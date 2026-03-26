@@ -166,7 +166,7 @@ export class DirectivesPage extends BrokerPage {
               children: [
                 new CardHeader({ children: new Heading(5, { text: 'Directives', className: 'mb-0' }) }),
                 new CardBody({
-                  children: new DataTable({
+                  children: new DataTable<Directive>({
                     columns: [
                       { key: 'id', label: 'ID', render: (row: Directive) => new SmallText({ text: row.id.slice(0, 8), className: 'font-monospace' }) },
                       { key: 'title', label: 'Title' },

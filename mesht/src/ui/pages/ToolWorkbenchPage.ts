@@ -295,7 +295,7 @@ export class ToolWorkbenchPage extends BrokerPage {
             children: [
               new CardHeader({ children: new Heading(5, { text: 'Dynamic Tool Forge Review', className: 'mb-0' }) }),
               new CardBody({
-                children: new DataTable({
+                children: new DataTable<ForgeTool>({
                   columns: [
                     { key: 'name', label: 'Tool Name' },
                     { key: 'description', label: 'Description' },

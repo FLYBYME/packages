@@ -203,7 +203,7 @@ export class GitflowTab extends BrokerComponent {
           className: 'p-0',
           children: files.length === 0
             ? new Box({ className: 'p-4 text-center text-muted italic', text: 'No files changed.' })
-            : new DataTable({
+            : new DataTable<GitflowChangedFile>({
                 columns: [
                   { 
                     key: 'status', 

@@ -615,7 +615,7 @@ export class ArtifactsPage extends BrokerPage {
         children: [
           new CardBody({
             className: 'p-0',
-            children: new DataTable({
+            children: new DataTable<Artifact>({
               columns: [
                 { key: 'id', label: 'ID', render: (row: Artifact) => new Box({ tag: 'code', children: row.id.slice(0, 16) + '...' }) },
                 { key: 'type', label: 'Type', render: (row: Artifact) => new Badge({ text: row.type.toUpperCase(), variant: row.type === 'protocol' ? 'primary' : 'secondary' }) },

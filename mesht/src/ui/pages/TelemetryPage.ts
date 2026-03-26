@@ -74,7 +74,7 @@ export class TelemetryPage extends BrokerPage {
       new Card({
         children: [
           new CardBody({
-            children: new DataTable({
+            children: new DataTable<AuditLog>({
               columns: [
                 {
                   key: 'timestamp',

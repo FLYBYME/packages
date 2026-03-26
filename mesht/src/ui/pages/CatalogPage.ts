@@ -231,7 +231,7 @@ export class CatalogPage extends BrokerPage {
                   ]
                 }),
                 new CardBody({
-                  children: new DataTable({
+                  children: new DataTable<CatalogModel>({
                     columns: [
                       { key: 'alias', label: 'Alias' },
                       { key: 'providerId', label: 'Provider' },

@@ -196,7 +196,7 @@ export class ProjectsPage extends BrokerPage {
                   ] 
                 }),
                 new CardBody({
-                  children: new DataTable({
+                  children: new DataTable<Project>({
                     columns: [
                       { key: 'id', label: 'ID' },
                       { key: 'name', label: 'Name' },

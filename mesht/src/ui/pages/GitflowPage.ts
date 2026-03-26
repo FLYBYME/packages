@@ -79,7 +79,7 @@ export class GitflowPage extends BrokerPage {
           }),
           new CardBody({
             className: 'p-0 overflow-auto',
-            children: new DataTable({
+            children: new DataTable<GitflowSession>({
               columns: [
                 { key: 'projectId', label: 'Project', render: (row: GitflowSession) => new SmallText({ text: row.projectId, className: 'fw-bold' }) },
                 { key: 'directiveId', label: 'Directive', render: (row: GitflowSession) => new SmallText({ text: row.directiveId.slice(0, 8), className: 'font-monospace' }) },
