@@ -1,0 +1,7 @@
+# Ignore source and config files to keep the package lightweight
+src/
+tests/
+tsconfig.json
+tsconfig.tsbuildinfo
+jest.config.js
+.eslintrc.js

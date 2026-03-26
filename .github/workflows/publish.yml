@@ -1,0 +1,41 @@
+name: Build and Publish Monorepo
+
+on:
+  push:
+    branches:
+      - master # Triggers when you push or merge to master
+
+jobs:
+  publish-packages:
+    runs-on: ubuntu-latest
+    
+    # These permissions are required for the action to push to the registry
+    permissions:
+      contents: read
+      packages: write 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x' # Or whatever your target Node version is
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@flybyme'
+
+      - name: Install dependencies
+        # This installs dependencies across all workspaces
+        run: npm ci
+
+      - name: Build all packages
+        # Runs the build script in every workspace package
+        run: npm run build --workspaces --if-present
+
+      - name: Publish to GitHub Packages
+        # Publishes all workspaces to the registry
+        run: npm publish --workspaces
+        env:
+          # This token is automatically provided by GitHub Actions
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

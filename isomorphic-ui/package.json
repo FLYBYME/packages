@@ -1,0 +1,50 @@
+{
+  "name": "@flybyme/isomorphic-ui",
+  "version": "1.0.53",
+  "description": "Port of the legacy UI rendering logic for the isomorphic mesh ecosystem",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.ts\" --max-warnings=0",
+    "test:e2e": "playwright test",
+    "test:e2e:orchestrator": "ts-node -r tsconfig-paths/register e2e/setup/orchestrator.ts"
+  },
+  "dependencies": {
+    "@flybyme/isomorphic-core": "*",
+    "@flybyme/isomorphic-database": "*",
+    "@flybyme/isomorphic-mesh": "*",
+    "@flybyme/isomorphic-registry": "*",
+    "eventemitter3": "^5.0.4",
+    "nanoid": "^5.1.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@flybyme/isomorphic-cdn": "^1.0.53",
+    "@flybyme/isomorphic-compiler": "^1.0.53",
+    "@playwright/test": "^1.58.2",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.11.19",
+    "@typescript-eslint/eslint-plugin": "^8.57.1",
+    "@typescript-eslint/parser": "^8.57.1",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.3.3",
+    "vite": "^8.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FLYBYME/mesh.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@flybyme/isomorphic-mesh-monorepo",
+  "private": true,
+  "workspaces": [
+    "isomorphic-*",
+    "raft-consensus",
+    "mesh-*"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "prepare": "npm run build",
+    "typecheck": "tsc -b",
+    "lint": "npm run lint --workspaces",
+    "test": "npm test --workspaces",
+    "clean": "rm -rf node_modules && npm run clean --workspaces",
+    "bump": "node bump-version.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.3.0",
+    "resolve.exports": "^2.0.3",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
+  }
+}

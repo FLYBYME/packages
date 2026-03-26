@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Typecheck, Lint, and Build
+    runs-on: ubuntu-latest
+    # This will fail the job if it takes longer than 10 minutes
+    timeout-minutes: 10 
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 25
+          cache: "npm"
+
+      - name: Install Monorepo Dependencies
+        run: npm install
+
+      - name: Enforce Type Sovereignty (Solution Build)
+        run: npm run typecheck
+
+      - name: Lint Anti-Type Erosion
+        run: npm run lint
+
+      - name: Run Mesh Tests
+        run: npm test

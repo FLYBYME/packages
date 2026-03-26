@@ -1,0 +1,41 @@
+{
+  "name": "@flybyme/mesh-cli",
+  "version": "1.0.53",
+  "bin": {
+    "mesh": "./dist/bin/mesh.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.ts\" --max-warnings=0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "fs-extra": "^11.3.4",
+    "@flybyme/isomorphic-core": "*",
+    "@flybyme/isomorphic-auth": "*",
+    "@flybyme/isomorphic-mesh": "*",
+    "@flybyme/isomorphic-registry": "*",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.19",
+    "@typescript-eslint/eslint-plugin": "^8.57.1",
+    "@typescript-eslint/parser": "^8.57.1",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FLYBYME/mesh.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}

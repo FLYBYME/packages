@@ -1,0 +1,62 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "isomorphic-core"
+        },
+        {
+            "path": "isomorphic-registry"
+        },
+        {
+            "path": "isomorphic-mesh"
+        },
+        {
+            "path": "isomorphic-database"
+        },
+        {
+            "path": "isomorphic-auth"
+        },
+        {
+            "path": "isomorphic-fs"
+        },
+        {
+            "path": "isomorphic-kv"
+        },
+        {
+            "path": "isomorphic-messaging"
+        },
+        {
+            "path": "isomorphic-resiliency"
+        },
+        {
+            "path": "isomorphic-scheduler"
+        },
+        {
+            "path": "isomorphic-streams"
+        },
+        {
+            "path": "isomorphic-telemetry"
+        },
+        {
+            "path": "isomorphic-ui"
+        },
+        {
+            "path": "isomorphic-utils"
+        },
+        {
+            "path": "isomorphic-compiler"
+        },
+        {
+            "path": "isomorphic-cdn"
+        },
+        {
+            "path": "raft-consensus"
+        },
+        {
+            "path": "mesh-cli"
+        },
+        {
+            "path": "mesh-tasker"
+        }
+    ]
+}
