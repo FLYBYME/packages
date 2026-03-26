@@ -1,0 +1,56 @@
+{
+  "name": "mesht",
+  "version": "1.2.0",
+  "description": "MeshT — Decentralized Autonomous Engineering Grid",
+  "license": "MIT",
+  "author": "FLYBYME",
+  "type": "commonjs",
+  "main": "dist/run.js",
+  "bin": {
+    "mesht": "./dist/run.js"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/run.js",
+    "dev": "npx ts-node src/run.ts",
+    "lint": "eslint \"src/**/*.ts\" --max-warnings=0",
+    "clean": "rm -rf dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@flybyme/isomorphic-auth": "file:../packages/isomorphic-auth",
+    "@flybyme/isomorphic-cdn": "file:../packages/isomorphic-cdn",
+    "@flybyme/isomorphic-compiler": "file:../packages/isomorphic-compiler",
+    "@flybyme/isomorphic-core": "file:../packages/isomorphic-core",
+    "@flybyme/isomorphic-database": "file:../packages/isomorphic-database",
+    "@flybyme/isomorphic-fs": "file:../packages/isomorphic-fs",
+    "@flybyme/isomorphic-kv": "file:../packages/isomorphic-kv",
+    "@flybyme/isomorphic-mesh": "file:../packages/isomorphic-mesh",
+    "@flybyme/isomorphic-messaging": "file:../packages/isomorphic-messaging",
+    "@flybyme/isomorphic-registry": "file:../packages/isomorphic-registry",
+    "@flybyme/isomorphic-resiliency": "file:../packages/isomorphic-resiliency",
+    "@flybyme/isomorphic-scheduler": "file:../packages/isomorphic-scheduler",
+    "@flybyme/isomorphic-streams": "file:../packages/isomorphic-streams",
+    "@flybyme/isomorphic-telemetry": "file:../packages/isomorphic-telemetry",
+    "@flybyme/isomorphic-ui": "file:../packages/isomorphic-ui",
+    "@flybyme/isomorphic-utils": "file:../packages/isomorphic-utils",
+    "dotenv": "^16.4.5",
+    "eslint": "^10.1.0",
+    "isolated-vm": "^6.1.2",
+    "nedb-promises": "^6.2.3",
+    "openai": "^6.32.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^20.19.35",
+    "@typescript-eslint/eslint-plugin": "^8.57.1",
+    "@typescript-eslint/parser": "^8.57.1",
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3"
+  }
+}

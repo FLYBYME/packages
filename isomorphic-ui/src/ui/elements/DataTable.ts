@@ -5,17 +5,17 @@ import { Pagination, PageItem, PageLink } from './NavigationComponents';
 import { Text } from './Typography';
 import { FormSelect, FormControl, IFormControlProps, IFormSelectProps } from './Forms';
 
-export interface IDataTableColumn {
+export interface IDataTableColumn<T = Record<string, unknown>> {
     key: string;
     label: string;
     sortable?: boolean;
     className?: string;
-    render?: (row: Record<string, unknown>) => ComponentChild;
+    render?: (row: T) => ComponentChild;
 }
 
-export interface IDataTableProps extends IBaseUIProps {
-    columns: IDataTableColumn[];
-    data: Record<string, unknown>[];
+export interface IDataTableProps<T = Record<string, unknown>> extends IBaseUIProps {
+    columns: IDataTableColumn<T>[];
+    data: T[];
     initialEntriesPerPage?: number;
 }
 
@@ -47,9 +47,9 @@ class EntriesSelect extends FormSelect {
     }
 }
 
-export class DataTable extends BrokerComponent {
-    private data: Record<string, unknown>[];
-    private columns: IDataTableColumn[];
+export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
+    private data: T[];
+    private columns: IDataTableColumn<T>[];
     private currentPage: number = 1;
     private entriesPerPage: number;
     private searchQuery: string = '';
@@ -60,7 +60,7 @@ export class DataTable extends BrokerComponent {
     private entriesSelect!: EntriesSelect;
     private shouldRestoreFocus: boolean = false;
 
-    constructor(props: IDataTableProps) {
+    constructor(props: IDataTableProps<T>) {
         super('div', { ...props, className: 'datatable-container' });
         this.data = props.data || [];
         this.columns = props.columns || [];
@@ -117,7 +117,7 @@ export class DataTable extends BrokerComponent {
         if (this.searchQuery) {
             const query = this.searchQuery.toLowerCase();
             processed = processed.filter(item => {
-                return Object.values(item).some(val => 
+                return Object.values(item as Record<string, unknown>).some(val => 
                     String(val).toLowerCase().includes(query)
                 );
             });

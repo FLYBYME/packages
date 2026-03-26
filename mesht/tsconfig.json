@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "lib": [
+            "ES2020",
+            "dom"
+        ],
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "paths": {
+            "@flybyme/isomorphic-auth": ["../packages/isomorphic-auth/src/index.ts"],
+            "@flybyme/isomorphic-cdn": ["../packages/isomorphic-cdn/src/index.ts"],
+            "@flybyme/isomorphic-compiler": ["../packages/isomorphic-compiler/src/index.ts"],
+            "@flybyme/isomorphic-core": ["../packages/isomorphic-core/src/index.ts"],
+            "@flybyme/isomorphic-database": ["../packages/isomorphic-database/src/index.ts"],
+            "@flybyme/isomorphic-fs": ["../packages/isomorphic-fs/src/index.ts"],
+            "@flybyme/isomorphic-kv": ["../packages/isomorphic-kv/src/index.ts"],
+            "@flybyme/isomorphic-mesh": ["../packages/isomorphic-mesh/src/index.ts"],
+            "@flybyme/isomorphic-messaging": ["../packages/isomorphic-messaging/src/index.ts"],
+            "@flybyme/isomorphic-registry": ["../packages/isomorphic-registry/src/index.ts"],
+            "@flybyme/isomorphic-resiliency": ["../packages/isomorphic-resiliency/src/index.ts"],
+            "@flybyme/isomorphic-scheduler": ["../packages/isomorphic-scheduler/src/index.ts"],
+            "@flybyme/isomorphic-streams": ["../packages/isomorphic-streams/src/index.ts"],
+            "@flybyme/isomorphic-telemetry": ["../packages/isomorphic-telemetry/src/index.ts"],
+            "@flybyme/isomorphic-ui": ["../packages/isomorphic-ui/src/index.ts"],
+            "@flybyme/isomorphic-utils": ["../packages/isomorphic-utils/src/index.ts"]
+        },
+        "outDir": "./dist"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
