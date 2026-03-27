@@ -16,23 +16,19 @@ export class StructuredLogger implements ILogger {
         this.drainer = drainer || null;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public debug(msg: string, ...args: any[]): void {
+    public debug(msg: string, ...args: unknown[]): void {
         this.log('debug', msg, ...args);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public info(msg: string, ...args: any[]): void {
+    public info(msg: string, ...args: unknown[]): void {
         this.log('info', msg, ...args);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public warn(msg: string, ...args: any[]): void {
+    public warn(msg: string, ...args: unknown[]): void {
         this.log('warn', msg, ...args);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public error(msg: string, ...args: any[]): void {
+    public error(msg: string, ...args: unknown[]): void {
         this.log('error', msg, ...args);
     }
 
@@ -47,8 +43,7 @@ export class StructuredLogger implements ILogger {
     /**
      * Internal log formatter and emitter.
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private log(level: 'debug' | 'info' | 'warn' | 'error', message: string, ...args: any[]): void {
+    private log(level: 'debug' | 'info' | 'warn' | 'error', message: string, ...args: unknown[]): void {
         const levels: Record<string, number> = { debug: 0, info: 1, warn: 2, error: 3 };
         if (levels[level] < this.level) return;
 

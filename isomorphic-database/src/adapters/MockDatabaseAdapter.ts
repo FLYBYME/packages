@@ -109,10 +109,10 @@ export class MockDatabaseAdapter implements IDatabaseAdapter {
             const val = row[f.column];
             if (f.operator === '=' || f.operator === '$eq') { if (val !== f.value) return false; }
             else if (f.operator === '!=' || f.operator === '$ne') { if (val === f.value) return false; }
-            else if (f.operator === '>' || f.operator === '$gt') { if ((val as any) <= (f.value as any)) return false; }
-            else if (f.operator === '<' || f.operator === '$lt') { if ((val as any) >= (f.value as any)) return false; }
-            else if (f.operator === '>=' || f.operator === '$gte') { if ((val as any) < (f.value as any)) return false; }
-            else if (f.operator === '<=' || f.operator === '$lte') { if ((val as any) > (f.value as any)) return false; }
+            else if (f.operator === '>' || f.operator === '$gt') { if (!this.compare(val, f.value, (a, b) => (a as any) > (b as any))) return false; }
+            else if (f.operator === '<' || f.operator === '$lt') { if (!this.compare(val, f.value, (a, b) => (a as any) < (b as any))) return false; }
+            else if (f.operator === '>=' || f.operator === '$gte') { if (!this.compare(val, f.value, (a, b) => (a as any) >= (b as any))) return false; }
+            else if (f.operator === '<=' || f.operator === '$lte') { if (!this.compare(val, f.value, (a, b) => (a as any) <= (b as any))) return false; }
             else if (f.operator === '$contains') {
                 if (!Array.isArray(val)) return false;
                 if (!val.includes(f.value)) return false;
@@ -135,9 +135,11 @@ export class MockDatabaseAdapter implements IDatabaseAdapter {
         
         if (ast.select && ast.select.length > 0) {
             existing = existing.map(row => {
-                const picked: any = {};
-                for (const col of ast.select!) picked[col] = (row as any)[col];
-                return picked;
+                const picked: Record<string, unknown> = {};
+                for (const col of ast.select!) {
+                    picked[col] = (row as unknown as Record<string, unknown>)[col];
+                }
+                return picked as unknown as T;
             });
         }
         return existing;
@@ -150,7 +152,7 @@ export class MockDatabaseAdapter implements IDatabaseAdapter {
 
     async insert<T = unknown>(table: string, data: T): Promise<DatabaseResult> {
         const existing = this.store.get(table) || [];
-        const { id: _ignored, ...cleanData } = data as any;
+        const { id: _id, ...cleanData } = data as Record<string, unknown>;
         const id = String(existing.length + 1);
         const row = { ...cleanData, id };
         existing.push(row);
@@ -182,5 +184,11 @@ export class MockDatabaseAdapter implements IDatabaseAdapter {
 
     async transaction<T>(fn: () => Promise<T>): Promise<T> {
         return fn();
+    }
+
+    private compare(a: unknown, b: unknown, op: (a: unknown, b: unknown) => boolean): boolean {
+        if (a === null || a === undefined || b === null || b === undefined) return false;
+        if (typeof a !== typeof b) return false;
+        return op(a, b);
     }
 }

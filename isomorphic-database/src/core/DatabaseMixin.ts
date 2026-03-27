@@ -28,9 +28,9 @@ export const CRUDSchemas = {
 export type CRUDActions<
     TPrefix extends string, 
     TSchema extends z.AnyZodObject, 
-    TCreateSchema extends any = TSchema,
-    TUpdateSchema extends any = any,
-    TFindSchema extends any = any
+    TCreateSchema = TSchema,
+    TUpdateSchema = Record<string, unknown>,
+    TFindSchema = Record<string, unknown>
 > = {
     [K in `${TPrefix}.create`]: { params: TCreateSchema, returns: TSchema };
 } & {
@@ -53,7 +53,7 @@ export type CRUDActions<
 export function DatabaseMixin<
     T extends z.AnyZodObject,
     N extends string,
-    TExtra extends TableDefinition<any, any>[]
+    TExtra extends TableDefinition<z.AnyZodObject, string>[]
 >(
     primaryTable: TableDefinition<T, N>,
     ...extraTables: TExtra
@@ -68,7 +68,7 @@ export function DatabaseMixin<
             public db!: BaseRepository<T>;
             public broker!: IServiceBroker;
             public _tables = [primaryTable, ...extraTables];
-            public dbs: DbsType = {} as any;
+            public dbs: DbsType = {} as DbsType;
             public _initialized = false;
 
             async onInit(app: IMeshApp): Promise<void> {
@@ -113,14 +113,14 @@ export function DatabaseMixin<
                     const crudHandlers = {
                         create: async (ctx: IContext<Record<string, unknown>>) => {
                             const now = Date.now();
-                            const { id, ...incoming } = ctx.params as Record<string, unknown>;
+                            const { id: _id, ...incoming } = ctx.params as Record<string, unknown>;
                             const params: Record<string, unknown> = {
                                 ...incoming,
                                 createdAt: incoming.createdAt ? Number(incoming.createdAt) : now,
                                 updatedAt: incoming.updatedAt ? Number(incoming.updatedAt) : now
                             };
-                            const item = await repo.create(params as any);
-                            ctx.emit(`${eventPrefix}.created`, item);
+                            const item = await repo.create(params as z.infer<TS>);
+                            ctx.emit(`${eventPrefix}.created`, item as Record<string, unknown>);
                             return item;
                         },
                         get: async (ctx: IContext<Record<string, unknown>>) => {
@@ -148,11 +148,11 @@ export function DatabaseMixin<
                                 ...data,
                                 updatedAt: data.updatedAt ? Number(data.updatedAt) : Date.now()
                             };
-                            const changes = await repo.update(id, payload as any);
+                            const changes = await repo.update(id, payload as Partial<z.infer<TS>>);
                             if (changes.changes > 0) {
                                 const updated = await repo.findById(id);
                                 if (updated) {
-                                    ctx.emit(`${eventPrefix}.updated`, updated as any);
+                                    ctx.emit(`${eventPrefix}.updated`, updated as Record<string, unknown>);
                                 }
                             }
                             return changes;
@@ -181,7 +181,7 @@ export function DatabaseMixin<
 
                 register(primaryTable.name, this.db, true);
                 for (const table of extraTables) {
-                    register(table.name, (this.dbs as any)[table.name], false);
+                    register(table.name, (this.dbs as Record<string, BaseRepository<z.AnyZodObject>>)[table.name], false);
                 }
             }
         };

@@ -1,10 +1,9 @@
-/**
- * WSTransport — Isomorphic WebSocket Transport
- * Automatically resolves to Node.js or Browser implementation based on environment.
- */
-import { BaseSerializer } from '../serializers/BaseSerializer';
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 import { BaseTransport } from './BaseTransport';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export let WSTransport: any;
 
 if (typeof window !== 'undefined' || typeof self !== 'undefined') {

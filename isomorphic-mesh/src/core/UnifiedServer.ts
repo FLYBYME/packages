@@ -15,11 +15,18 @@ export class UnifiedServer {
 
     constructor(port = 0) {
         this.port = port;
-        if (Env.isNode()) {
-            const express = require('express');
-            const http = require('node:http');
-            this.app = express();
-            this.server = http.createServer(this.app) as IHttpServer;
+    }
+
+    private async init(): Promise<void> {
+        if (this.server || !Env.isNode()) return;
+        
+        try {
+            const express = await import('express');
+            const http = await import('node:http');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            this.server = http.createServer(this.app as any) as unknown as IHttpServer;
+        } catch {
+            // Fallback or ignore
         }
     }
 
@@ -28,7 +35,10 @@ export class UnifiedServer {
     getPort(): number { return this.port; }
 
     async listen(): Promise<number | null> {
-        if (!Env.isNode() || this.listening || !this.server) return this.port;
+        if (!Env.isNode() || this.listening) return this.port;
+
+        await this.init();
+        if (!this.server) return null;
 
         return new Promise((resolve, reject) => {
             this.server!.listen(this.port, () => {

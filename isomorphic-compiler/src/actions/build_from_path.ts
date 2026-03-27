@@ -6,6 +6,15 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { ICompilerService } from '../compiler.interface';
 
+interface IMeshProcess extends NodeJS.Process {
+    [key: symbol]: unknown;
+}
+
+interface IManifestModule {
+    default?: SiteManifest & { network?: unknown };
+    [key: string]: (SiteManifest & { network?: unknown }) | undefined;
+}
+
 export async function build_from_path(
     this: ICompilerService,
     ctx: IContext<z.infer<typeof BuildFromPathParamsSchema>>
@@ -20,7 +29,7 @@ export async function build_from_path(
 
     // Register ts-node compiler on the fly to require the typescript manifest file
     // Note: We avoid polluting global space heavily, but require('ts-node/register') is safe if already loaded
-    if (!(process as any)[Symbol.for('ts-node.register.instance')]) {
+    if (!(process as unknown as IMeshProcess)[Symbol.for('ts-node.register.instance')]) {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         require('ts-node').register({ transpileOnly: true });
     }
@@ -29,12 +38,13 @@ export async function build_from_path(
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     delete require.cache[require.resolve(manifestPath)];
 
-    let importedModule: any;
+    let importedModule: IManifestModule;
     try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         importedModule = require(manifestPath);
-    } catch (err) {
-        throw new Error(`Failed to load manifest at ${manifestPath}: ${err}`);
+    } catch (err: unknown) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        throw new Error(`Failed to load manifest at ${manifestPath}: ${error.message}`);
     }
 
     // Find the exported manifest object. We look for 'default' or any exported object with 'app' and 'mesh' (or 'network' for compatibility).

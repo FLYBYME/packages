@@ -125,7 +125,7 @@ export class BaseRepository<T extends z.AnyZodObject> {
     async find(filter: FilterObject<T> = {}, options: QueryOptions<T> = {}): Promise<TableSchema<T>[]> {
         let qb = this.translateFilter(filter, options.skipTenancy);
 
-        if (options.select) qb = qb.select(options.select as any);
+        if (options.select) qb = qb.select(options.select as ColumnOf<T>[]);
         if (options.limit !== undefined) qb = qb.limit(options.limit);
         if (options.offset !== undefined) qb = qb.offset(options.offset);
 
@@ -145,7 +145,7 @@ export class BaseRepository<T extends z.AnyZodObject> {
      * Find a single record by its ID.
      */
     async findById(id: string | number, skipTenancy: boolean = false): Promise<TableSchema<T> | null> {
-        // @ts-ignore - Assuming 'id' column exists
+        // @ts-expect-error - Assuming 'id' column exists
         return this.findOne({ id } as FilterObject<T>, { skipTenancy });
     }
 
@@ -161,7 +161,7 @@ export class BaseRepository<T extends z.AnyZodObject> {
      * Update a single record by ID.
      */
     async update(id: string | number, data: Partial<TableSchema<T>>): Promise<{ changes: number }> {
-        // @ts-ignore - Assuming 'id' column exists
+        // @ts-expect-error - Assuming 'id' column exists
         return this.updateMany({ id } as FilterObject<T>, data);
     }
 
@@ -176,7 +176,7 @@ export class BaseRepository<T extends z.AnyZodObject> {
      * Remove a single record by ID.
      */
     async remove(id: string | number): Promise<{ changes: number }> {
-        // @ts-ignore - Assuming 'id' column exists
+        // @ts-expect-error - Assuming 'id' column exists
         return this.removeMany({ id } as FilterObject<T>);
     }
 

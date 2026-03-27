@@ -48,8 +48,9 @@ export class DatadogExporter {
             //     headers: { 'Content-Type': 'application/json' },
             //     body: JSON.stringify({ series })
             // });
-        } catch (err) {
-            console.error('[DatadogExporter] Export failed', err);
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : String(err);
+            console.error(`[DatadogExporter] Export failed: ${message}`);
         }
     }
 }

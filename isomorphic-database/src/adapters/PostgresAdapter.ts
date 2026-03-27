@@ -6,23 +6,45 @@ export interface PostgresConfig {
     ssl?: boolean | object;
 }
 
+interface IPostgresResult<T = unknown> {
+    rows: T[];
+    rowCount: number;
+}
+
+interface IPostgresClient {
+    query<T = unknown>(sql: string, params?: unknown[]): Promise<IPostgresResult<T>>;
+    release(): void;
+}
+
+interface IPostgresPool {
+    query<T = unknown>(sql: string, params?: unknown[]): Promise<IPostgresResult<T>>;
+    connect(): Promise<IPostgresClient>;
+    end(): Promise<void>;
+}
+
+interface IPostgresStatic {
+    Pool: new (config: object) => IPostgresPool;
+}
+
 export class PostgresAdapter implements IDatabaseAdapter {
     public readonly name = 'native-postgres';
-    private pool: any;
+    private pool?: IPostgresPool;
     private initializedTables = new Set<string>();
 
     constructor(private readonly config: PostgresConfig) {}
 
     async init(): Promise<void> {
         try {
-            // @ts-ignore
-            const { Pool } = await import('pg');
+            // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+            // @ts-expect-error
+            const { Pool } = await import('pg') as unknown as IPostgresStatic;
             this.pool = new Pool({
                 connectionString: this.config.connectionString,
                 ssl: this.config.ssl
             });
-        } catch (error) {
-            throw new Error(`Failed to initialize PostgresAdapter: ${error instanceof Error ? error.message : String(error)}`);
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            throw new Error(`Failed to initialize PostgresAdapter: ${error.message}`);
         }
     }
 
@@ -33,16 +55,17 @@ export class PostgresAdapter implements IDatabaseAdapter {
     }
 
     private async ensureTable(table: string, columns: string[]): Promise<void> {
+        if (!this.pool) throw new Error('PostgresAdapter not initialized');
         // Ensure table exists with an 'id' primary key
         await this.pool.query(`CREATE TABLE IF NOT EXISTS ${this.escape(table)} (id TEXT PRIMARY KEY)`);
 
         // Check existing columns
-        const info = await this.pool.query(`
+        const info = await this.pool.query<{ column_name: string }>(`
             SELECT column_name 
             FROM information_schema.columns 
             WHERE table_name = $1
         `, [table]);
-        const existingCols = new Set(info.rows.map((r: any) => r.column_name));
+        const existingCols = new Set(info.rows.map(r => r.column_name));
 
         // Add missing columns
         for (const col of columns) {
@@ -78,6 +101,7 @@ export class PostgresAdapter implements IDatabaseAdapter {
     }
 
     async find<T = unknown>(ast: QueryAST): Promise<T[]> {
+        if (!this.pool) throw new Error('PostgresAdapter not initialized');
         try {
             const { where, params } = this.processAST(ast, 1);
             const cols = ast.select && ast.select.length > 0 ? ast.select.map(c => this.escape(c)).join(', ') : '*';
@@ -86,30 +110,35 @@ export class PostgresAdapter implements IDatabaseAdapter {
             if (ast.limit !== undefined) sql += ` LIMIT ${ast.limit}`;
             if (ast.offset !== undefined) sql += ` OFFSET ${ast.offset}`;
 
-            const res = await this.pool.query(sql, params);
+            const res = await this.pool.query<T>(sql, params);
             return res.rows;
-        } catch (e: any) {
-            if (e.message.includes('does not exist')) return [];
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('does not exist')) return [];
+            throw error;
         }
     }
 
     async count(ast: QueryAST): Promise<number> {
+        if (!this.pool) throw new Error('PostgresAdapter not initialized');
         try {
             const { where, params } = this.processAST(ast, 1);
             const sql = `SELECT COUNT(*) as count FROM ${this.escape(ast.table)} ${where}`.trim();
-            const res = await this.pool.query(sql, params);
+            const res = await this.pool.query<{ count: string | number }>(sql, params);
             return Number(res.rows[0]?.count || 0);
-        } catch (e: any) {
-            if (e.message.includes('does not exist')) return 0;
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('does not exist')) return 0;
+            throw error;
         }
     }
 
     async insert<T = unknown>(table: string, data: T): Promise<DatabaseResult> {
-        const { id, ...cleanData } = data as any;
+        if (!this.pool) throw new Error('PostgresAdapter not initialized');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _, ...cleanData } = data as unknown as Record<string, unknown>;
         const generatedId = crypto.randomUUID();
-        const payload = { id: generatedId, ...cleanData };
+        const payload: Record<string, unknown> = { id: generatedId, ...cleanData };
 
         const keys = Object.keys(payload);
         await this.ensureTable(table, keys);
@@ -119,12 +148,14 @@ export class PostgresAdapter implements IDatabaseAdapter {
         const sql = `INSERT INTO ${this.escape(table)} (${columns}) VALUES (${placeholders}) RETURNING id`;
         const params = keys.map(k => payload[k]);
         
-        const res = await this.pool.query(sql, params);
+        const res = await this.pool.query<{ id: string }>(sql, params);
         return { changes: res.rowCount, lastInsertId: res.rows[0]?.id || generatedId };
     }
 
     async update<T = unknown>(ast: QueryAST, data: Partial<T>): Promise<DatabaseResult> {
-        const { id, ...cleanData } = data as any;
+        if (!this.pool) throw new Error('PostgresAdapter not initialized');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _, ...cleanData } = data as unknown as Record<string, unknown>;
         const setKeys = Object.keys(cleanData);
         
         if (setKeys.length > 0) {
@@ -145,25 +176,29 @@ export class PostgresAdapter implements IDatabaseAdapter {
         try {
             const res = await this.pool.query(sql, params);
             return { changes: res.rowCount };
-        } catch (e: any) {
-            if (e.message.includes('does not exist')) return { changes: 0 };
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('does not exist')) return { changes: 0 };
+            throw error;
         }
     }
 
     async delete(ast: QueryAST): Promise<DatabaseResult> {
+        if (!this.pool) throw new Error('PostgresAdapter not initialized');
         try {
             const { where, params } = this.processAST(ast, 1);
             const sql = `DELETE FROM ${this.escape(ast.table)} ${where}`.trim();
             const res = await this.pool.query(sql, params);
             return { changes: res.rowCount };
-        } catch (e: any) {
-            if (e.message.includes('does not exist')) return { changes: 0 };
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('does not exist')) return { changes: 0 };
+            throw error;
         }
     }
 
     async transaction<T>(fn: () => Promise<T>): Promise<T> {
+        if (!this.pool) throw new Error('PostgresAdapter not initialized');
         const client = await this.pool.connect();
         try {
             await client.query('BEGIN');

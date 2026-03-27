@@ -1,5 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
-import { IMeshNetworkNode, IMeshOrchestrator, NodeInfo } from '../types/mesh.types';
+import { IMeshNetworkNode } from '../types/mesh.types';
 import { TransportManager } from './TransportManager';
 import { NetworkDispatcher } from './NetworkDispatcher';
 import { NetworkController } from './NetworkController';
@@ -40,7 +40,7 @@ export class MeshNetwork extends EventEmitter implements IMeshNetwork, IMeshNetw
     // Packet Deduplication Cache (Phase 1)
     private seenPackets = new Map<string, number>();
     private readonly PACKET_TTL_MS = 10000;
-    private cleanupTimer: any;
+    private cleanupTimer: unknown;
 
     constructor(options: MeshNetworkOptions, logger: ILogger, registry: IServiceRegistry) {
         super();
@@ -78,7 +78,8 @@ export class MeshNetwork extends EventEmitter implements IMeshNetwork, IMeshNetw
                 }
             }
         }, 5000);
-        SafeTimer.unref(this.cleanupTimer);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        SafeTimer.unref(this.cleanupTimer as any);
 
         this.transport.on('packet', async (packet: MeshPacket) => {
             // Deduplication Check (Phase 1)

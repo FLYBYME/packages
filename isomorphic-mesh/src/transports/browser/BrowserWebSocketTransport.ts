@@ -1,6 +1,6 @@
 import { BaseTransport } from '../BaseTransport';
 import { BaseSerializer } from '../../serializers/BaseSerializer';
-import { ILogger, TransportConnectOptions, ITransportSocket } from '../../types/mesh.types';
+import { ILogger, TransportConnectOptions } from '../../types/mesh.types';
 import { nanoid } from 'nanoid';
 import { OfflineStorageEngine } from '../../utils/OfflineStorageEngine';
 import { MeshPacket } from '../../types/packet.types';

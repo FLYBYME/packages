@@ -113,7 +113,8 @@ export class TCPTransport extends BaseTransport {
 
     async publish(topic: string, data: unknown): Promise<void> {
         // Phase 3: Block REQUEST broadcasts
-        if (data && typeof data === 'object' && 'type' in (data as any) && (data as any).type === 'REQUEST') {
+        const dataObj = data as Record<string, unknown> | null;
+        if (dataObj && typeof dataObj === 'object' && 'type' in dataObj && dataObj.type === 'REQUEST') {
             this.logger?.warn(`[TCPTransport] Cannot broadcast REQUEST packets to topic: ${topic}`);
             return;
         }
@@ -174,7 +175,11 @@ export class TCPTransport extends BaseTransport {
         const challenge = JSON.stringify({ type: 'challenge', nonce });
         socket.write(TCPFrameCodec.encode(WirePacketType.AUTH, 'handshake', new TextEncoder().encode(challenge)));
 
-        socket.on('data', (chunk: unknown) => this.processData(peer, chunk as Uint8Array));
+        socket.on('data', (chunk: unknown) => {
+            if (chunk instanceof Uint8Array) {
+                this.processData(peer, chunk);
+            }
+        });
         socket.on('end', () => {
             if (peer.nodeID) {
                 this.peers.delete(peer.nodeID);
@@ -183,9 +188,8 @@ export class TCPTransport extends BaseTransport {
             this.stopHeartbeat(peer);
         });
         socket.on('error', (err: unknown) => {
-            if (err instanceof Error) {
-                this.emit('error', err);
-            }
+            const error = err instanceof Error ? err : new Error(String(err));
+            this.emit('error', error);
             socket.destroy();
         });
     }
@@ -316,13 +320,14 @@ export class TCPTransport extends BaseTransport {
             try {
                 const pong = TCPFrameCodec.encode(WirePacketType.PING, 'ping', new Uint8Array(0));
                 const socket = peer.socket as INodeSocket;
-                socket.write(pong, (err) => {
+                socket.write(pong, (err: unknown) => {
                     if (err) {
-                        this.logger?.warn(`Heartbeat write failed for ${peer.nodeID}: ${err.message}`);
+                        const error = err instanceof Error ? err : new Error(String(err));
+                        this.logger?.warn(`Heartbeat write failed for ${peer.nodeID}: ${error.message}`);
                         (peer.socket as INodeSocket).destroy();
                     }
                 });
-            } catch (error) {
+            } catch (error: unknown) {
                 const err = error instanceof Error ? error : new Error(String(error));
                 this.logger?.warn(`Heartbeat failed for ${peer.nodeID}: ${err.message}`);
                 (peer.socket as INodeSocket).destroy();
@@ -353,7 +358,11 @@ export class TCPTransport extends BaseTransport {
                 };
 
                 
-                socket.on('data', (chunk: unknown) => this.processData(peer, chunk as Uint8Array));
+                socket.on('data', (chunk: unknown) => {
+                    if (chunk instanceof Uint8Array) {
+                        this.processData(peer, chunk);
+                    }
+                });
                 socket.on('end', () => {
                     this.peers.delete(nodeID);
                     this.emit('peer:disconnect', nodeID);

@@ -5,20 +5,42 @@ export interface SQLiteConfig {
     filename: string;
 }
 
+interface ISQLiteRunResult {
+    changes: number;
+    lastInsertRowid: number | string;
+}
+
+interface ISQLiteStatement {
+    run(...params: unknown[]): ISQLiteRunResult;
+    get(...params: unknown[]): unknown;
+    all(...params: unknown[]): unknown[];
+}
+
+interface ISQLiteDatabase {
+    prepare(sql: string): ISQLiteStatement;
+    close(): void;
+}
+
+interface ISQLiteStatic {
+    new (filename: string): ISQLiteDatabase;
+}
+
 export class SQLiteAdapter implements IDatabaseAdapter {
     public readonly name = 'native-sqlite';
-    private db: any;
+    private db?: ISQLiteDatabase;
     private initializedTables = new Set<string>();
 
     constructor(private readonly config: SQLiteConfig) {}
 
     async init(): Promise<void> {
         try {
-            // @ts-ignore
-            const Database = (await import('better-sqlite3')).default;
+            // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+            // @ts-expect-error
+            const Database = (await import('better-sqlite3')).default as unknown as ISQLiteStatic;
             this.db = new Database(this.config.filename);
-        } catch (error) {
-            throw new Error(`Failed to initialize SQLiteAdapter: ${error instanceof Error ? error.message : String(error)}`);
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            throw new Error(`Failed to initialize SQLiteAdapter: ${error.message}`);
         }
     }
 
@@ -32,12 +54,13 @@ export class SQLiteAdapter implements IDatabaseAdapter {
         // We still check set to avoid repeated PRAGMA calls in a single session if possible,
         // but we'll be more careful.
         
+        if (!this.db) throw new Error('SQLiteAdapter not initialized');
         // Ensure table exists with an 'id' primary key
         this.db.prepare(`CREATE TABLE IF NOT EXISTS ${this.escape(table)} (id TEXT PRIMARY KEY)`).run();
 
         // Check existing columns
-        const info = this.db.prepare(`PRAGMA table_info(${this.escape(table)})`).all();
-        const existingCols = new Set(info.map((c: any) => c.name));
+        const info = this.db.prepare(`PRAGMA table_info(${this.escape(table)})`).all() as { name: string }[];
+        const existingCols = new Set(info.map(c => c.name));
 
         // Add missing columns
         for (const col of columns) {
@@ -50,18 +73,21 @@ export class SQLiteAdapter implements IDatabaseAdapter {
     }
 
     async all<T = unknown>(sql: string, params: unknown[] = []): Promise<T[]> {
+        if (!this.db) throw new Error('SQLiteAdapter not initialized');
         const rows = this.db.prepare(sql).all(this.mapParams(params));
-        return rows.map((row: any) => this.mapResult(row)) as T[];
+        return rows.map(row => this.mapResult(row as Record<string, unknown>)) as T[];
     }
 
     async get<T = unknown>(sql: string, params: unknown[] = []): Promise<T | undefined> {
+        if (!this.db) throw new Error('SQLiteAdapter not initialized');
         const row = this.db.prepare(sql).get(this.mapParams(params));
-        return this.mapResult(row) as T | undefined;
+        return this.mapResult(row as Record<string, unknown>) as T | undefined;
     }
 
     async run(sql: string, params: unknown[] = []): Promise<DatabaseResult> {
+        if (!this.db) throw new Error('SQLiteAdapter not initialized');
         const res = this.db.prepare(sql).run(this.mapParams(params));
-        return { changes: res.changes, lastInsertId: res.lastInsertRowid };
+        return { changes: res.changes, lastInsertId: String(res.lastInsertRowid) };
     }
 
     private mapParams(params: unknown[]): unknown[] {
@@ -73,9 +99,9 @@ export class SQLiteAdapter implements IDatabaseAdapter {
         });
     }
 
-    private mapResult(row: any): any {
-        if (!row) return row;
-        const mapped: any = {};
+    private mapResult(row: Record<string, unknown> | null | undefined): Record<string, unknown> | undefined {
+        if (!row) return undefined;
+        const mapped: Record<string, unknown> = {};
         for (const [key, value] of Object.entries(row)) {
             if (typeof value === 'string' && (value.startsWith('{') || value.startsWith('['))) {
                 try {
@@ -135,9 +161,10 @@ export class SQLiteAdapter implements IDatabaseAdapter {
             }
 
             return await this.all<T>(sql, params);
-        } catch (e: any) {
-            if (e.message.includes('no such table')) return [];
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('no such table')) return [];
+            throw error;
         }
     }
 
@@ -147,16 +174,18 @@ export class SQLiteAdapter implements IDatabaseAdapter {
             const sql = `SELECT COUNT(*) as count FROM ${this.escape(ast.table)} ${where}`.trim();
             const rows = await this.query<{ count: number }>(sql, params);
             return rows[0]?.count || 0;
-        } catch (e: any) {
-            if (e.message.includes('no such table')) return 0;
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('no such table')) return 0;
+            throw error;
         }
     }
 
     async insert<T = unknown>(table: string, data: T): Promise<DatabaseResult> {
-        const { id, ...cleanData } = data as any;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _, ...cleanData } = data as unknown as Record<string, unknown>;
         const generatedId = crypto.randomUUID();
-        const payload = { id: generatedId, ...cleanData };
+        const payload: Record<string, unknown> = { id: generatedId, ...cleanData };
 
         const keys = Object.keys(payload);
         this.ensureTable(table, keys);
@@ -171,7 +200,8 @@ export class SQLiteAdapter implements IDatabaseAdapter {
     }
 
     async update<T = unknown>(ast: QueryAST, data: Partial<T>): Promise<DatabaseResult> {
-        const { id, ...cleanData } = data as any;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _, ...cleanData } = data as unknown as Record<string, unknown>;
         const setKeys = Object.keys(cleanData);
         
         if (setKeys.length > 0) {
@@ -185,9 +215,10 @@ export class SQLiteAdapter implements IDatabaseAdapter {
         
         try {
             return await this.run(sql, params);
-        } catch (e: any) {
-            if (e.message.includes('no such table')) return { changes: 0 };
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('no such table')) return { changes: 0 };
+            throw error;
         }
     }
 
@@ -196,21 +227,23 @@ export class SQLiteAdapter implements IDatabaseAdapter {
             const { where, params } = this.processAST(ast);
             const sql = `DELETE FROM ${this.escape(ast.table)} ${where}`.trim();
             return await this.run(sql, params);
-        } catch (e: any) {
-            if (e.message.includes('no such table')) return { changes: 0 };
-            throw e;
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            if (error.message.includes('no such table')) return { changes: 0 };
+            throw error;
         }
     }
 
     async transaction<T>(fn: () => Promise<T>): Promise<T> {
+        if (!this.db) throw new Error('SQLiteAdapter not initialized');
         this.db.prepare('BEGIN TRANSACTION').run();
         try {
             const result = await fn();
             this.db.prepare('COMMIT').run();
             return result;
-        } catch (e) {
+        } catch (err: unknown) {
             this.db.prepare('ROLLBACK').run();
-            throw e;
+            throw err;
         }
     }
 
