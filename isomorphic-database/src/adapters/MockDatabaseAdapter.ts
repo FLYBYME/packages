@@ -109,10 +109,10 @@ export class MockDatabaseAdapter implements IDatabaseAdapter {
             const val = row[f.column];
             if (f.operator === '=' || f.operator === '$eq') { if (val !== f.value) return false; }
             else if (f.operator === '!=' || f.operator === '$ne') { if (val === f.value) return false; }
-            else if (f.operator === '>' || f.operator === '$gt') { if (!this.compare(val, f.value, (a, b) => (a as any) > (b as any))) return false; }
-            else if (f.operator === '<' || f.operator === '$lt') { if (!this.compare(val, f.value, (a, b) => (a as any) < (b as any))) return false; }
-            else if (f.operator === '>=' || f.operator === '$gte') { if (!this.compare(val, f.value, (a, b) => (a as any) >= (b as any))) return false; }
-            else if (f.operator === '<=' || f.operator === '$lte') { if (!this.compare(val, f.value, (a, b) => (a as any) <= (b as any))) return false; }
+            else if (f.operator === '>' || f.operator === '$gt') { if (!this.compare(val, f.value, (a, b) => (a as number) > (b as number))) return false; }
+            else if (f.operator === '<' || f.operator === '$lt') { if (!this.compare(val, f.value, (a, b) => (a as number) < (b as number))) return false; }
+            else if (f.operator === '>=' || f.operator === '$gte') { if (!this.compare(val, f.value, (a, b) => (a as number) >= (b as number))) return false; }
+            else if (f.operator === '<=' || f.operator === '$lte') { if (!this.compare(val, f.value, (a, b) => (a as number) <= (b as number))) return false; }
             else if (f.operator === '$contains') {
                 if (!Array.isArray(val)) return false;
                 if (!val.includes(f.value)) return false;
@@ -152,7 +152,8 @@ export class MockDatabaseAdapter implements IDatabaseAdapter {
 
     async insert<T = unknown>(table: string, data: T): Promise<DatabaseResult> {
         const existing = this.store.get(table) || [];
-        const { id: _id, ...cleanData } = data as Record<string, unknown>;
+        const cleanData = { ...(data as Record<string, unknown>) };
+        delete cleanData.id;
         const id = String(existing.length + 1);
         const row = { ...cleanData, id };
         existing.push(row);

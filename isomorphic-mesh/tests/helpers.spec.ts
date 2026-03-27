@@ -4,7 +4,7 @@ import { TCPFrameCodec } from '../src/transports/helpers/TCPFrameCodec';
 import { IsomorphicCrypto } from '../src/utils/Crypto';
 import { OfflineStorageEngine } from '../src/utils/OfflineStorageEngine';
 
-const mockLogger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn(), child: jest.fn().mockReturnThis() };
+const mockLogger = { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn(), getLevel: jest.fn().mockReturnValue(1), child: jest.fn().mockReturnThis() };
 
 describe('Helpers and Utils Coverage', () => {
     it('TCPAuthHandler coverage', () => {

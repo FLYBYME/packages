@@ -16,12 +16,27 @@ describe('DeliveryService', () => {
         await broker.registerService({
             name: 'mesh.manifest',
             actions: {
-                get: {
+                resolve: {
                     params: z.object({ appId: z.string() }),
                     handler: async () => ({
                         app: { id: 'test-app', name: 'Test' },
-                        i18n: { defaultLocale: 'en' }
+                        i18n: { defaultLocale: 'en' },
+                        assets: {
+                            css: ['/styles.css'],
+                            js: ['/app.js']
+                        }
                     })
+                }
+            }
+        });
+
+        // Mock the compiler service
+        await broker.registerService({
+            name: 'mesh.compiler',
+            actions: {
+                ssr_render: {
+                    params: z.record(z.unknown()),
+                    handler: async () => '<div id="mesh-root-app">Rendered content</div>'
                 }
             }
         });

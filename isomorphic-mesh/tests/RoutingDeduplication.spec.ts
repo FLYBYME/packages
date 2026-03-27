@@ -27,13 +27,14 @@ describe('Routing Deduplication', () => {
     });
 
     test('Unit Test: Packet "Seen" Cache in MeshNetwork', async () => {
-        const dummyLogger = {
+        const dummyLogger: ILogger = {
             debug: jest.fn(),
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1),
             child: jest.fn().mockReturnThis()
-        } as any;
+        };
 
         const dummyRegistry = {
             getNode: jest.fn(),

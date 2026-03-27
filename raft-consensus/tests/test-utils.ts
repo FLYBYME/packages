@@ -128,5 +128,6 @@ export const createMockLogger = (): jest.Mocked<ILogger> => ({
     info: jest.fn(),
     warn: jest.fn(),
     error: jest.fn(),
-    child: jest.fn().mockReturnThis()
+    child: jest.fn().mockReturnThis(),
+    getLevel: jest.fn().mockReturnValue(1)
 });

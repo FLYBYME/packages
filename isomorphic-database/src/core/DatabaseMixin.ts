@@ -92,10 +92,10 @@ export function DatabaseMixin<
                 const enforceTenancy = config?.enforceTenancy !== false;
 
                 this.db = new BaseRepository(primaryTable.name, primaryTable.schema, adapter, broker, enforceTenancy);
-                (this.dbs as any)[primaryTable.name] = this.db;
+                (this.dbs as Record<string, BaseRepository<z.AnyZodObject>>)[primaryTable.name] = this.db;
 
                 for (const table of extraTables) {
-                    (this.dbs as any)[table.name] = new BaseRepository(table.name, table.schema, adapter, broker, enforceTenancy);
+                    (this.dbs as Record<string, BaseRepository<z.AnyZodObject>>)[table.name] = new BaseRepository(table.name, table.schema, adapter, broker, enforceTenancy);
                 }
 
                 this._provisionCRUDActions();
@@ -113,7 +113,8 @@ export function DatabaseMixin<
                     const crudHandlers = {
                         create: async (ctx: IContext<Record<string, unknown>>) => {
                             const now = Date.now();
-                            const { id: _id, ...incoming } = ctx.params as Record<string, unknown>;
+                            const incoming = { ...(ctx.params as Record<string, unknown>) };
+                            delete incoming.id;
                             const params: Record<string, unknown> = {
                                 ...incoming,
                                 createdAt: incoming.createdAt ? Number(incoming.createdAt) : now,

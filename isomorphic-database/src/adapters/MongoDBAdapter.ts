@@ -42,7 +42,7 @@ export class MongoDBAdapter implements IDatabaseAdapter {
     async init(): Promise<void> {
         try {
             // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-            // @ts-expect-error
+            // @ts-ignore - mongodb might not be available at compile time or type mismatch during dynamic import
             const { MongoClient, ObjectId } = await import('mongodb') as unknown as IMongoStatic;
             this.ObjectId = ObjectId;
             this.client = new MongoClient(this.config.uri);

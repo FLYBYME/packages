@@ -36,7 +36,7 @@ describe('Networking & Transports', () => {
             registry: {
                 getNode: (id: string) => ({ nodeID: id, addresses: [`${id}://test`] })
             },
-            logger: { info: jest.fn(), debug: jest.fn(), warn: jest.fn() }
+            logger: { info: jest.fn(), debug: jest.fn(), warn: jest.fn(), getLevel: jest.fn().mockReturnValue(1) } as any
         };
 
         const manager = new TransportManager({

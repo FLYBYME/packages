@@ -11,8 +11,8 @@ jest.mock('@flybyme/raft-consensus', () => ({
 
 describe('IdentityService', () => {
     let identityService: IdentityService;
-    let mockStorage: jest.Mocked<IStorageAdapter>;
-    let mockLogger: jest.Mocked<ILogger>;
+    let mockStorage: any;
+    let mockLogger: any;
 
     beforeEach(() => {
         mockStorage = {
@@ -28,7 +28,8 @@ describe('IdentityService', () => {
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
-            child: jest.fn().mockReturnThis()
+            child: jest.fn().mockReturnThis(),
+            getLevel: jest.fn().mockReturnValue(1)
         } as any;
         identityService = new IdentityService(mockStorage, mockLogger);
     });

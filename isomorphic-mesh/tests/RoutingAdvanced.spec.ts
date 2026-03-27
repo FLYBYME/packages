@@ -28,13 +28,14 @@ describe('Advanced Routing & Deduplication', () => {
         selectNode: jest.fn(), 
         hasLocalAction: jest.fn()
     } as any);
-
-    const createDummyLogger = () => ({
-        debug: jest.fn(), 
-        info: jest.fn(), 
-        warn: jest.fn(), 
-        error: jest.fn(), 
-        child: jest.fn().mockReturnThis()
+const createDummyLogger = (): ILogger => ({
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    getLevel: jest.fn().mockReturnValue(1),
+    child: jest.fn().mockReturnThis()
+});
     } as any);
 
     afterEach(async () => {

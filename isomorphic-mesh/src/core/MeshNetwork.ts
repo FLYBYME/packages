@@ -50,7 +50,7 @@ export class MeshNetwork extends EventEmitter implements IMeshNetwork, IMeshNetw
         this.logger = logger;
         this.registry = registry;
 
-        if (Env.isNode() && options.port) {
+        if (Env.isNode() && options.port !== undefined) {
             this.server = new UnifiedServer(options.port);
         }
 

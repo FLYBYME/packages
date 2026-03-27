@@ -42,7 +42,7 @@ export class NeDBAdapter implements IDatabaseAdapter {
         if (!this.collections.has(name)) {
             try {
                 // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-                // @ts-expect-error
+                // @ts-ignore - nedb-promises might not be available at compile time or type mismatch during dynamic import
                 const Datastore = (await import('nedb-promises')).default as unknown as INeDBStatic;
                 const ds = Datastore.create({
                     filename: this.config.filename ? `${this.config.filename}_${name}` : undefined,

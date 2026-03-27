@@ -49,12 +49,10 @@ export class StructuredLogger implements ILogger {
 
         // Process variadic arguments into a single data object
         const mergedData: Record<string, unknown> = {};
-        let _error: Error | undefined;
         let isInternal = false;
 
         for (const arg of args) {
             if (arg instanceof Error) {
-                _error = arg;
                 mergedData.error = arg.message;
                 mergedData.stack = arg.stack;
             } else if (typeof arg === 'object' && arg !== null) {

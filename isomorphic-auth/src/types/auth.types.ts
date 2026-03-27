@@ -6,6 +6,7 @@ export interface ILogger {
     warn(msg: string, data?: Record<string, unknown>): void;
     error(msg: string, data?: Record<string, unknown>): void;
     child(context: Record<string, unknown>): ILogger;
+    getLevel(): number;
 }
 
 export interface IAuditLogger {

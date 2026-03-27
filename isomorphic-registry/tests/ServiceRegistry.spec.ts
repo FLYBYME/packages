@@ -8,13 +8,14 @@ describe('ServiceRegistry', () => {
     let mockLogger: jest.Mocked<ILogger>;
 
     beforeEach(() => {
-        mockLogger = {
+        const mockLogger: any = {
             debug: jest.fn(),
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1),
             child: jest.fn().mockReturnThis()
-        } as any;
+        };
         registry = new ServiceRegistry(mockLogger, { localNodeID: 'local-node' });
     });
 

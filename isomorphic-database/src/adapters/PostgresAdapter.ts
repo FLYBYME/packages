@@ -36,7 +36,7 @@ export class PostgresAdapter implements IDatabaseAdapter {
     async init(): Promise<void> {
         try {
             // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-            // @ts-expect-error
+            // @ts-ignore - pg might not be available at compile time or type mismatch during dynamic import
             const { Pool } = await import('pg') as unknown as IPostgresStatic;
             this.pool = new Pool({
                 connectionString: this.config.connectionString,

@@ -59,9 +59,12 @@ export async function bootstrapMeshTasker(config: MeshTaskerConfig = {}): Promis
         ...config.mesh?.telemetry
     });
 
-    const databaseModule = new DatabaseModule({
-        adapterType: config.dbPath ? 'sqlite' : 'mock',
-        adapterConfig: config.dbPath ? { filename: config.dbPath } : {},
+    const databaseModule = new DatabaseModule(config.dbPath ? {
+        adapterType: 'sqlite',
+        adapterConfig: { filename: config.dbPath },
+        enforceTenancy: false
+    } : {
+        adapterType: 'mock',
         enforceTenancy: false
     });
 

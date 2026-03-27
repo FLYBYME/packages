@@ -24,6 +24,9 @@ export class UnifiedServer {
             const express = await import('express');
             const http = await import('node:http');
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const appFactory = (express.default || express) as any;
+            this.app = appFactory();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             this.server = http.createServer(this.app as any) as unknown as IHttpServer;
         } catch {
             // Fallback or ignore

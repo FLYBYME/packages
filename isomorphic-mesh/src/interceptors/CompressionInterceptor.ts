@@ -21,7 +21,7 @@ export class CompressionInterceptor implements IInterceptor<MeshPacket, MeshPack
                 data: compressed,
                 meta: { ...packet.meta, compressed: true }
             } as MeshPacket;
-        } catch (_e: unknown) {
+        } catch {
             return packet;
         }
     }
@@ -37,7 +37,7 @@ export class CompressionInterceptor implements IInterceptor<MeshPacket, MeshPack
                 data: JSON.parse(decompressed.toString()),
                 meta: { ...packet.meta, compressed: false }
             } as MeshPacket;
-        } catch (_e: unknown) {
+        } catch {
             return packet;
         }
     }

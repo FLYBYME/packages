@@ -62,7 +62,7 @@ export class NetworkModule implements IMeshModule {
         // 1. Initialize the Network stack
         const fullOptions: MeshNetworkOptions = {
             nodeId: app.nodeID,
-            port: this.options.port || 4000,
+            port: this.options.port,
             namespace: this.options.namespace || 'default',
             bootstrapNodes: this.options.bootstrapNodes || [],
             transports: this.options.transports
