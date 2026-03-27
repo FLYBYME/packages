@@ -11,6 +11,7 @@ describe('MeshNetwork Smoke Test', () => {
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1),
             child: jest.fn().mockReturnThis()
         };
         registry = {

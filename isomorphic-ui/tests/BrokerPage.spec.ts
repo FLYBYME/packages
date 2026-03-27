@@ -22,6 +22,14 @@ jest.mock('../src/BrokerDOM', () => ({
                 manifest: { theme: { colors: { primary: '#007bff' } } }
             }
         })),
+        getLogger: jest.fn(() => ({
+            child: jest.fn().mockReturnThis(),
+            debug: jest.fn(),
+            info: jest.fn(),
+            warn: jest.fn(),
+            error: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1)
+        })),
         getAppShell: jest.fn(() => mockAppShell),
         registerComponent: jest.fn(),
         unregisterComponent: jest.fn()

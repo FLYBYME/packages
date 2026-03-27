@@ -13,16 +13,15 @@ export class CompressionInterceptor implements IInterceptor<MeshPacket, MeshPack
         if (Env.isBrowser() || !packet.data) return packet;
 
         try {
-            // Use direct require so bundlers can intercept/shim it if needed, 
-            // but we still guard with Env.isBrowser() for safety.
-            const zlib = require('node:zlib');
+            // Use dynamic import for Node.js internals
+            const zlib = await import('node:zlib');
             const compressed = zlib.gzipSync(JSON.stringify(packet.data));
             return {
                 ...packet,
                 data: compressed,
                 meta: { ...packet.meta, compressed: true }
-            };
-        } catch (e) {
+            } as MeshPacket;
+        } catch {
             return packet;
         }
     }
@@ -31,14 +30,14 @@ export class CompressionInterceptor implements IInterceptor<MeshPacket, MeshPack
         if (Env.isBrowser() || !packet.meta?.compressed || !packet.data) return packet;
 
         try {
-            const zlib = require('node:zlib');
+            const zlib = await import('node:zlib');
             const decompressed = zlib.gunzipSync(packet.data as Buffer);
             return {
                 ...packet,
                 data: JSON.parse(decompressed.toString()),
                 meta: { ...packet.meta, compressed: false }
-            };
-        } catch (e) {
+            } as MeshPacket;
+        } catch {
             return packet;
         }
     }

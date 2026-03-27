@@ -35,8 +35,9 @@ const mockLogger = {
     info: jest.fn(),
     warn: jest.fn(),
     error: jest.fn(),
+    getLevel: jest.fn().mockReturnValue(1),
     child: jest.fn().mockReturnThis()
-};
+} as any;
 
 describe('Transports Full Coverage', () => {
     let serializer;

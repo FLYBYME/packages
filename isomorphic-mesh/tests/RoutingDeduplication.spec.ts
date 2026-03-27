@@ -1,4 +1,4 @@
-import { createMeshApp, IServiceBroker, ServiceBroker } from '@flybyme/isomorphic-core';
+import { createMeshApp, IServiceBroker, ServiceBroker, ILogger } from '@flybyme/isomorphic-core';
 import { MeshNetwork } from '../src/core/MeshNetwork';
 import { NetworkPlugin } from '../src/NetworkPlugin';
 import { RoutingInterceptor } from '../src/interceptors/RoutingInterceptor';
@@ -27,13 +27,14 @@ describe('Routing Deduplication', () => {
     });
 
     test('Unit Test: Packet "Seen" Cache in MeshNetwork', async () => {
-        const dummyLogger = {
+        const dummyLogger: ILogger = {
             debug: jest.fn(),
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1),
             child: jest.fn().mockReturnThis()
-        } as any;
+        };
 
         const dummyRegistry = {
             getNode: jest.fn(),

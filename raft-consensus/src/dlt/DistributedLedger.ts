@@ -213,4 +213,66 @@ export class DistributedLedger<T = unknown> {
     async commit(index: number): Promise<Transaction<T>[]> {
         return this.getEntriesFrom(index);
     }
+
+    /**
+     * reconcileLog — standard Raft log consistency check and conflict resolution.
+     */
+    async reconcileLog(entries: Transaction<T>[], baseIndex: number, baseTerm: number): Promise<void> {
+        // 1. Check if we have the base entry
+        if (baseIndex > 0) {
+            const localBase = await this.getEntry(baseIndex);
+            if (!localBase || localBase.term !== baseTerm) {
+                throw new Error('Log inconsistency: base entry mismatch');
+            }
+        }
+
+        // 2. Process entries
+        for (const entry of entries) {
+            const local = await this.getEntry(entry.index);
+            if (local) {
+                if (local.term !== entry.term) {
+                    // Conflict! Truncate and replace
+                    await this.truncateSuffix(entry.index);
+                    await this.appendLocally(entry);
+                }
+                // If term matches, it's already there and consistent
+            } else {
+                // New entry
+                await this.appendLocally(entry);
+            }
+        }
+    }
+
+    /**
+     * truncateSuffix — remove entries from index onwards.
+     */
+    async truncateSuffix(index: number): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.writeQueue = this.writeQueue.then(async () => {
+                try {
+                    await this.provider.run(
+                        'DELETE FROM ledger_transactions WHERE [index] >= ? AND namespace = ?',
+                        [index, this.namespace]
+                    );
+
+                    // Recalculate head and length
+                    const lastRow = await this.provider.get(
+                        'SELECT tx_id, [index] FROM ledger_transactions WHERE namespace = ? ORDER BY [index] DESC LIMIT 1',
+                        [this.namespace]
+                    ) as { tx_id: string, index: number } | null;
+
+                    if (lastRow) {
+                        this.head = lastRow.tx_id;
+                        this.length = lastRow.index;
+                    } else {
+                        this.head = null;
+                        this.length = 0;
+                    }
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            }).catch(() => {});
+        });
+    }
 }

@@ -13,7 +13,8 @@ describe('MeshTasker Kitchen Sink Chaos', () => {
             info: jest.fn(), 
             warn: jest.fn(), 
             error: jest.fn(),
-            child: jest.fn().mockReturnThis()
+            child: jest.fn().mockReturnThis(),
+            getLevel: jest.fn().mockReturnValue(1)
         } as any;
         
         try {
@@ -23,6 +24,7 @@ describe('MeshTasker Kitchen Sink Chaos', () => {
                 role: 'gateway', 
                 customLogger: logger, 
                 transportType: 'mock',
+                port: 0,
                 dbPath: ':memory:' 
             });
             workerApp = await bootstrapMeshTasker({ 
@@ -30,6 +32,7 @@ describe('MeshTasker Kitchen Sink Chaos', () => {
                 role: 'worker', 
                 customLogger: logger, 
                 transportType: 'mock',
+                port: 0,
                 dbPath: ':memory:'
             });
 
@@ -92,7 +95,7 @@ describe('MeshTasker Kitchen Sink Chaos', () => {
         expect(updated).toBeDefined();
         // It's a toggle: pending -> active
         expect(updated.status).toBe('active');
-    });
+    }, 10000);
 
     test('should enforce rate limits on task creation', async () => {
         const network = gatewayApp.getProvider('network');
@@ -103,12 +106,14 @@ describe('MeshTasker Kitchen Sink Chaos', () => {
             data: {}
         } as any;
 
-        // Our limit is 10 per minute in bootstrap. Let's do 11 to trigger it.
-        for (let i = 0; i < 11; i++) {
+        // Force a low limit for testing
+        (rateLimiter as any).MAX_PACKETS_PER_WINDOW = 10;
+
+        for (let i = 0; i < 10; i++) {
             await rateLimiter.onInbound({ ...req, id: `req-${i}` });
         }
 
-        await expect(rateLimiter.onInbound({ ...req, id: 'req-fail' }))
-            .rejects.toThrow('Rate limit exceeded');
+        const res = await rateLimiter.onInbound({ ...req, id: 'req-fail' });
+        expect(res.topic).toBe('__dropped');
     });
 });

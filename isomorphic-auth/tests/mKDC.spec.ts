@@ -33,7 +33,8 @@ describe('mKDC & TicketManager (15 Tests)', () => {
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
-            child: jest.fn().mockReturnThis()
+            child: jest.fn().mockReturnThis(),
+            getLevel: jest.fn().mockReturnValue(1)
         } as any;
         mkdc = new mKDC('kdc-node', tokenManager, mockStorage, mockLogger);
     });

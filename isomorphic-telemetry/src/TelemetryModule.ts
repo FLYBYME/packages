@@ -201,7 +201,16 @@ export class TelemetryModule implements IMeshModule {
 
         try {
             const network = app.getProvider<IMeshNetwork>('network');
-            const server = (network as unknown as { server: { getApp: () => { get: (path: string, cb: (req: unknown, res: { set: (k: string, v: string) => void, send: (v: string) => void }) => void) => void } } }).server;
+            // Define a local structural interface for the Prometheus check
+            interface IMeshWithServer {
+                server?: {
+                    getApp: () => {
+                        get: (path: string, cb: (req: unknown, res: { set: (k: string, v: string) => void, send: (v: string) => void }) => void) => void;
+                    };
+                };
+            }
+            
+            const server = (network as unknown as IMeshWithServer).server;
             if (server?.getApp()) {
                 const expressApp = server.getApp();
                 expressApp.get(path, (_req: unknown, res: { set: (k: string, v: string) => void, send: (v: string) => void }) => {

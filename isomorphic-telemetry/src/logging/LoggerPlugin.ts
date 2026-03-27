@@ -20,8 +20,8 @@ export class LoggerPlugin implements IBrokerPlugin {
                 return result;
             } catch (err: unknown) {
                 const duration = Date.now() - start;
-                const msg = err instanceof Error ? err.message : String(err);
-                this.logger.error(`[Pipeline] x- ${ctx.actionName} (ID: ${ctx.id}) [${duration}ms] - ${msg} ${(err as Error).stack}`);
+                const error = err instanceof Error ? err : new Error(String(err));
+                this.logger.error(`[Pipeline] x- ${ctx.actionName} (ID: ${ctx.id}) [${duration}ms] - ${error.message} ${error.stack}`);
                 throw err;
             }
         });

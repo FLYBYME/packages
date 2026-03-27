@@ -31,7 +31,8 @@ describe('RaftNode', () => {
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
-            child: jest.fn().mockReturnThis()
+            child: jest.fn().mockReturnThis(),
+            getLevel: jest.fn().mockReturnValue(1)
         };
 
         config = {

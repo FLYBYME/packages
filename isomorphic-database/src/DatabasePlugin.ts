@@ -8,13 +8,17 @@ import { MockDatabaseAdapter } from './adapters/MockDatabaseAdapter';
 
 export type AdapterType = 'mongodb' | 'postgres' | 'sqlite' | 'nedb' | 'mock';
 
-export interface DatabasePluginConfig {
-    adapterType: AdapterType;
-    adapterConfig?: MongoConfig | PostgresConfig | SQLiteConfig | NeDBConfig | any;
+export type DatabasePluginConfig = {
     enforceTenancy?: boolean;
     schemaVersion?: string;
     repositories?: Record<string, unknown>;
-}
+} & (
+    | { adapterType: 'mongodb'; adapterConfig: MongoConfig }
+    | { adapterType: 'postgres'; adapterConfig: PostgresConfig }
+    | { adapterType: 'sqlite'; adapterConfig: SQLiteConfig }
+    | { adapterType: 'nedb'; adapterConfig: NeDBConfig }
+    | { adapterType: 'mock'; adapterConfig?: never }
+);
 
 /**
  * DatabasePlugin — LOCAL Pipeline middleware for data access.
@@ -29,15 +33,13 @@ export class DatabasePlugin implements IBrokerPlugin {
         this.adapter = this.createAdapter(config.adapterType, config.adapterConfig);
     }
 
-    private createAdapter(type: AdapterType, config: any): IDatabaseAdapter {
-        switch (type) {
-            case 'mongodb': return new MongoDBAdapter(config);
-            case 'postgres': return new PostgresAdapter(config);
-            case 'sqlite': return new SQLiteAdapter(config);
-            case 'nedb': return new NeDBAdapter(config);
-            case 'mock': return new MockDatabaseAdapter();
-            default: throw new Error(`Unknown database adapter type: ${type}`);
-        }
+    private createAdapter(type: AdapterType, config: DatabasePluginConfig['adapterConfig']): IDatabaseAdapter {
+        if (type === 'mongodb') return new MongoDBAdapter(config as MongoConfig);
+        if (type === 'postgres') return new PostgresAdapter(config as PostgresConfig);
+        if (type === 'sqlite') return new SQLiteAdapter(config as SQLiteConfig);
+        if (type === 'nedb') return new NeDBAdapter(config as NeDBConfig);
+        if (type === 'mock') return new MockDatabaseAdapter();
+        throw new Error(`Unknown database adapter type: ${type}`);
     }
 
     onRegister(broker: IServiceBroker): void {

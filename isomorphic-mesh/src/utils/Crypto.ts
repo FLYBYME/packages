@@ -2,30 +2,32 @@
  * WebCrypto-based cryptographic utilities (Isomorphic/Browser-safe).
  */
 export class IsomorphicCrypto {
-    private static getCrypto(): any {
+    private static async getCrypto(): Promise<Crypto | null> {
         if (typeof globalThis !== 'undefined' && globalThis.crypto) {
             return globalThis.crypto;
         }
         
-        // Use a conditional require that esbuild can easily ignore/stub
+        // Use a conditional import for Node environments
         try {
             if (typeof process !== 'undefined' && process.versions && process.versions.node) {
-                return require('node:crypto').webcrypto;
+                const nodeCrypto = await import('node:crypto');
+                return (nodeCrypto.webcrypto as unknown as Crypto);
             }
-        } catch (e) {
-            // Ignore
+        } catch {
+            // Ignore if not in node or import fails
         }
         return null;
     }
 
-    private static crypto = IsomorphicCrypto.getCrypto();
-
     /** Generate a random ID string */
     static randomID(len = 16): string {
         const bytes = new Uint8Array(len / 2);
-        if (this.crypto) {
-            this.crypto.getRandomValues(bytes);
+        const crypto = typeof globalThis !== 'undefined' ? globalThis.crypto : null;
+
+        if (crypto) {
+            crypto.getRandomValues(bytes);
         } else {
+            // Fallback for environments where Crypto is not yet available sync
             for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
         }
         return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -33,13 +35,13 @@ export class IsomorphicCrypto {
 
     /** Sign data using Ed25519 private key (Base64) */
     static async signEd25519(payload: string | Uint8Array, privateKeyB64: string): Promise<string> {
-        const crypto = this.getCrypto();
+        const crypto = await this.getCrypto();
         if (!crypto) throw new Error('WebCrypto not available');
         
         const privKeyBuf = this.fromBase64(privateKeyB64);
         const key = await crypto.subtle.importKey(
             'pkcs8',
-            privKeyBuf,
+            privKeyBuf as unknown as BufferSource,
             { name: 'Ed25519' },
             false,
             ['sign']
@@ -49,7 +51,7 @@ export class IsomorphicCrypto {
         const signature = await crypto.subtle.sign(
             { name: 'Ed25519' },
             key,
-            data
+            data as unknown as BufferSource
         );
 
         return this.toBase64(new Uint8Array(signature));
@@ -57,14 +59,14 @@ export class IsomorphicCrypto {
 
     /** Verify Ed25519 signature */
     static async verifyEd25519(signatureB64: string, payload: string | Uint8Array, publicKeyB64: string): Promise<boolean> {
-        const crypto = this.getCrypto();
+        const crypto = await this.getCrypto();
         if (!crypto) return false;
 
         try {
             const pubKeyBuf = this.fromBase64(publicKeyB64);
             const key = await crypto.subtle.importKey(
                 'spki',
-                pubKeyBuf,
+                pubKeyBuf as unknown as BufferSource,
                 { name: 'Ed25519' },
                 false,
                 ['verify']
@@ -76,10 +78,10 @@ export class IsomorphicCrypto {
             return await crypto.subtle.verify(
                 { name: 'Ed25519' },
                 key,
-                signature,
-                data
+                signature as unknown as BufferSource,
+                data as unknown as BufferSource
             );
-        } catch (err) {
+        } catch {
             return false;
         }
     }

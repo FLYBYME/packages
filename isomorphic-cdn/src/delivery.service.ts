@@ -165,12 +165,12 @@ export class DeliveryService implements IServiceSchema {
                 }
             }
         }
-
-        this.logger.warn(`[cdn.delivery] Could not find compiled index.html for ${actualAppId}. Serving fallback.`);
-        return {
-            html: `<html><body><div id="mesh-root-app"></div></body></html>`,
-            buildId: fallbackBuildId
-        };
+// Fallback or 404
+this.logger.warn(`[cdn.delivery] Could not find compiled index.html for ${appId}. Serving fallback.`);
+return { 
+    html: `<html><head></head><body><div id="mesh-root-app"></div></body></html>`,
+    buildId: fallbackBuildId
+};
     }
 
     async started() {

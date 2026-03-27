@@ -1,4 +1,4 @@
-import { createMeshApp, IServiceBroker, ServiceBroker } from '@flybyme/isomorphic-core';
+import { createMeshApp, IServiceBroker, ServiceBroker, ILogger } from '@flybyme/isomorphic-core';
 import { MeshNetwork } from '../src/core/MeshNetwork';
 import { NetworkPlugin } from '../src/NetworkPlugin';
 import { RoutingInterceptor } from '../src/interceptors/RoutingInterceptor';
@@ -29,13 +29,14 @@ describe('Advanced Routing & Deduplication', () => {
         hasLocalAction: jest.fn()
     } as any);
 
-    const createDummyLogger = () => ({
-        debug: jest.fn(), 
-        info: jest.fn(), 
-        warn: jest.fn(), 
-        error: jest.fn(), 
+    const createDummyLogger = (): ILogger => ({
+        debug: jest.fn(),
+        info: jest.fn(),
+        warn: jest.fn(),
+        error: jest.fn(),
+        getLevel: jest.fn().mockReturnValue(1),
         child: jest.fn().mockReturnThis()
-    } as any);
+    });
 
     afterEach(async () => {
         if (gatewayNetwork) await gatewayNetwork.stop();

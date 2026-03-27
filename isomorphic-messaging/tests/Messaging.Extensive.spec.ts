@@ -20,7 +20,7 @@ describe('Messaging Extensive', () => {
                 getProvider: jest.fn().mockReturnValue(null) 
             },
             registry,
-            logger: { info: jest.fn(), error: jest.fn(), warn: jest.fn(), debug: jest.fn() },
+            logger: { info: jest.fn(), error: jest.fn(), warn: jest.fn(), debug: jest.fn(), getLevel: jest.fn().mockReturnValue(1) },
             on: jest.fn(),
             emit: jest.fn(),
             call: jest.fn<() => Promise<any>>(),

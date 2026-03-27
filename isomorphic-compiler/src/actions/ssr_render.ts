@@ -2,18 +2,18 @@ import { IContext } from '@flybyme/isomorphic-core';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ICompilerService } from '../compiler.interface';
-import { BrokerDOM, ReactiveState } from '@flybyme/isomorphic-ui';
+import { BrokerDOM, ReactiveState, IBaseUIProps } from '@flybyme/isomorphic-ui';
 
 export async function ssr_render(
     this: ICompilerService,
-    ctx: IContext<{ componentPath: string; props?: Record<string, any> }>
+    ctx: IContext<{ componentPath: string; props?: IBaseUIProps }>
 ) {
     const { componentPath, props = {} } = ctx.params;
 
     // Phase 7: Ensure minimal UI context exists for the render
     try {
         BrokerDOM.getBroker();
-    } catch (_e) {
+    } catch {
         // Initialize minimal shim for SSR process
         BrokerDOM.initialize(this.broker, null as never, new ReactiveState(props));
     }
@@ -44,7 +44,7 @@ export async function ssr_render(
         try {
             // eslint-disable-next-line @typescript-eslint/no-require-imports
             require('tsconfig-paths/register');
-        } catch (_e) { /* ignore */ }
+        } catch { /* ignore */ }
     }
 
     // Load component

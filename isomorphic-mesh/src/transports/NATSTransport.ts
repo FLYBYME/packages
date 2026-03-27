@@ -37,8 +37,8 @@ export class NATSTransport extends BaseTransport {
         }
         
         this.isDisconnecting = false;
-        const { connect } = require('nats');
-        this.client = await connect({ servers: opts.url }) as INatsConnection;
+        const { connect } = await import('nats');
+        this.client = await connect({ servers: opts.url }) as unknown as INatsConnection;
         this.connected = true;
         this.emit('connected');
 
@@ -87,7 +87,7 @@ export class NATSTransport extends BaseTransport {
                         this.emit('error', err instanceof Error ? err : new Error(String(err)));
                     }
                 }
-            } catch (e) {
+            } catch {
                 // Iterator might be closed
             }
         })();

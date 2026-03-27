@@ -60,6 +60,7 @@ describe('FSService', () => {
             warn: jest.fn(),
             info: jest.fn(),
             debug: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1),
             child: jest.fn().mockReturnThis()
         } as unknown as ILogger;
 

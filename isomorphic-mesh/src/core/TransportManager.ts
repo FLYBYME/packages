@@ -1,6 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
 import { BaseTransport } from '../transports/BaseTransport';
-import { BaseSerializer } from '../serializers/BaseSerializer';
 import { IMeshNetworkNode, TransportType, TransportConnectOptions } from '../types/mesh.types';
 import { MeshPacket } from '../types/packet.types';
 

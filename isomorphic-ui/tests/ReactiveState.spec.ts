@@ -7,7 +7,8 @@ jest.mock('../src/BrokerDOM', () => ({
                 debug: jest.fn(),
                 info: jest.fn(),
                 warn: jest.fn(),
-                error: jest.fn()
+                error: jest.fn(),
+                getLevel: jest.fn().mockReturnValue(1)
             }))
         }))
     }

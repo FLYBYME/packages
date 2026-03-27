@@ -33,7 +33,7 @@ describe('Discovery & Security', () => {
 
     it('UDP/DHT Discovery: handles node announcements via publisher', async () => {
         const publisher = jest.fn().mockResolvedValue(undefined);
-        const logger: any = { info: jest.fn(), debug: jest.fn() };
+        const logger: any = { info: jest.fn(), debug: jest.fn(), getLevel: jest.fn().mockReturnValue(1) };
         
         const dht = new DHTDiscovery({
             nodeID: 'test-node',
