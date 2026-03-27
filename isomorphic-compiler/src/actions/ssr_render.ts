@@ -17,10 +17,10 @@ export async function ssr_render(
         // Initialize minimal shim for SSR process
         BrokerDOM.initialize(this.broker, null as never, new ReactiveState(props));
     }
-    
+
     // Resolve absolute path
-    const absolutePath = path.isAbsolute(componentPath) 
-        ? componentPath 
+    const absolutePath = path.isAbsolute(componentPath)
+        ? componentPath
         : path.resolve(process.cwd(), componentPath);
 
     if (!fs.existsSync(absolutePath)) {
@@ -30,8 +30,8 @@ export async function ssr_render(
     // Ensure ts-node is registered with maximum speed settings
     if (!(process as unknown as Record<string, unknown>)[Symbol.for('ts-node.register.instance') as unknown as string]) {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
-        require('ts-node').register({ 
-            transpileOnly: true, 
+        require('ts-node').register({
+            transpileOnly: true,
             skipProject: true,
             compilerOptions: {
                 module: 'commonjs',
@@ -40,7 +40,7 @@ export async function ssr_render(
                 skipLibCheck: true
             }
         });
-        
+
         try {
             // eslint-disable-next-line @typescript-eslint/no-require-imports
             require('tsconfig-paths/register');
@@ -52,7 +52,7 @@ export async function ssr_render(
     try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         const module = require(absolutePath);
-        
+
         // Find component class (default or named export)
         let ComponentClass = module.default || Object.values(module).find(v => typeof v === 'function' && v.prototype?.renderToString);
 
@@ -65,9 +65,9 @@ export async function ssr_render(
         }
 
         const instance = new ComponentClass(props);
-        
+
         if (typeof instance.renderToString !== 'function') {
-             throw new Error(`Component does not implement renderToString: ${componentPath}`);
+            throw new Error(`Component does not implement renderToString: ${componentPath}`);
         }
 
         const html = instance.renderToString();
