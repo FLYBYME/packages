@@ -65,8 +65,8 @@ export class CompilerService extends DatabaseMixin(BuildTable)(class {}) {
     /**
      * process_build
      */
-    async process_build(ctx: IContext<{ buildId: string; appId: string; manifestId: string; manifest: z.infer<typeof SiteManifestSchema>; watch?: boolean }>) {
-        return process_build.call(this as unknown as ICompilerService, ctx);
+    async process_build(ctx: IContext<{ buildId: string; appId: string; manifestId: string; manifest: any; watch?: boolean; buildDir: string }>) {
+        return process_build.call(this as unknown as ICompilerService, ctx as any);
     }
 
     /**

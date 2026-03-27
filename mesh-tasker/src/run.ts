@@ -77,7 +77,7 @@ async function main(): Promise<void> {
 
         // --- Trigger Initial Build using Manifest Path ---
         gatewayApp.logger.info(`Triggering initial build from manifest path...`);
-        const buildResult = await gatewayBroker.call<{ buildId: string }>('mesh.compiler.build_from_path', {
+        const buildResult = await gatewayBroker.call('mesh.compiler.build_from_path', {
             manifestPath: 'src/ui/tasker.manifest.ts',
             watch: true
         });
@@ -105,7 +105,7 @@ async function main(): Promise<void> {
         await gatewayApp.registry.waitForService('tasks', 5000);
 
         // --- PERSISTENCE DEMO: List existing tasks first ---
-        const existingTasks = await gatewayBroker.call<Task[]>('tasks.list', {});
+        const existingTasks = await gatewayBroker.call('tasks.list', {});
         gatewayApp.logger.info(`Found ${existingTasks.length} existing tasks in SQLite:`);
         if (existingTasks.length > 0) {
             console.table(existingTasks.map(t => ({
@@ -124,26 +124,31 @@ async function main(): Promise<void> {
 
         // 1. The compiler forces the second argument to perfectly match `CreateTaskParams`
         // 2. The compiler infers `newTask` is of type `Task` without any generic casting.
-        const newTask = await gatewayBroker.call<Task>('tasks.create', {
+        const newTask = await gatewayBroker.call('tasks.create', {
             id: nanoid(),
             title: `Task ${existingTasks.length + 1}: Deploy Iron Mesh`,
-            status: 'pending',
-            assignedTo: 'timothy'
+            status: 'pending' as any,
+            assignedTo: 'timothy',
+            priority: 'medium',
+            tags: []
         });
+        
+        if (!newTask) throw new Error('Failed to create task');
 
         gatewayApp.logger.info(`Created New Task: ${newTask.id}`);
 
         // The compiler enforces that we only pass `{ id: string }` here
-        const updatedTask = await gatewayBroker.call<Task>('tasks.toggleStatus', {
+        const updatedTask = await gatewayBroker.call('tasks.toggleStatus', {
             id: newTask.id
         });
         gatewayApp.logger.info(`Updated Task Status: ${updatedTask.status}`);
 
         // --- CRUD AUTO-PROVISIONING DEMO ---
-        const taskCount = await gatewayBroker.call<number>('tasks.count', {});
+        const taskCount = await gatewayBroker.call('tasks.count', {});
         gatewayApp.logger.info(`Total tasks in DB: ${taskCount}`);
 
-        const fetchedTask = await gatewayBroker.call<Task>('tasks.get', { id: newTask.id });
+        const fetchedTask = await gatewayBroker.call('tasks.get', { id: newTask.id });
+        if (!fetchedTask) throw new Error(`Failed to fetch task ${newTask.id}`);
         gatewayApp.logger.info(`Fetched task by ID`, { id: fetchedTask.id, title: fetchedTask.title });
 
         gatewayApp.logger.info(`Demo is running. Visit http://localhost:3000 to see the Mesh CDN in action.`);

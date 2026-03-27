@@ -2,7 +2,7 @@ import { IFeatureFlagManager } from '../interfaces/IFeatureFlagManager';
 import { ICacheProvider } from '../interfaces/ICacheProvider';
 
 export interface IBrokerCaller {
-    call<T>(action: string, params: Record<string, unknown>): Promise<T>;
+    call(action: any, params: any, options?: any): Promise<any>;
 }
 
 /**
@@ -40,7 +40,7 @@ export class FeatureFlagManager implements IFeatureFlagManager {
         if (!this.broker) return;
 
         try {
-            const result = await this.broker.call<{ enabled: boolean }>('$flags.fetch', { flag });
+            const result = await this.broker.call('$flags.fetch', { flag });
             this.updateFlag(flag, result.enabled);
         } catch {
             // Silently fail or log

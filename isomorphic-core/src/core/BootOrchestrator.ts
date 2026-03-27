@@ -17,6 +17,8 @@ export class BootOrchestrator {
             broker = this.app.getProvider<IServiceBroker>('broker');
         }
 
+        const startedModules: IMeshModule[] = []; // Track successes for rollback
+
         try {
             // Phase 1: Initialization (Instantiation and configuration)
             for (const mod of modules) {
@@ -54,6 +56,7 @@ export class BootOrchestrator {
                 if (mod.onStart) {
                     await mod.onStart(this.app);
                 }
+                startedModules.push(mod); // Record successful start
             }
 
             // Phase 4: Ready (Final state)
@@ -65,6 +68,13 @@ export class BootOrchestrator {
         } catch (error) {
             const err = error instanceof Error ? error : new Error(String(error));
             this.app.logger.error(`[BootOrchestrator] Boot sequence aborted due to error:`, { error: err.message });
+            
+            // NEW: Gracefully rollback the modules that successfully started before the crash
+            if (startedModules.length > 0) {
+                this.app.logger.warn(`[BootOrchestrator] Executing emergency teardown for ${startedModules.length} modules...`);
+                await this.executeTeardown(startedModules);
+            }
+            
             throw err;
         }
     }

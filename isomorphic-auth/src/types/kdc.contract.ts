@@ -9,16 +9,16 @@ import { ValidatePACParamsSchema, ValidatePACResponseSchema, KDCSettingsSchema }
 declare module '@flybyme/isomorphic-core' {
     interface IServiceActionRegistry {
         'sys.kdc.authenticate': {
-            params: typeof TGTRequestSchema;
-            returns: z.ZodObject<{ token: z.ZodString }>;
+            params: z.infer<typeof TGTRequestSchema>;
+            returns: { token: string };
         };
         'sys.kdc.getServiceTicket': {
-            params: typeof STRequestSchema;
-            returns: z.ZodObject<{ token: z.ZodString }>;
+            params: z.infer<typeof STRequestSchema>;
+            returns: { token: string };
         };
         'sys.kdc.validate_pac': {
-            params: typeof ValidatePACParamsSchema;
-            returns: typeof ValidatePACResponseSchema;
+            params: z.infer<typeof ValidatePACParamsSchema>;
+            returns: z.infer<typeof ValidatePACResponseSchema>;
         };
     }
 

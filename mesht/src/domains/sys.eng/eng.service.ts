@@ -42,7 +42,7 @@ const ExecLogTable = defineTable('exec_logs', ExecLogSchema);
  * - `rm -rf` commands require governance approval (spec §7.2 Directive Beta)
  * - All executions are logged to the audit trail
  */
-export class EngService extends DatabaseMixin(ExecLogTable)(class {}) {
+export class EngService extends DatabaseMixin(ExecLogTable)(class { }) {
   public readonly name = 'sys.eng';
 
   declare logger: ILogger;
@@ -101,7 +101,7 @@ export class EngService extends DatabaseMixin(ExecLogTable)(class {}) {
         }
 
         // 2. Fallback to specific project associated with the directive
-        const directive = await broker.call<Directive>('sys.directives.get', { id: directiveID });
+        const directive = await broker.call('sys.directives.get', { id: directiveID });
         if (directive?.projectId) {
           const project = await broker.call<Project>('sys.projects.get', { id: directive.projectId });
           if (project?.rootPath) return project.rootPath;

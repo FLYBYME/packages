@@ -43,16 +43,17 @@ export interface IServiceBroker {
     /** Typed mesh action call. */
     call<K extends keyof IServiceActionRegistry>(
         action: K,
-        params: IServiceActionRegistry[K] extends { params: import('zod').ZodType<infer P> } ? P : Record<string, unknown>,
+        params: IServiceActionRegistry[K] extends { params: infer P } ? P : never,
         options?: { nodeID?: string; timeout?: number }
-    ): Promise<IServiceActionRegistry[K] extends { returns: import('zod').ZodType<infer R> } ? R : unknown>;
+    ): Promise<IServiceActionRegistry[K] extends { returns: infer R } ? R : never>;
 
-    // Keep the generic fallback for unregistered actions
-    call<TResult = unknown>(
-        action: string,
-        params: unknown,
-        options?: { nodeID?: string; timeout?: number }
-    ): Promise<TResult>;
+    /** Runtime access to schemas (instance property) */
+    readonly actionSchemas: Map<string, {
+        params?: import('zod').ZodTypeAny,
+        returns?: import('zod').ZodTypeAny,
+        mutates?: boolean,
+        timeout?: number
+    }>;
 
     /** Typed mesh event emit. */
     emit<K extends keyof IServiceEventRegistry>(event: K, payload: unknown): void;

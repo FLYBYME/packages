@@ -34,21 +34,18 @@ interface LocalAction {
     highSecurity?: boolean;
 }
 
-/**
- * Runtime Action Registry for Zod validation.
- */
-export const MeshActionSchemaRegistry: Map<string, {
-    params?: z.ZodTypeAny,
-    returns?: z.ZodTypeAny,
-    mutates?: boolean,
-    timeout?: number
-}> = new Map();
 
 /**
  * ServiceBroker — The "OS Kernel" that routes requests locally or remotely.
  * Production-Grade implementation with Bipartite Pipeline.
  */
 export class ServiceBroker implements IServiceBroker {
+    public readonly actionSchemas = new Map<string, {
+        params?: z.ZodTypeAny,
+        returns?: z.ZodTypeAny,
+        mutates?: boolean,
+        timeout?: number
+    }>();
     private localServices = new Map<string, LocalAction>();
     private services: IServiceSchema[] = [];
     private isStarted: boolean = false;
@@ -179,7 +176,7 @@ export class ServiceBroker implements IServiceBroker {
                 const actionName = `${serviceName}.${actionNameKey}`;
 
                 // Populate schema registry for runtime validation and mutation tracking
-                MeshActionSchemaRegistry.set(actionName, {
+                this.actionSchemas.set(actionName, {
                     params: actionDef.params,
                     returns: actionDef.returns,
                     mutates: actionDef.mutates,
@@ -208,18 +205,16 @@ export class ServiceBroker implements IServiceBroker {
 
     public async call<K extends keyof IServiceActionRegistry>(
         action: K,
-        params: IServiceActionRegistry[K] extends { params: import('zod').ZodType<infer P> } ? P : Record<string, unknown>,
+        params: IServiceActionRegistry[K] extends { params: infer P } ? P : never,
         options?: { nodeID?: string; timeout?: number }
-    ): Promise<IServiceActionRegistry[K] extends { returns: import('zod').ZodType<infer R> } ? R : unknown>;
-
-    public async call<TResult = unknown>(
-        action: string,
-        params: unknown,
-        options?: { nodeID?: string; timeout?: number }
-    ): Promise<TResult>;
-
-    public async call(action: string, params: unknown, options?: unknown): Promise<unknown> {
-        return this.internalCall(action, params as Record<string, unknown>, options as { nodeID?: string; timeout?: number });
+    ): Promise<IServiceActionRegistry[K] extends { returns: infer R } ? R : never> {
+        const opts = options as { nodeID?: string; timeout?: number; parentContext?: any } | undefined;
+        return this.internalCall(
+            action, 
+            params as Record<string, unknown>, 
+            opts, 
+            opts?.parentContext
+        ) as any;
     }
 
     public emit<K extends keyof IServiceEventRegistry>(event: K, payload: unknown): void {
@@ -228,7 +223,7 @@ export class ServiceBroker implements IServiceBroker {
     }
 
     private async internalCall(actionName: string, params: Record<string, unknown>, options?: { nodeID?: string; timeout?: number }, parentCtx?: IContext<Record<string, unknown>, Record<string, unknown>>): Promise<unknown> {
-        const schema = MeshActionSchemaRegistry.get(actionName);
+        const schema = this.actionSchemas.get(actionName);
         // Ensure params are validated against schema if provided
         if (schema?.params && params !== undefined) {
             // If params is truly unknown, parse it. Otherwise, use it directly if already typed.
@@ -282,7 +277,7 @@ export class ServiceBroker implements IServiceBroker {
             spanId,
             parentId,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            call: (a: string, p: Record<string, unknown>, o?: any) => (this as any).call(a, p, { ...o, parentContext: ctx }),
+            call: (a: any, p: any, o?: any) => (this as any).call(a, p, { ...o, parentContext: ctx }) as any,
             emit: (e: string, p: Record<string, unknown>) => this.emit(e as keyof IServiceEventRegistry, p)
         };
 
@@ -311,12 +306,12 @@ export class ServiceBroker implements IServiceBroker {
             spanId: (meta.spanId as string) || nanoid(),
             parentId: meta.parentId as string,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            call: (a: string, p: Record<string, unknown>, o?: any) => (this as any).call(a, p, { ...o, parentContext: ctx }),
+            call: (a: any, p: any, o?: any) => (this as any).call(a, p, { ...o, parentContext: ctx }) as any,
             emit: (e: string, p: Record<string, unknown>) => this.emit(e as keyof IServiceEventRegistry, p)
         };
 
         const result = await this.handlePipeline(ctx);
-        const schema = MeshActionSchemaRegistry.get(packet.topic);
+        const schema = this.actionSchemas.get(packet.topic);
         if (schema?.returns) {
             return schema.returns.parse(result);
         }
@@ -385,7 +380,7 @@ export class ServiceBroker implements IServiceBroker {
             parentId: currentCtx?.parentId
         };
 
-        const schema = MeshActionSchemaRegistry.get(actionName);
+        const schema = this.actionSchemas.get(actionName);
         const timeoutMs = (meta.timeout as number) || schema?.timeout || (this.app.config.rpcTimeout as number) || 10000;
 
         return new Promise((resolve, reject) => {

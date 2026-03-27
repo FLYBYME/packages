@@ -1,4 +1,4 @@
-import { IBrokerPlugin, IServiceBroker, IContext, MeshActionSchemaRegistry } from '@flybyme/isomorphic-core';
+import { IBrokerPlugin, IServiceBroker, IContext } from '@flybyme/isomorphic-core';
 
 /**
  * ConsensusPlugin — Passive observer for distributed state mutations.
@@ -6,27 +6,27 @@ import { IBrokerPlugin, IServiceBroker, IContext, MeshActionSchemaRegistry } fro
 export class ConsensusPlugin implements IBrokerPlugin {
     public readonly name = '@flybyme/raft-consensus';
 
-    constructor(private ledger?: unknown) {}
+    constructor(private ledger?: unknown) { }
 
     onRegister(broker: IServiceBroker): void {
         // Global Middleware: Passive observer (does not block, only reacts after next())
-        broker.use(async (ctx: IContext<unknown, Record<string, unknown>>, next: () => Promise<unknown>) => {
+        broker.use(async (ctx: any, next: () => Promise<unknown>) => {
             const result = await next();
-            
+
             const actionName = ctx.actionName;
-            const schema = MeshActionSchemaRegistry.get(actionName);
-            
+            const schema = broker.actionSchemas.get(actionName);
+
             if (schema?.mutates === true) {
-                broker.emit(`$${actionName.split('.')[0]}.mutated`, { 
-                    action: actionName, 
-                    correlationID: ctx.correlationID 
+                broker.emit(`$${actionName.split('.')[0]}.mutated`, {
+                    action: actionName,
+                    correlationID: ctx.correlationID
                 });
             }
-            
+
             return result;
         });
     }
 
-    async onStart(): Promise<void> {}
-    async onStop(): Promise<void> {}
+    async onStart(): Promise<void> { }
+    async onStop(): Promise<void> { }
 }

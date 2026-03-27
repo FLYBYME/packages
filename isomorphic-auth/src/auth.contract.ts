@@ -4,12 +4,12 @@ import { LoginParams, GetTicketParams, AuthSettingsSchema } from './auth.schema'
 declare module '@flybyme/isomorphic-core' {
     interface IServiceActionRegistry {
         'auth.authenticate': {
-            params: typeof LoginParams;
-            returns: z.ZodObject<{ token: z.ZodString }>;
+            params: z.infer<typeof LoginParams>;
+            returns: { token: string };
         };
         'auth.getServiceTicket': {
-            params: typeof GetTicketParams;
-            returns: z.ZodObject<{ token: z.ZodString }>;
+            params: z.infer<typeof GetTicketParams>;
+            returns: { token: string };
         };
     }
 

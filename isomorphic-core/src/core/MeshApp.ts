@@ -8,6 +8,7 @@ import {
     IServiceBroker,
     IServiceSchema,
     IServiceRegistry,
+    IServiceActionRegistry,
     IMiddleware
 } from '../interfaces';
 import { BootOrchestrator } from './BootOrchestrator';
@@ -161,9 +162,13 @@ export class MeshApp implements IMeshApp {
         this.logger.info('MeshApp started successfully.');
     }
 
-    public async call(action: string, params: unknown): Promise<unknown> {
+    public async call<K extends keyof IServiceActionRegistry>(
+        action: K,
+        params: IServiceActionRegistry[K] extends { params: infer P } ? P : never,
+        options?: { nodeID?: string; timeout?: number }
+    ): Promise<IServiceActionRegistry[K] extends { returns: infer R } ? R : never> {
         const broker = this.getProvider<IServiceBroker>('broker');
-        return broker.call(action, params);
+        return (broker as any).call(action, params, options);
     }
 
     public async publish<T = unknown>(topic: string, data: T): Promise<void> {

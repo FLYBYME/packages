@@ -59,7 +59,7 @@ export async function build_from_path(
 
     // 1. Register the manifest into the mesh system so the CDN and routing can find it
     try {
-        await ctx.call('mesh.manifest.register', manifest);
+        await ctx.call('mesh.manifest.register', manifest as any);
         this.logger.debug(`[mesh.compiler] Successfully registered manifest ${appId} into the mesh.`);
     } catch (err) {
         this.logger.error(`[mesh.compiler] Failed to register manifest into the mesh:`, err as Error);
@@ -95,7 +95,7 @@ export async function build_from_path(
         buildId,
         appId,
         manifestId,
-        manifest,
+        manifest: manifest as any,
         watch: ctx.params.watch,
         buildDir
     }).catch(err => {

@@ -31,7 +31,7 @@ export class AuthModule implements IMeshModule {
         this.tokenManager = new MeshTokenManager(app.nodeID);
         
         const kdcCaller = (action: string, params: unknown) => 
-            this.serviceBroker.call<Record<string, unknown>>(action, params);
+            this.serviceBroker.call(action as any, params as any) as Promise<any>;
 
         this.ticketManager = new TicketManager(app.nodeID, this.tokenManager, kdcCaller, this.logger);
         

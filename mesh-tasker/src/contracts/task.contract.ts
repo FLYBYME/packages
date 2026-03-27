@@ -8,8 +8,8 @@ export const ToggleStatusParams = z.object({ id: z.string() });
 declare module '@flybyme/isomorphic-core' {
     export interface IServiceActionRegistry extends CRUDActions<'tasks', typeof TaskSchema> {
         'tasks.toggleStatus': {
-            params: typeof ToggleStatusParams;
-            returns: typeof TaskSchema;
+            params: z.infer<typeof ToggleStatusParams>;
+            returns: z.infer<typeof TaskSchema>;
         };
     }
 }

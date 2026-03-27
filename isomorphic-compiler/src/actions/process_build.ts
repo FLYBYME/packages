@@ -17,7 +17,7 @@ import { SiteManifestSchema, SiteManifest } from '@flybyme/isomorphic-core';
  */
 export async function process_build(
     this: ICompilerService,
-    ctx: IContext<{ buildId: string; appId: string; manifestId: string; manifest: z.infer<typeof SiteManifestSchema>; watch?: boolean }>
+    ctx: IContext<{ buildId: string; appId: string; manifestId: string; manifest: any; watch?: boolean; buildDir: string }>
 ) {
     const { buildId, appId, manifest, watch } = ctx.params; // Destructure watch param
     const siteManifest = manifest as SiteManifest;

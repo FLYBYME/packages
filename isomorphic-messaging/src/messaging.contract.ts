@@ -4,19 +4,19 @@ import { MessageEnvelopeSchema, SubscriptionOptionsSchema } from './messaging.sc
 declare module '@flybyme/isomorphic-core' {
     export interface IServiceActionRegistry {
         'messaging.publish': {
-            params: z.ZodObject<{
-                topic: z.ZodString;
-                payload: z.ZodUnknown;
-                options?: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnknown>>;
-            }>;
-            returns: z.ZodObject<{ success: z.ZodBoolean, messageId: z.ZodString }>;
+            params: {
+                topic: string;
+                payload: unknown;
+                options?: Record<string, unknown>;
+            };
+            returns: { success: boolean, messageId: string };
         };
         'messaging.subscribe': {
-            params: z.ZodObject<{
-                topic: z.ZodString;
-                options: typeof SubscriptionOptionsSchema;
-            }>;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: {
+                topic: string;
+                options: z.infer<typeof SubscriptionOptionsSchema>;
+            };
+            returns: { success: boolean };
         };
     }
 

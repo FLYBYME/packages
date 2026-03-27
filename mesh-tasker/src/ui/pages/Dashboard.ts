@@ -163,7 +163,7 @@ export class Dashboard extends BrokerPage {
             const broker = BrokerDOM.getBroker();
             if (!broker) throw new Error('Broker is offline.');
 
-            const tasks = await broker.call<Task[]>('tasks.find', {});
+            const tasks = await broker.call('tasks.find', {});
             BrokerDOM.getStateService().set('$data.tasks', tasks);
         } catch (error) {
             this.logger.error('Failed to load tasks:', { error });
@@ -190,9 +190,9 @@ export class Dashboard extends BrokerPage {
                 id,
                 title,
                 description: descInput?.value || '',
-                priority: priorityInput?.value || 'medium',
+                priority: (priorityInput?.value as any) || 'medium',
                 tags,
-                status: 'backlog',
+                status: 'backlog' as any,
                 assignedTo: 'system',
                 createdAt: Date.now()
             });

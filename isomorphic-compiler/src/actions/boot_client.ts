@@ -52,7 +52,8 @@ export async function boot_client(
         buildId,
         appId,
         manifestId,
-        manifest // Passing manifest for simplicity in this implementation
+        manifest: manifest as any,
+        buildDir
     }).catch(err => {
         this.logger.error(`[mesh.compiler] Build ${buildId} failed background processing:`, { error: err });
     });

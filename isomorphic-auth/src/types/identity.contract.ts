@@ -8,12 +8,12 @@ import { UserRegistrationSchema, UserLoginSchema, IdentitySettingsSchema } from 
 declare module '@flybyme/isomorphic-core' {
     interface IServiceActionRegistry {
         'auth.identity.register': {
-            params: typeof UserRegistrationSchema;
-            returns: z.ZodObject<{ id: z.ZodString, email: z.ZodString }>;
+            params: z.infer<typeof UserRegistrationSchema>;
+            returns: { id: string, email: string };
         };
         'auth.identity.login': {
-            params: typeof UserLoginSchema;
-            returns: z.ZodObject<{ id: z.ZodString, token: z.ZodString }>;
+            params: z.infer<typeof UserLoginSchema>;
+            returns: { id: string, token: string };
         };
     }
 

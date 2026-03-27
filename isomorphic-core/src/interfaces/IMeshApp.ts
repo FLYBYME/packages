@@ -56,8 +56,7 @@ export interface IMeshApp extends IMeshNode {
 
     call<K extends keyof IServiceActionRegistry>(
         action: K,
-        params: IServiceActionRegistry[K] extends { params: import('zod').ZodType<infer P> } ? P : Record<string, unknown>
-    ): Promise<IServiceActionRegistry[K] extends { returns: import('zod').ZodType<infer R> } ? R : unknown>;
-
-    call<TResult = unknown>(action: string, params: unknown): Promise<TResult>;
+        params: IServiceActionRegistry[K] extends { params: infer P } ? P : never,
+        options?: { nodeID?: string; timeout?: number }
+    ): Promise<IServiceActionRegistry[K] extends { returns: infer R } ? R : never>;
 }

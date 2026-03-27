@@ -1,6 +1,5 @@
 import { MeshApp } from '../src/core/MeshApp';
 import { BrokerModule } from '../src/modules/BrokerModule';
-import { MeshActionSchemaRegistry } from '../src/core/ServiceBroker';
 import { z } from 'zod';
 import { IServiceBroker, IContext, IServiceSchema } from '../src/interfaces';
 
@@ -9,7 +8,6 @@ describe('ServiceBroker & Zod Contracts', () => {
 
     beforeEach(() => {
         app = new MeshApp({ nodeID: 'test-node' });
-        MeshActionSchemaRegistry.clear();
     });
 
     class TestService implements IServiceSchema {

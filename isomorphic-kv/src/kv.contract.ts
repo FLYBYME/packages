@@ -4,23 +4,23 @@ import { KVSetRequestSchema, KVGetRequestSchema, KVEntrySchema } from './kv.sche
 declare module '@flybyme/isomorphic-core' {
     export interface IServiceActionRegistry {
         'kv.get': {
-            params: typeof KVGetRequestSchema;
-            returns: z.ZodNullable<typeof KVEntrySchema>;
+            params: z.infer<typeof KVGetRequestSchema>;
+            returns: z.infer<typeof KVEntrySchema> | null;
             rest: { method: 'GET', path: '/:key' };
         };
         'kv.set': {
-            params: typeof KVSetRequestSchema;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: z.infer<typeof KVSetRequestSchema>;
+            returns: { success: boolean };
             rest: { method: 'POST', path: '/' };
         };
         'kv.delete': {
-            params: z.ZodObject<{ key: z.ZodString }>;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: { key: string };
+            returns: { success: boolean };
             rest: { method: 'DELETE', path: '/:key' };
         };
         'kv.replicate': {
-            params: typeof KVEntrySchema;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: z.infer<typeof KVEntrySchema>;
+            returns: { success: boolean };
         };
     }
 

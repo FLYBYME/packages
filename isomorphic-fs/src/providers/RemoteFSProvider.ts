@@ -22,7 +22,7 @@ export class RemoteFSProvider implements IFileSystemProvider {
     }
 
     async readFile(p: string): Promise<Uint8Array> {
-        const result = (await this.broker.call('fs.readFile', { path: this.getRemotePath(p) })) as { data: string | Uint8Array };
+        const result = (await this.broker.call('fs.readFile', { path: this.getRemotePath(p), encoding: 'binary' })) as { data: string | Uint8Array };
         const data = result.data;
         if (typeof data === 'string') {
             return Buffer.from(data, 'base64');
@@ -86,12 +86,12 @@ export class RemoteFSProvider implements IFileSystemProvider {
 
     async readdir(p: string): Promise<VirtualNode[]> {
         const result = await this.broker.call('fs.readdir', { path: this.getRemotePath(p) });
-        return result as VirtualNode[];
+        return result as any as VirtualNode[];
     }
 
     async stat(p: string): Promise<VirtualNode> {
         const result = await this.broker.call('fs.stat', { path: this.getRemotePath(p) });
-        return result as VirtualNode;
+        return result as any as VirtualNode;
     }
 
     async unlink(p: string): Promise<void> {

@@ -4,44 +4,44 @@ import { ReadFileParams, WriteFileParams, ReadDirParams, StatParams, VirtualNode
 declare module '@flybyme/isomorphic-core' {
     interface IServiceActionRegistry {
         'fs.readFile': {
-            params: typeof ReadFileParams;
-            returns: z.ZodObject<{ data: z.ZodUnion<[z.ZodType<Uint8Array>, z.ZodString]> }>;
+            params: z.infer<typeof ReadFileParams>;
+            returns: { data: Uint8Array | string };
         };
         'fs.writeFile': {
-            params: typeof WriteFileParams;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: z.infer<typeof WriteFileParams>;
+            returns: { success: boolean };
         };
         'fs.readdir': {
-            params: typeof ReadDirParams;
-            returns: z.ZodArray<typeof VirtualNodeSchema>;
+            params: z.infer<typeof ReadDirParams>;
+            returns: z.infer<typeof VirtualNodeSchema>[];
         };
         'fs.stat': {
-            params: typeof StatParams;
-            returns: typeof VirtualNodeSchema;
+            params: z.infer<typeof StatParams>;
+            returns: z.infer<typeof VirtualNodeSchema>;
         };
         'fs.mkdir': {
-            params: z.ZodObject<{ path: z.ZodString, recursive: z.ZodOptional<z.ZodBoolean> }>;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: { path: string, recursive?: boolean };
+            returns: { success: boolean };
         };
         'fs.unlink': {
-            params: typeof StatParams;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: z.infer<typeof StatParams>;
+            returns: { success: boolean };
         };
         'fs.openStream': {
-            params: z.ZodObject<{ path: z.ZodString }>;
-            returns: z.ZodObject<{ streamID: z.ZodString }>;
+            params: { path: string };
+            returns: { streamID: string };
         };
         'fs.lock': {
-            params: z.ZodObject<{ path: z.ZodString, ttl: z.ZodOptional<z.ZodNumber> }>;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: { path: string, ttl?: number };
+            returns: { success: boolean };
         };
         'fs.unlock': {
-            params: z.ZodObject<{ path: z.ZodString }>;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: { path: string };
+            returns: { success: boolean };
         };
         'fs.rmdir': {
-            params: z.ZodObject<{ path: z.ZodString, recursive: z.ZodOptional<z.ZodBoolean> }>;
-            returns: z.ZodObject<{ success: z.ZodBoolean }>;
+            params: { path: string, recursive?: boolean };
+            returns: { success: boolean };
         };
     }
 

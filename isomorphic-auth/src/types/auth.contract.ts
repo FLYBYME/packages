@@ -8,12 +8,12 @@ import { TGTRequestSchema, STRequestSchema } from './auth.schema';
 declare module '@flybyme/isomorphic-core' {
     interface IServiceActionRegistry {
         'auth.authenticate': {
-            params: typeof TGTRequestSchema;
-            returns: z.ZodObject<{ token: z.ZodString }>;
+            params: z.infer<typeof TGTRequestSchema>;
+            returns: { token: string };
         };
         'auth.getServiceTicket': {
-            params: typeof STRequestSchema;
-            returns: z.ZodObject<{ token: z.ZodString }>;
+            params: z.infer<typeof STRequestSchema>;
+            returns: { token: string };
         };
     }
 }

@@ -75,7 +75,7 @@ export class CronModule implements IMeshModule {
             if (now >= task.nextRun) {
                 // Dispatch execution
                 this.logger.info(`Triggering cron task: ${task.definition.action}`);
-                this.serviceBroker.call(task.definition.action, task.definition.params || {}).catch(err => {
+                this.serviceBroker.call(task.definition.action as any, task.definition.params || {} as any).catch(err => {
                     const error = err instanceof Error ? err : new Error(String(err));
                     this.logger.error(`Cron task failed: ${task.definition.action}`, { error: error.message });
                 });

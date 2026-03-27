@@ -37,16 +37,9 @@ export interface IContext<TParams = Record<string, unknown>, TMeta = IMeshMeta> 
     /** Calls a mesh action with strict inference from context. */
     call<K extends keyof IServiceActionRegistry>(
         action: K, 
-        params: IServiceActionRegistry[K] extends { params: import('zod').ZodType<infer P> } ? P : never,
+        params: IServiceActionRegistry[K] extends { params: infer P } ? P : never,
         options?: { nodeID?: string; timeout?: number }
-    ): Promise<IServiceActionRegistry[K] extends { returns: import('zod').ZodType<infer R> } ? R : never>;
-
-    /** Fallback untyped call. */
-    call<TResult = unknown>(
-        action: string, 
-        params: Record<string, unknown>,
-        options?: { nodeID?: string; timeout?: number }
-    ): Promise<TResult>;
+    ): Promise<IServiceActionRegistry[K] extends { returns: infer R } ? R : never>;
 
     /** Emits a mesh event with strict inference. */
     emit<K extends keyof IServiceEventRegistry>(

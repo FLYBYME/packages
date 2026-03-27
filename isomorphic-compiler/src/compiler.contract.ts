@@ -21,7 +21,14 @@ declare module '@flybyme/isomorphic-core' {
          * Internal Build Processor.
          */
         'mesh.compiler.process_build': {
-            params: { buildId: string; appId: string; manifestId: string; manifest: z.infer<typeof SiteManifestSchema> };
+            params: { 
+                buildId: string; 
+                appId: string; 
+                manifestId: string; 
+                manifest: z.infer<typeof SiteManifestSchema>;
+                watch?: boolean;
+                buildDir: string;
+            };
             returns: { success: boolean };
         };
 
@@ -55,6 +62,30 @@ declare module '@flybyme/isomorphic-core' {
         'mesh.manifest.get': {
             params: { appId: string };
             returns: z.infer<typeof SiteManifestSchema>;
+        };
+
+        /**
+         * Build from path.
+         */
+        'mesh.compiler.build_from_path': {
+            params: { manifestPath: string, watch?: boolean, outputPath?: string };
+            returns: { success: boolean; appId: string; buildId: string; buildDir: string; indexUrl: string };
+        };
+
+        /**
+         * Update Build Status.
+         */
+        'mesh.compiler.update': {
+            params: { 
+                id: string; 
+                status: 'running' | 'success' | 'failed'; 
+                errorLog?: string; 
+                durationMs?: number; 
+                assets?: string;
+                indexUrl?: string; 
+                buildDir?: string 
+            };
+            returns: { success: boolean };
         };
     }
 }

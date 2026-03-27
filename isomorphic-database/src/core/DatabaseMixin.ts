@@ -28,23 +28,23 @@ export const CRUDSchemas = {
 export type CRUDActions<
     TPrefix extends string, 
     TSchema extends z.AnyZodObject, 
-    TCreateSchema extends any = TSchema,
+    TCreateSchema extends any = z.infer<TSchema>,
     TUpdateSchema extends any = any,
     TFindSchema extends any = any
 > = {
-    [K in `${TPrefix}.create`]: { params: TCreateSchema, returns: TSchema };
+    [K in `${TPrefix}.create`]: { params: TCreateSchema, returns: z.infer<TSchema> };
 } & {
-    [K in `${TPrefix}.get`]: { params: typeof CRUDSchemas.get, returns: TSchema };
+    [K in `${TPrefix}.get`]: { params: z.infer<typeof CRUDSchemas.get>, returns: z.infer<TSchema> | null };
 } & {
-    [K in `${TPrefix}.list`]: { params: typeof CRUDSchemas.list, returns: z.ZodArray<TSchema> };
+    [K in `${TPrefix}.list`]: { params: z.infer<typeof CRUDSchemas.list>, returns: z.infer<TSchema>[] };
 } & {
-    [K in `${TPrefix}.find`]: { params: TFindSchema, returns: z.ZodArray<TSchema> };
+    [K in `${TPrefix}.find`]: { params: TFindSchema, returns: z.infer<TSchema>[] };
 } & {
-    [K in `${TPrefix}.count`]: { params: TFindSchema, returns: z.ZodNumber };
+    [K in `${TPrefix}.count`]: { params: TFindSchema, returns: number };
 } & {
-    [K in `${TPrefix}.update`]: { params: TUpdateSchema, returns: z.ZodNumber };
+    [K in `${TPrefix}.update`]: { params: TUpdateSchema, returns: { changes: number } };
 } & {
-    [K in `${TPrefix}.remove`]: { params: typeof CRUDSchemas.remove, returns: z.ZodNumber };
+    [K in `${TPrefix}.remove`]: { params: z.infer<typeof CRUDSchemas.remove>, returns: { changes: number } };
 };
 
 /**
