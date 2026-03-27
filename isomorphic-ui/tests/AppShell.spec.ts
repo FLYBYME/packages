@@ -26,6 +26,14 @@ jest.mock('../src/BrokerDOM', () => ({
             navigation: { main: [] }
         })),
         getStateService: jest.fn(() => mockState),
+        getLogger: jest.fn(() => ({
+            child: jest.fn().mockReturnThis(),
+            debug: jest.fn(),
+            info: jest.fn(),
+            warn: jest.fn(),
+            error: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1)
+        })),
         setAppShell: jest.fn(),
         getAppShell: jest.fn(),
         registerComponent: jest.fn(),

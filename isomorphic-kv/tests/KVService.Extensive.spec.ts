@@ -24,11 +24,22 @@ describe('KVService Extensive', () => {
             getSetting: jest.fn().mockReturnValue({ replicationFactor: 3 })
         };
 
+        const mockLogger = {
+            debug: jest.fn(),
+            info: jest.fn(),
+            warn: jest.fn(),
+            error: jest.fn(),
+            getLevel: jest.fn().mockReturnValue(1),
+            child: jest.fn().mockReturnThis()
+        };
+
         mockApp = {
             nodeID: 'node1',
+            logger: mockLogger,
             getProvider: jest.fn().mockImplementation((p) => {
                 if (p === 'database:adapter') return { run: jest.fn(), query: jest.fn() };
                 if (p === 'broker') return mockBroker;
+                if (p === 'logger') return mockLogger;
                 return {};
             })
         };

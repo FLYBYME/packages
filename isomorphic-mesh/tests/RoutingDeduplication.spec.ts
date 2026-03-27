@@ -1,4 +1,4 @@
-import { createMeshApp, IServiceBroker, ServiceBroker } from '@flybyme/isomorphic-core';
+import { createMeshApp, IServiceBroker, ServiceBroker, ILogger } from '@flybyme/isomorphic-core';
 import { MeshNetwork } from '../src/core/MeshNetwork';
 import { NetworkPlugin } from '../src/NetworkPlugin';
 import { RoutingInterceptor } from '../src/interceptors/RoutingInterceptor';

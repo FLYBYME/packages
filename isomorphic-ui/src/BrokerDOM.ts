@@ -34,7 +34,13 @@ interface BrokerDOMStorage {
  * Supports environment agnosticism (SSR-ready).
  */
 export class BrokerDOM {
-    private static logger = BrokerDOM.getLogger().child({ component: 'BrokerDOM' });
+    private static _logger: ILogger | null = null;
+    private static get logger(): ILogger {
+        if (!this._logger) {
+            this._logger = this.getLogger().child({ component: 'BrokerDOM' });
+        }
+        return this._logger;
+    }
 
     private static get storage(): BrokerDOMStorage {
         const g = globalThis as unknown as { __mesh_dom_storage: BrokerDOMStorage };

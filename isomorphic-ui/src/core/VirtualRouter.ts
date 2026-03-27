@@ -1,10 +1,17 @@
+import { ILogger } from '@flybyme/isomorphic-core';
 import { BrokerDOM } from '../BrokerDOM';
 import { RouteConfig } from '../types/router.types';
 
 export class VirtualRouter {
     private static routes: RouteConfig[] = [];
     private static initialized = false;
-    private static logger = BrokerDOM.getLogger().child({ component: 'VirtualRouter' });
+    private static _logger: ILogger | null = null;
+    private static get logger(): ILogger {
+        if (!this._logger) {
+            this._logger = BrokerDOM.getLogger().child({ component: 'VirtualRouter' });
+        }
+        return this._logger;
+    }
 
     public static init(routes: RouteConfig[]) {
         if (this.initialized) return;
