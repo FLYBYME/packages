@@ -124,7 +124,7 @@ export async function bootstrapMeshT(config: MeshTConfig = {}): Promise<IMeshApp
   await fs.mkdir(dbDir, { recursive: true });
 
   const databaseModule = new DatabaseModule({
-    adapterType: config.dbAdapter || 'nedb',
+    adapterType: 'nedb',
     adapterConfig: {
       filename: path.join(dbDir, 'mesht'),
       inMemoryOnly: config.dbAdapter === 'mock'

@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-messaging",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Decentralized, backpressure-aware Pub/Sub for the isomorphic mesh",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-mesh",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "A standalone isomorphic networking library",
   "main": "dist/index.js",
   "browser": {

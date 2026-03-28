@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/mesh-tasker",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "MeshTasker: Real-time, offline-capable distributed task management demo",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-streams",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Backpressure-aware distributed streams for the isomorphic mesh",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

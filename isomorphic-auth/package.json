@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-auth",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "A standalone browser-safe auth library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

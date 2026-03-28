@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-core",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "The unified kernel and DI shell for the isomorphic mesh ecosystem",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",

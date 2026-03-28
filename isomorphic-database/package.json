@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-database",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Type-safe isomorphic database query builder",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,9 +15,10 @@
     "lint": "eslint \"src/**/*.ts\" --max-warnings=0"
   },
   "dependencies": {
-    "eventemitter3": "^5.0.4",
     "@flybyme/isomorphic-core": "*",
+    "eventemitter3": "^5.0.4",
     "nanoid": "^5.1.6",
+    "nedb-promises": "^6.2.3",
     "zod": "^3.25.76"
   },
   "devDependencies": {

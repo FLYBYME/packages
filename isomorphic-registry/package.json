@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-registry",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "A standalone isomorphic service and node registry",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

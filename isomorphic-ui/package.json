@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-ui",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Port of the legacy UI rendering logic for the isomorphic mesh ecosystem",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,8 +26,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@flybyme/isomorphic-cdn": "^1.0.53",
-    "@flybyme/isomorphic-compiler": "^1.0.53",
+    "@flybyme/isomorphic-cdn": "^1.0.54",
+    "@flybyme/isomorphic-compiler": "^1.0.54",
     "@playwright/test": "^1.58.2",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.11.19",

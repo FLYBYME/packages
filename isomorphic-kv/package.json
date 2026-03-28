@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-kv",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "Distributed L2 Cache with Consistent Hashing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
