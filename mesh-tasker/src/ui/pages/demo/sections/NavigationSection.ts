@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbItem, Pagination, PageItem, PageLink, Heading, Box } from '@flybyme/isomorphic-ui';
+import { Breadcrumb, BreadcrumbItem, Pagination, PageItem, PageLink, Heading, Section } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class NavigationSection extends BaseDemoSection {
@@ -16,7 +16,7 @@ export class NavigationSection extends BaseDemoSection {
             }),
 
             new Heading(5, { text: 'Pagination', marginBottom: '3' }),
-            new Box({
+            new Section({
                 className: 'd-flex gap-4 flex-wrap align-items-center',
                 children: [
                     // Standard

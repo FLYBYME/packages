@@ -1,4 +1,4 @@
-import { Row, Col, Heading, LeadText, Box } from '@flybyme/isomorphic-ui';
+import { Row, Col, Heading, LeadText, Section } from '@flybyme/isomorphic-ui';
 
 export class DemoHeader extends Row {
     constructor() {
@@ -10,7 +10,7 @@ export class DemoHeader extends Row {
                     children: [
                         new Heading(1, { text: 'Broker Design System', marginBottom: '2' }),
                         new LeadText({ muted: true, text: 'A programmatic UI library built with Bootstrap 5 and Isomorphic-UI reactivity.' }),
-                        new Box({ tagName: 'hr', className: 'my-4' })
+                        new Section({ tagName: 'hr', className: 'my-4' })
                     ]
                 })
             ]

@@ -1,6 +1,6 @@
 import {
   BrokerComponent, ComponentChild, BrokerDOM,
-  Box, Heading, SmallText, Badge,
+  Section, Heading, SmallText, Badge,
   Button, Card, CardHeader, CardBody, DataTable,
   Modal, ModalHeader, ModalTitle, ModalBody,
   IBaseUIProps, IBadgeProps
@@ -34,7 +34,7 @@ export class GitflowTab extends BrokerComponent {
           className: 'p-0 bg-dark',
           style: { height: '70vh' },
           children: [
-            new Box({
+            new Section({
               id: 'diffContent',
               className: 'h-100 overflow-auto p-3 font-monospace x-small text-white',
               style: { whiteSpace: 'pre-wrap' },
@@ -80,7 +80,7 @@ export class GitflowTab extends BrokerComponent {
 
     if (!session) {
       return [
-        new Box({
+        new Section({
           className: 'd-flex h-100 align-items-center justify-content-center flex-column text-muted',
           children: [
             new Heading(6, { text: 'No Gitflow Session' }),
@@ -94,23 +94,23 @@ export class GitflowTab extends BrokerComponent {
       // Header: Branch Lifecycle
       this.renderHeader(session),
 
-      new Box({
+      new Section({
         className: 'flex-grow-1 overflow-auto p-3',
         children: [
-          new Box({
+          new Section({
             className: 'row g-3',
             children: [
               // Left Col: Timeline & Actions
-              new Box({
+              new Section({
                 className: 'col-md-5',
                 children: [
                   this.renderTimeline(session.commitHistory),
-                  new Box({ className: 'mt-3' }),
+                  new Section({ className: 'mt-3' }),
                   this.renderAdminActions(session)
                 ]
               }),
               // Right Col: Files & Conflicts
-              new Box({
+              new Section({
                 className: 'col-md-7',
                 children: [
                   session.status === 'conflict' ? this.renderConflictAlert(session) : null,
@@ -134,13 +134,13 @@ export class GitflowTab extends BrokerComponent {
       conflict: 'danger'
     };
 
-    return new Box({
+    return new Section({
       className: 'p-3 border-bottom bg-white d-flex justify-content-between align-items-center',
       children: [
-        new Box({
+        new Section({
           children: [
             new SmallText({ text: 'Branch Lifecycle', className: 'text-muted uppercase x-small fw-bold mb-1 d-block' }),
-            new Box({
+            new Section({
               className: 'd-flex align-items-center gap-2',
               children: [
                 new Badge({ variant: 'light', text: session.baseBranch, className: 'border' }),
@@ -165,23 +165,23 @@ export class GitflowTab extends BrokerComponent {
         new CardBody({
           className: 'p-0',
           children: history.length === 0 
-            ? new Box({ className: 'p-4 text-center text-muted italic', text: 'No commits recorded yet.' })
-            : history.map((commit, i) => new Box({
+            ? new Section({ className: 'p-4 text-center text-muted italic', text: 'No commits recorded yet.' })
+            : history.map((commit, i) => new Section({
                 className: 'p-3 border-bottom d-flex gap-3 position-relative',
                 children: [
                   // Timeline line
-                  i < history.length - 1 ? new Box({ 
+                  i < history.length - 1 ? new Section({ 
                     className: 'position-absolute bg-secondary bg-opacity-25', 
                     style: { left: '23px', top: '40px', width: '2px', height: 'calc(100% - 20px)' } 
                   }) : null,
                   // Icon
-                  new Box({ 
+                  new Section({ 
                     className: 'rounded-circle bg-info bg-opacity-10 border border-info d-flex align-items-center justify-content-center flex-shrink-0', 
                     style: { width: '20px', height: '20px', marginTop: '4px', zIndex: 1 },
-                    children: new Box({ className: 'bg-info rounded-circle', style: { width: '8px', height: '8px' } })
+                    children: new Section({ className: 'bg-info rounded-circle', style: { width: '8px', height: '8px' } })
                   }),
                   // Content
-                  new Box({
+                  new Section({
                     children: [
                       new SmallText({ text: commit.message, className: 'd-block fw-bold' }),
                       new SmallText({ text: commit.sha.slice(0, 7), className: 'font-monospace text-muted x-small me-2' }),
@@ -202,7 +202,7 @@ export class GitflowTab extends BrokerComponent {
         new CardBody({
           className: 'p-0',
           children: files.length === 0
-            ? new Box({ className: 'p-4 text-center text-muted italic', text: 'No files changed.' })
+            ? new Section({ className: 'p-4 text-center text-muted italic', text: 'No files changed.' })
             : new DataTable<GitflowChangedFile>({
                 columns: [
                   { 
@@ -247,14 +247,14 @@ export class GitflowTab extends BrokerComponent {
   }
 
   private renderConflictAlert(session: GitflowSession): ComponentChild {
-    return new Box({
+    return new Section({
       className: 'alert alert-danger mb-3 p-3',
       children: [
         new Heading(6, { text: '⚠️ Merge Conflict Detected', className: 'alert-heading mb-2' }),
         new SmallText({ text: 'The Grid attempted to merge but encountered conflicts. Autonomous operations are paused.', className: 'd-block mb-3' }),
-        new Box({
+        new Section({
           className: 'bg-black bg-opacity-10 p-2 rounded mb-3',
-          children: session.conflictDetails.map(c => new Box({
+          children: session.conflictDetails.map(c => new Section({
             className: 'd-flex justify-content-between align-items-center mb-1',
             children: [
               new SmallText({ text: c.file, className: 'font-monospace x-small' }),
@@ -263,7 +263,7 @@ export class GitflowTab extends BrokerComponent {
           }))
         }),
         new Heading(6, { text: 'How to resolve:', className: 'small fw-bold mb-2' }),
-        new Box({
+        new Section({
           className: 'bg-dark p-2 rounded mb-3 text-white font-monospace x-small overflow-auto',
           children: `git checkout ${session.baseBranch} && git pull && git checkout ${session.branchName} && git rebase ${session.baseBranch}`
         }),

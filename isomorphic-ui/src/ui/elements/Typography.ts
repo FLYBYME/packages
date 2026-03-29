@@ -102,3 +102,20 @@ export class Icon extends BrokerComponent {
     
     build() { return null; }
 }
+
+export interface IBootstrapIconProps extends IBaseUIProps {
+    name: string;
+}
+
+export class BootstrapIcon extends BrokerComponent {
+    constructor(props: IBootstrapIconProps) {
+        super('i', props);
+    }
+
+    protected override getBaseClasses(): string {
+        const props = this.props as IBootstrapIconProps;
+        return `bi bi-${props.name}`;
+    }
+
+    build() { return null; }
+}

@@ -1,9 +1,9 @@
 import { BrokerComponent, IBaseUIProps, ComponentChild } from '../../core/BrokerComponent';
-import { Row, Col, Box } from './Layout';
+import { Row, Col, Container } from './Layout';
 import { Table, TableHead, TableRow, TableCell, TableBody } from './Table';
 import { Pagination, PageItem, PageLink } from './NavigationComponents';
 import { Text } from './Typography';
-import { FormSelect, FormControl, IFormControlProps, IFormSelectProps } from './Forms';
+import { FormSelect, FormControl, FormOption, IFormControlProps, IFormSelectProps } from './Forms';
 
 export interface IDataTableColumn<T = Record<string, unknown>> {
     key: string;
@@ -153,10 +153,10 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
         this.entriesSelect = new EntriesSelect({
             size: 'sm',
             children: [
-                new Box({ tagName: 'option', value: '5', text: '5', selected: this.entriesPerPage === 5 ? true : undefined }),
-                new Box({ tagName: 'option', value: '10', text: '10', selected: this.entriesPerPage === 10 ? true : undefined }),
-                new Box({ tagName: 'option', value: '25', text: '25', selected: this.entriesPerPage === 25 ? true : undefined }),
-                new Box({ tagName: 'option', value: '50', text: '50', selected: this.entriesPerPage === 50 ? true : undefined })
+                new FormOption({ value: '5', text: '5', selected: this.entriesPerPage === 5 ? true : undefined }),
+                new FormOption({ value: '10', text: '10', selected: this.entriesPerPage === 10 ? true : undefined }),
+                new FormOption({ value: '25', text: '25', selected: this.entriesPerPage === 25 ? true : undefined }),
+                new FormOption({ value: '50', text: '50', selected: this.entriesPerPage === 50 ? true : undefined })
             ]
         }, this.handleEntriesChange);
 
@@ -175,7 +175,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
                     className: 'd-flex align-items-center gap-2',
                     children: [
                         new Text({ text: 'Show' }),
-                        new Box({ 
+                        new Container({ 
                             style: { width: '80px' }, 
                             children: this.entriesSelect
                         }),
@@ -187,7 +187,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
                     className: 'd-flex justify-content-end align-items-center gap-2',
                     children: [
                         new Text({ text: 'Search:' }),
-                        new Box({
+                        new Container({
                             style: { width: '200px' },
                             children: this.searchInput
                         })
@@ -210,7 +210,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
                 isHeader: true,
                 style: col.sortable ? { cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap' } : { whiteSpace: 'nowrap' },
                 onClick: col.sortable ? () => this.handleSort(col.key) : undefined,
-                children: new Box({
+                children: new Container({
                     className: 'd-flex justify-content-between align-items-center',
                     children: [
                         new Text({ text: col.label }),
@@ -316,7 +316,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
 
         return [
             topControls,
-            new Box({ className: 'table-responsive border rounded', children: dataTable }),
+            new Container({ className: 'table-responsive border rounded', children: dataTable }),
             bottomControls
         ];
     }

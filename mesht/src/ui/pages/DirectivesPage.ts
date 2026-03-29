@@ -1,7 +1,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Card, CardHeader, CardBody, Badge, Heading, SmallText,
-  Button, Box, DataTable,
+  Button, Section, DataTable,
   Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
   FormLabel, FormControl, FormSelect
 } from '@flybyme/isomorphic-ui';
@@ -13,7 +13,7 @@ import { SubmitDirectiveResult } from '../../domains/sys.interface/interface.sch
 class ProjectSelect extends FormSelect {
   build(): ComponentChild[] {
     const projects = BrokerDOM.getStateService().getValue<Project[]>('projects.all') || [];
-    return projects.map(p => new Box({
+    return projects.map(p => new Section({
       tagName: 'option',
       value: p.id,
       text: p.name,
@@ -82,14 +82,14 @@ export class DirectivesPage extends BrokerPage {
               placeholder: 'Internal Refactoring',
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newDirective.title', (e.target as HTMLInputElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Project' }),
             new ProjectSelect({
               id: 'directiveProject',
               value: '$state.ui.newDirective.projectId',
               onChange: (e: Event) => BrokerDOM.getStateService().set('ui.newDirective.projectId', (e.target as HTMLSelectElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Objective' }),
             new FormControl({
               id: 'directiveObjective',
@@ -157,10 +157,10 @@ export class DirectivesPage extends BrokerPage {
     const directives = state.getValue<Directive[]>('directives.list') || [];
 
     return [
-      new Box({
+      new Section({
         className: 'flex-grow-1 position-relative overflow-hidden d-flex',
         children: [
-          new Box({
+          new Section({
             className: 'flex-grow-1 overflow-auto p-4',
             children: new Card({
               children: [
@@ -177,7 +177,7 @@ export class DirectivesPage extends BrokerPage {
                       }) },
                       { key: 'currentNode', label: 'Node', render: (row: Directive) => new Badge({ variant: 'light', text: row.currentNode, className: 'text-dark border' }) },
                       { key: 'assignedPersona', label: 'Persona', render: (row: Directive) => new SmallText({ text: row.assignedPersona || 'Unassigned' }) },
-                      { key: 'id', label: 'Actions', render: (row: Directive) => new Box({
+                      { key: 'id', label: 'Actions', render: (row: Directive) => new Section({
                         className: 'd-flex gap-1',
                         children: [
                           new Button({ 

@@ -1,18 +1,4 @@
-import { BrokerPage, PageHeaderConfig, BrokerComponent, IBaseUIProps, ComponentChild } from '@flybyme/isomorphic-ui';
-
-class Box extends BrokerComponent {
-    constructor(props: IBaseUIProps & { children?: ComponentChild | ComponentChild[] }) {
-        super('div', props);
-    }
-    build() { return this.props.children || null; }
-}
-
-class Text extends BrokerComponent {
-    constructor(props: IBaseUIProps & { text: string }) {
-        super('span', props);
-    }
-    build() { return this.props.text; }
-}
+import { BrokerPage, PageHeaderConfig, Section, Span } from '@flybyme/isomorphic-ui';
 
 export class Settings extends BrokerPage {
     constructor() {
@@ -27,10 +13,10 @@ export class Settings extends BrokerPage {
     public async onLeave(): Promise<void> {}
 
     build() {
-        return new Box({
+        return new Section({
             children: [
-                new Text({ text: 'Application Settings', style: { fontSize: '24px', fontWeight: 'bold', display: 'block', marginBottom: '16px' } }),
-                new Text({ text: 'Settings will be implemented here.' })
+                new Span({ text: 'Application Settings', style: { fontSize: '24px', fontWeight: 'bold', display: 'block', marginBottom: '16px' } }),
+                new Span({ text: 'Settings will be implemented here.' })
             ]
         });
     }

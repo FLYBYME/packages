@@ -1,7 +1,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM, Row, Col,
   Card, CardHeader, CardBody, Heading, SmallText,
-  Button, FormLabel, FormControl, FormSelect, Box
+  Button, FormLabel, FormControl, FormSelect, Section
 } from '@flybyme/isomorphic-ui';
 import { AuditLog } from '../../domains/sys.audit/audit.schema';
 import { Project, ProjectStatus } from '../../domains/sys.projects/projects.schema';
@@ -14,7 +14,7 @@ type RegistryNodes = Record<string, { id?: string }>;
 class ProjectSelect extends FormSelect {
   build(): ComponentChild[] {
     const projects = BrokerDOM.getStateService().getValue<Project[]>('projects.all') || [];
-    return projects.map(p => new Box({
+    return projects.map(p => new Section({
       tagName: 'option',
       value: p.id,
       text: p.name,

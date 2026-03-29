@@ -1,9 +1,10 @@
 import { BrokerComponent, ComponentChild } from './BrokerComponent';
 import { BrokerDOM } from '../BrokerDOM';
 import { NavigationItem } from '@flybyme/isomorphic-core';
-import { Main, Container, Box } from '../ui/elements/Layout';
+import { Main, Container } from '../ui/elements/Layout';
 import { Navbar, NavbarBrand, NavbarToggler, NavbarCollapse, NavbarNav, Sidebar, NavbarItem, NavbarLink, NavbarDropdown, NavbarDropdownToggle, NavbarDropdownMenu, NavbarDropdownItem } from '../ui/elements/NavigationComponents';
 import { RouterView } from './RouterView';
+import { Text, BootstrapIcon } from '../ui/elements/Typography';
 
 export class AppShell extends BrokerComponent {
     private routerView: RouterView;
@@ -103,15 +104,15 @@ export class AppShell extends BrokerComponent {
                                         children: [
                                             new NavbarDropdownToggle({
                                                 children: [
-                                                    item.icon ? new Box({ tagName: 'i', className: `bi bi-${item.icon} me-2` }) : null,
-                                                    new Box({ tagName: 'span', text: item.label })
+                                                    item.icon ? new BootstrapIcon({ name: item.icon, className: 'me-2' }) : null,
+                                                    new Text({ text: item.label })
                                                 ]
                                             }),
                                             new NavbarDropdownMenu({
                                                 children: item.children.map(child => new NavbarDropdownItem({
                                                     children: [
-                                                        child.icon ? new Box({ tagName: 'i', className: `bi bi-${child.icon} me-2` }) : null,
-                                                        new Box({ tagName: 'span', text: child.label })
+                                                        child.icon ? new BootstrapIcon({ name: child.icon, className: 'me-2' }) : null,
+                                                        new Text({ text: child.label })
                                                     ],
                                                     onClick: (e: Event) => {
                                                         e.preventDefault();
@@ -126,8 +127,8 @@ export class AppShell extends BrokerComponent {
                                     children: new NavbarLink({
                                         className: 'nav-link cursor-pointer text-nowrap px-3 px-lg-3',
                                         children: [
-                                            item.icon ? new Box({ tagName: 'i', className: `bi bi-${item.icon} me-2` }) : null,
-                                            new Box({ tagName: 'span', text: item.label })
+                                            item.icon ? new BootstrapIcon({ name: item.icon, className: 'me-2' }) : null,
+                                            new Text({ text: item.label })
                                         ],
                                         onClick: (e: Event) => {
                                             e.preventDefault();

@@ -1,7 +1,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Card, CardHeader, CardBody, Badge, Heading, SmallText,
-  Box, DataTable, Button, IBadgeProps
+  Section, DataTable, Button, IBadgeProps
 } from '@flybyme/isomorphic-ui';
 import { GitflowSession, GitflowSessionStatus } from '../../domains/sys.gitflow/gitflow.schema';
 
@@ -56,7 +56,7 @@ export class GitflowPage extends BrokerPage {
 
     return [
       // Stats Bar
-      new Box({
+      new Section({
         className: 'row g-3 mb-4',
         children: [
           this.renderStatCard('Total Workspaces', stats.total, 'primary'),
@@ -112,7 +112,7 @@ export class GitflowPage extends BrokerPage {
   }
 
   private renderStatCard(label: string, value: number, variant: IBadgeProps['variant']): ComponentChild {
-    return new Box({
+    return new Section({
       className: 'col-md-3',
       children: new Card({
         className: `border-start border-4 border-${variant}`,

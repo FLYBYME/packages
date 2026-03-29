@@ -1,4 +1,4 @@
-import { Row, Col, Nav, NavItem, TabContent, TabPane, Heading, Box } from '@flybyme/isomorphic-ui';
+import { Row, Col, Nav, NavItem, TabContent, TabPane, Heading, Section } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class TabsSection extends BaseDemoSection {
@@ -32,7 +32,7 @@ export class TabsSection extends BaseDemoSection {
                         span: 6,
                         children: [
                             new Heading(5, { text: 'Vertical Pills', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex align-items-start',
                                 children: [
                                     new Nav({

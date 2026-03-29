@@ -1,4 +1,4 @@
-import { MeshUI, BrokerDOM, BrokerPage, Accordion, AccordionItem, Button, VirtualRouter, Box } from '../src';
+import { MeshUI, BrokerDOM, BrokerPage, Accordion, AccordionItem, Button, VirtualRouter, Heading, Badge } from '../src';
 
 // Register test routes to specific sandbox components
 class CounterTestPage extends BrokerPage {
@@ -12,10 +12,11 @@ class CounterTestPage extends BrokerPage {
         }
 
         return [
-            new Box({ tagName: 'h1', text: 'Counter Sandbox' }),
-            new Box({ 
+            new Heading(1, { text: 'Counter Sandbox' }),
+            new Badge({ 
                 id: 'counter-display', 
-                text: '$state.counter' 
+                text: '$state.counter',
+                size: 'lg'
             }),
             new Button({ 
                 text: 'Increment', 

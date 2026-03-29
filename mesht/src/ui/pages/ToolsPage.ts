@@ -2,7 +2,7 @@ import {
   BrokerPage, ComponentChild, BrokerDOM,
   Row, Col, Card, CardHeader, CardBody,
   Heading, Badge, Table, TableHead, TableBody, TableRow, TableCell,
-  SmallText, Box, Button, IBaseUIProps
+  SmallText, Section, Button, IBaseUIProps
 } from '@flybyme/isomorphic-ui';
 
 interface Tool {
@@ -103,7 +103,7 @@ export class ToolsPage extends BrokerPage {
                         children: tools.map(t => new TableRow({
                           children: [
                             new TableCell({ children: [
-                              new Box({ text: t.name, className: 'fw-bold' }),
+                              new Section({ text: t.name, className: 'fw-bold' }),
                               new SmallText({ text: t.description, className: 'text-muted d-block x-small' })
                             ]}),
                             new TableCell({ children: new Badge({ variant: 'light', text: t.category, className: 'text-dark border' }) }),
@@ -149,10 +149,10 @@ export class ToolsPage extends BrokerPage {
                 }),
                 new CardBody({
                   children: pending.length > 0 ? 
-                    pending.map(p => new Box({
+                    pending.map(p => new Section({
                       className: 'p-2 mb-2 border border-secondary rounded d-flex justify-content-between align-items-center',
                       children: [
-                        new Box({ children: [
+                        new Section({ children: [
                           new SmallText({ text: p.toolName, className: 'fw-bold d-block' }),
                           new SmallText({ text: `ID: ${p.approvalId.slice(0, 8)}`, className: 'text-muted x-small' })
                         ]}),

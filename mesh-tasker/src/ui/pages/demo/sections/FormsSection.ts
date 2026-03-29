@@ -1,7 +1,7 @@
-import { Row, Col, FormLabel, FormControl, FloatingLabel, InputGroup, Box, FormSelect, FormCheck, FormRange, FormFeedback, Heading, Badge } from '@flybyme/isomorphic-ui';
+import { Row, Col, FormLabel, FormControl, FloatingLabel, InputGroup, Section, FormSelect, FormCheck, FormRange, FormFeedback, Heading, Badge } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
-class InteractiveRangeSlider extends Box {
+class InteractiveRangeSlider extends Section {
     private valDisplay: Badge;
     private rangeInput: FormRange;
 
@@ -12,7 +12,7 @@ class InteractiveRangeSlider extends Box {
         super({
             className: 'd-flex align-items-center gap-3 mb-3',
             children: [
-                new Box({ flex: 1, children: rangeInput }),
+                new Section({ flex: 1, children: rangeInput }),
                 valDisplay
             ]
         });
@@ -63,9 +63,9 @@ export class FormsSection extends BaseDemoSection {
                             new FormSelect({
                                 marginBottom: '3',
                                 children: [
-                                    new Box({ tagName: 'option', text: 'Select an option', disabled: true, selected: true }),
-                                    new Box({ tagName: 'option', text: 'Edge Computing' }),
-                                    new Box({ tagName: 'option', text: 'Mesh Networking' })
+                                    new Section({ tagName: 'option', text: 'Select an option', disabled: true, selected: true }),
+                                    new Section({ tagName: 'option', text: 'Edge Computing' }),
+                                    new Section({ tagName: 'option', text: 'Mesh Networking' })
                                 ]
                             }),
                             new FormLabel({ text: 'Checks & Radios' }),
@@ -136,7 +136,7 @@ export class FormsSection extends BaseDemoSection {
                             new InputGroup({
                                 marginBottom: '3',
                                 children: [
-                                    new Box({ tagName: 'span', className: 'input-group-text', text: '@' }),
+                                    new Section({ tagName: 'span', className: 'input-group-text', text: '@' }),
                                     new FormControl({ type: 'text', placeholder: 'Username' })
                                 ]
                             }),
@@ -144,7 +144,7 @@ export class FormsSection extends BaseDemoSection {
                                 marginBottom: '3',
                                 children: [
                                     new FormControl({ type: 'text', placeholder: "Recipient's username" }),
-                                    new Box({ tagName: 'span', className: 'input-group-text', text: '@example.com' })
+                                    new Section({ tagName: 'span', className: 'input-group-text', text: '@example.com' })
                                 ]
                             })
                         ]
@@ -155,9 +155,9 @@ export class FormsSection extends BaseDemoSection {
                             new InputGroup({
                                 marginBottom: '3',
                                 children: [
-                                    new Box({ tagName: 'span', className: 'input-group-text', text: '$' }),
+                                    new Section({ tagName: 'span', className: 'input-group-text', text: '$' }),
                                     new FormControl({ type: 'text', placeholder: 'Amount' }),
-                                    new Box({ tagName: 'span', className: 'input-group-text', text: '.00' })
+                                    new Section({ tagName: 'span', className: 'input-group-text', text: '.00' })
                                 ]
                             })
                         ]

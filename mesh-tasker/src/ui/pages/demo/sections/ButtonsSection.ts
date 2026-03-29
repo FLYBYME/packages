@@ -1,11 +1,11 @@
-import { Box, Button, Heading, Row, Col, ButtonGroup, ButtonToolbar, InputGroup, InputGroupText, FormControl, FormCheck } from '@flybyme/isomorphic-ui';
+import { Section, Button, Heading, Row, Col, ButtonGroup, ButtonToolbar, InputGroup, InputGroupText, FormControl, FormCheck } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class ButtonsSection extends BaseDemoSection {
     constructor() {
         super('Buttons & Actions', [
             new Heading(5, { text: 'Base Variations', marginBottom: '3' }),
-            new Box({
+            new Section({
                 className: 'd-flex gap-3 flex-wrap align-items-center mb-4',
                 children: [
                     new Button({ variant: 'primary', label: 'Primary Action' }),
@@ -18,7 +18,7 @@ export class ButtonsSection extends BaseDemoSection {
             }),
 
             new Heading(5, { text: 'Button Sizes', className: 'mt-4 mb-3' }),
-            new Box({
+            new Section({
                 className: 'd-flex gap-3 align-items-center mb-4',
                 children: [
                     new Button({ variant: 'primary', size: 'lg', label: 'Large Button' }),
@@ -28,7 +28,7 @@ export class ButtonsSection extends BaseDemoSection {
             }),
 
             new Heading(5, { text: 'Outline Variations', className: 'mt-4 mb-3' }),
-            new Box({
+            new Section({
                 className: 'd-flex gap-3 flex-wrap align-items-center mb-4',
                 children: [
                     new Button({ variant: 'primary', outline: true, label: 'Primary' }),
@@ -68,7 +68,7 @@ export class ButtonsSection extends BaseDemoSection {
                                     new Button({ variant: 'secondary', label: 'Right' })
                                 ]
                             }),
-                            new Box({ className: 'mt-3' }),
+                            new Section({ className: 'mt-3' }),
                             new ButtonGroup({
                                 vertical: true,
                                 children: [
@@ -100,7 +100,7 @@ export class ButtonsSection extends BaseDemoSection {
                                     })
                                 ]
                             }),
-                            new Box({ className: 'mt-4' }),
+                            new Section({ className: 'mt-4' }),
                             new ButtonGroup({
                                 ariaLabel: 'Toggle group',
                                 children: [

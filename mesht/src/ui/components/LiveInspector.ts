@@ -1,7 +1,7 @@
 // FILE: src/ui/components/LiveInspector.ts
 import {
   BrokerComponent, ComponentChild, BrokerDOM,
-  Box, Heading, SmallText,
+  Section, Heading, SmallText,
   Button, IBaseUIProps
 } from '@flybyme/isomorphic-ui';
 
@@ -149,16 +149,16 @@ export class LiveInspector extends BrokerComponent {
 
     return [
       // Header
-      new Box({
+      new Section({
         className: 'p-3 border-bottom d-flex justify-content-between align-items-center bg-white',
         children: [
-          new Box({
+          new Section({
             children: [
               new Heading(6, { text: 'Directive Inspector', className: 'mb-0 text-info uppercase small fw-bold' }),
               new SmallText({ text: `ID: ${id.slice(0, 8)}`, className: 'text-muted font-monospace' }),
             ]
           }),
-          new Box({
+          new Section({
             className: 'd-flex gap-2',
             children: [
               new Button({
@@ -187,37 +187,37 @@ export class LiveInspector extends BrokerComponent {
   }
 
   private buildFSMView(manifest: FSMManifest | undefined, currentNode: string, logs: InspectorLogEntry[]): ComponentChild {
-    return new Box({
+    return new Section({
       className: 'flex-grow-1 d-flex flex-column overflow-hidden',
       children: [
         // FSM Visualizer (SVG Graph)
-        new Box({
+        new Section({
           className: 'p-0 border-bottom bg-black overflow-hidden position-relative',
           style: { height: '300px' },
           children: [
             this.renderSVGGraph(manifest, currentNode),
-            new Box({
+            new Section({
               className: 'position-absolute bottom-0 start-0 p-2 bg-dark bg-opacity-75',
               children: new SmallText({ text: `Current Node: ${currentNode}`, className: 'text-info small' })
             })
           ]
         }),
         // Terminal Stream
-        new Box({
+        new Section({
           className: 'flex-grow-1 p-0 bg-dark overflow-hidden d-flex flex-column',
           children: [
-            new Box({
+            new Section({
               className: 'p-2 bg-secondary bg-opacity-25 border-bottom border-secondary d-flex justify-content-between',
               children: [
                 new SmallText({ text: 'Cognition Stream', className: 'text-muted x-small' }),
                 new SmallText({ text: 'ONLINE', className: 'text-success fw-bold blink x-small' }),
               ]
             }),
-            new Box({
+            new Section({
               className: 'flex-grow-1 p-3 overflow-auto font-monospace',
               style: { color: '#10b981', fontSize: '11px', lineHeight: '1.4' },
               children: logs.length > 0 ? logs.map((log) => this.buildLogRow(log)) : [
-                new Box({ className: 'text-muted italic', text: 'Waiting for cognition...' })
+                new Section({ className: 'text-muted italic', text: 'Waiting for cognition...' })
               ]
             })
           ]
@@ -228,7 +228,7 @@ export class LiveInspector extends BrokerComponent {
 
   private renderSVGGraph(manifest: FSMManifest | undefined, currentNode: string): ComponentChild {
     if (!manifest) {
-      return new Box({ className: 'd-flex h-100 align-items-center justify-content-center text-muted', children: 'Loading protocol manifest...' });
+      return new Section({ className: 'd-flex h-100 align-items-center justify-content-center text-muted', children: 'Loading protocol manifest...' });
     }
 
     const nodes = manifest.nodes || [];
@@ -270,9 +270,9 @@ export class LiveInspector extends BrokerComponent {
 
     const totalHeight = Math.max(300, nodes.length * rowHeight + 80);
 
-    return new Box({
+    return new Section({
       className: 'overflow-auto w-100 h-100',
-      children: new Box({
+      children: new Section({
         tagName: 'svg',
         style: { width: '100%', minHeight: `${totalHeight}px` },
         dangerouslySetInnerHTML: `
@@ -293,14 +293,14 @@ export class LiveInspector extends BrokerComponent {
 
   private buildLogRow(log: InspectorLogEntry): ComponentChild {
     const color = log.type === 'tool' ? '#38bdf8' : log.type === 'verdict' ? '#facc15' : '#10b981';
-    return new Box({
+    return new Section({
       className: 'mb-2 opacity-transition',
       children: [
         new SmallText({ 
           text: `[${new Date(log.timestamp).toLocaleTimeString()}] `, 
           className: 'text-muted me-1' 
         }),
-        new Box({
+        new Section({
           tag: 'span',
           style: { color },
           children: log.content

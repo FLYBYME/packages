@@ -1,7 +1,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Card, CardHeader, CardBody, Heading, SmallText,
-  Box, Badge, DataTable, Button, Modal, ModalHeader, ModalTitle, ModalBody, FormLabel, FormControl, ModalFooter, Row, Col, FormSelect
+  Section, Badge, DataTable, Button, Modal, ModalHeader, ModalTitle, ModalBody, FormLabel, FormControl, ModalFooter, Row, Col, FormSelect
 } from '@flybyme/isomorphic-ui';
 import { Artifact, FSMNode, Edge } from '../../domains/sys.artifacts/artifacts.schema';
 import {
@@ -12,7 +12,7 @@ import {
 } from '../ui.schema';
 import { JSONObject } from '../../shared/json.schema';
 
-class MutableBox extends Box {
+class MutableBox extends Section {
   public updateChildren(children: ComponentChild[]): void {
     this.setProps({ children });
   }
@@ -152,11 +152,11 @@ export class ArtifactsPage extends BrokerPage {
       { id: 'raw', label: 'Raw JSON (Advanced)' }
     ];
 
-    return new Box({
+    return new Section({
       className: 'nav nav-tabs',
-      children: tabs.map(tab => new Box({
+      children: tabs.map(tab => new Section({
         className: 'nav-item cursor-pointer',
-        children: new Box({
+        children: new Section({
           className: `nav-link ${activeTab === tab.id ? 'active fw-bold' : 'text-muted'}`,
           text: tab.label,
           onClick: (e: Event) => {
@@ -177,7 +177,7 @@ export class ArtifactsPage extends BrokerPage {
       case 'nodes': return this.buildNodesTab();
       case 'edges': return this.buildEdgesTab();
       case 'raw': return this.buildRawTab();
-      default: return new Box({});
+      default: return new Section({});
     }
   }
 
@@ -198,8 +198,8 @@ export class ArtifactsPage extends BrokerPage {
                       value: '$state.ui.builder.type',
                       onChange: (e: Event) => BrokerDOM.getStateService().set('ui.builder.type', (e.target as HTMLSelectElement).value),
                       children: [
-                        new Box({ tagName: 'option', value: 'protocol', text: 'Protocol (FSM Workflow)' }),
-                        new Box({ tagName: 'option', value: 'capability', text: 'Capability (Atomic Tool)' })
+                        new Section({ tagName: 'option', value: 'protocol', text: 'Protocol (FSM Workflow)' }),
+                        new Section({ tagName: 'option', value: 'capability', text: 'Capability (Atomic Tool)' })
                       ]
                     })
                   ]
@@ -217,14 +217,14 @@ export class ArtifactsPage extends BrokerPage {
                 })
               ]
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Description' }),
             new FormControl({
               type: 'textarea', rows: 3, placeholder: 'What does this artifact do?', value: '$state.ui.builder.description',
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.builder.description', (e.target as HTMLTextAreaElement).value)
             }),
 
-            type === 'capability' ? new Box({
+            type === 'capability' ? new Section({
               className: 'mt-3', children: [
                 new FormLabel({ text: 'Capability Input Schema (JSON)' }),
                 new FormControl({
@@ -232,7 +232,7 @@ export class ArtifactsPage extends BrokerPage {
                   onInput: (e: Event) => BrokerDOM.getStateService().set('ui.builder.schemaStr', (e.target as HTMLTextAreaElement).value)
                 })
               ]
-            }) : new Box({
+            }) : new Section({
               className: 'mt-3', children: [
                 new Row({
                   children: [
@@ -265,7 +265,7 @@ export class ArtifactsPage extends BrokerPage {
                     })
                   ]
                 }),
-                new Box({ className: 'mt-3' }),
+                new Section({ className: 'mt-3' }),
                 new FormLabel({ text: 'Shared Memory Schema (JSON)' }),
                 new FormControl({
                   type: 'textarea', rows: 6, className: 'font-monospace small', value: '$state.ui.builder.manifest.sharedMemorySchemaStr',
@@ -285,10 +285,10 @@ export class ArtifactsPage extends BrokerPage {
                   children: [
                     new FormLabel({ text: 'Version' }),
                     new FormControl({ type: 'text', value: '$state.ui.builder.version', onInput: (e: Event) => BrokerDOM.getStateService().set('ui.builder.version', (e.target as HTMLInputElement).value) }),
-                    new Box({ className: 'mt-2' }),
+                    new Section({ className: 'mt-2' }),
                     new FormLabel({ text: 'Author' }),
                     new FormControl({ type: 'text', value: '$state.ui.builder.author', onInput: (e: Event) => BrokerDOM.getStateService().set('ui.builder.author', (e.target as HTMLInputElement).value) }),
-                    new Box({ className: 'mt-2' }),
+                    new Section({ className: 'mt-2' }),
                     new FormLabel({ text: 'Tags (comma separated)' }),
                     new FormControl({ type: 'text', value: '$state.ui.builder.tags', onInput: (e: Event) => BrokerDOM.getStateService().set('ui.builder.tags', (e.target as HTMLInputElement).value) })
                   ]
@@ -305,16 +305,16 @@ export class ArtifactsPage extends BrokerPage {
   private buildNodesTab(): ComponentChild {
     const nodes = this.getBuilderState(BrokerDOM.getStateService()).manifest.nodes;
 
-    return new Box({
+    return new Section({
       children: [
-        new Box({
+        new Section({
           className: 'd-flex gap-2 mb-3', children: [
             new Button({ type: 'button', size: 'sm', variant: 'primary', text: '+ Add Persona Node', onClick: (e: Event) => { e.preventDefault(); this.addNode('persona'); } }),
             new Button({ type: 'button', size: 'sm', variant: 'warning', text: '+ Add Gate Node', onClick: (e: Event) => { e.preventDefault(); this.addNode('gate'); } }),
             new Button({ type: 'button', size: 'sm', variant: 'success', text: '+ Add Terminal Node', onClick: (e: Event) => { e.preventDefault(); this.addNode('terminal'); } })
           ]
         }),
-        new Box({ className: 'd-flex flex-column gap-3', children: nodes.map((node, i) => this.buildNodeCard(node, i)) })
+        new Section({ className: 'd-flex flex-column gap-3', children: nodes.map((node, i) => this.buildNodeCard(node, i)) })
       ]
     });
   }
@@ -339,10 +339,10 @@ export class ArtifactsPage extends BrokerPage {
       children: [
         new CardHeader({
           className: `d-flex justify-content-between align-items-center ${headerColor}`, children: [
-            new Box({
+            new Section({
               children: [
                 new Badge({ variant: 'light', className: 'text-dark me-2', text: node.type.toUpperCase() }),
-                new Box({ tag: 'span', className: 'fw-bold', text: node.nodeId })
+                new Section({ tag: 'span', className: 'fw-bold', text: node.nodeId })
               ]
             }),
             new Button({
@@ -385,7 +385,7 @@ export class ArtifactsPage extends BrokerPage {
                       new FormLabel({ text: 'Evaluator Type' }),
                       new FormSelect({
                         value: node.evaluatorType, onChange: (e: Event) => this.updateNode(index, { ...node, evaluatorType: (e.target as HTMLSelectElement).value as typeof node.evaluatorType }),
-                        children: [new Box({ tagName: 'option', value: 'static_logic', text: 'Static Logic' }), new Box({ tagName: 'option', value: 'judge_persona', text: 'Judge Persona' })]
+                        children: [new Section({ tagName: 'option', value: 'static_logic', text: 'Static Logic' }), new Section({ tagName: 'option', value: 'judge_persona', text: 'Judge Persona' })]
                       })
                     ]
                   }),
@@ -402,7 +402,7 @@ export class ArtifactsPage extends BrokerPage {
                       new FormLabel({ text: 'Resolution' }),
                       new FormSelect({
                         value: node.resolution, onChange: (e: Event) => this.updateNode(index, { ...node, resolution: (e.target as HTMLSelectElement).value as typeof node.resolution }),
-                        children: [new Box({ tagName: 'option', value: 'SUCCESS', text: 'SUCCESS' }), new Box({ tagName: 'option', value: 'FAILURE', text: 'FAILURE' })]
+                        children: [new Section({ tagName: 'option', value: 'SUCCESS', text: 'SUCCESS' }), new Section({ tagName: 'option', value: 'FAILURE', text: 'FAILURE' })]
                       })
                     ]
                   }),
@@ -425,9 +425,9 @@ export class ArtifactsPage extends BrokerPage {
   private buildEdgesTab(): ComponentChild {
     const edges = this.getBuilderState(BrokerDOM.getStateService()).manifest.edges;
 
-    return new Box({
+    return new Section({
       children: [
-        new Box({
+        new Section({
           className: 'd-flex gap-2 mb-3', children: [
             new Button({
               type: 'button', size: 'sm', variant: 'primary', text: '+ Add Edge', onClick: (e: Event) => {
@@ -439,7 +439,7 @@ export class ArtifactsPage extends BrokerPage {
             }),
           ]
         }),
-        new Box({ className: 'd-flex flex-column gap-2', children: edges.map((edge, i) => this.buildEdgeRow(edge, i)) })
+        new Section({ className: 'd-flex flex-column gap-2', children: edges.map((edge, i) => this.buildEdgeRow(edge, i)) })
       ]
     });
   }
@@ -492,7 +492,7 @@ export class ArtifactsPage extends BrokerPage {
 
   // --- Raw Tab ---
   private buildRawTab(): ComponentChild {
-    return new Box({
+    return new Section({
       children: [
         new SmallText({ text: 'Paste an entire JSON payload matching RegisterArtifactParamsSchema to override the builder.', className: 'text-muted d-block mb-2' }),
         new FormControl({
@@ -585,7 +585,7 @@ export class ArtifactsPage extends BrokerPage {
     // Dynamically inject updated UI into the stable container
     const newContent = [
       this.buildTabsNav(),
-      new Box({
+      new Section({
         className: 'p-3 bg-white border border-top-0', children: [
           this.buildTabContent()
         ]
@@ -596,7 +596,7 @@ export class ArtifactsPage extends BrokerPage {
     this.builderContainer.updateChildren(newContent);
 
     return [
-      new Box({
+      new Section({
         className: 'd-flex justify-content-between align-items-center mb-4',
         children: [
           new Heading(4, { text: 'Artifacts Registry' }),
@@ -617,13 +617,13 @@ export class ArtifactsPage extends BrokerPage {
             className: 'p-0',
             children: new DataTable<Artifact>({
               columns: [
-                { key: 'id', label: 'ID', render: (row: Artifact) => new Box({ tag: 'code', children: row.id.slice(0, 16) + '...' }) },
+                { key: 'id', label: 'ID', render: (row: Artifact) => new Section({ tag: 'code', children: row.id.slice(0, 16) + '...' }) },
                 { key: 'type', label: 'Type', render: (row: Artifact) => new Badge({ text: row.type.toUpperCase(), variant: row.type === 'protocol' ? 'primary' : 'secondary' }) },
-                { key: 'name', label: 'Name', render: (row: Artifact) => new Box({ className: 'fw-bold', children: row.name }) },
+                { key: 'name', label: 'Name', render: (row: Artifact) => new Section({ className: 'fw-bold', children: row.name }) },
                 { key: 'version', label: 'Version', render: (row: Artifact) => new SmallText({ text: `v${row.metadata?.version || '1.0'}` }) },
                 { key: 'description', label: 'Description', render: (row: Artifact) => new SmallText({ text: row.description.slice(0, 50) + (row.description.length > 50 ? '...' : ''), className: 'text-muted' }) },
                 {
-                  key: 'actions', label: 'Actions', render: (row: Artifact) => new Box({
+                  key: 'actions', label: 'Actions', render: (row: Artifact) => new Section({
                     className: 'd-flex gap-1',
                     children: [
                       new Button({ size: 'sm', variant: 'outline-primary', text: 'Edit', onClick: () => this.editArtifact(row) }),

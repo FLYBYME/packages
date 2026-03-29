@@ -178,7 +178,7 @@ export class ToolsService extends DatabaseMixin(ToolTable, SpecialistSettingsTab
     const tool = await this.createToolRecord(params);
 
     this.logger.info(`[sys.tools] Registered: ${params.name} (${params.category}, risk: ${params.riskLevel})`);
-    
+
     const eventPayload = { id: tool.id, name: params.name, category: params.category };
     if (typeof ctx.emit === 'function') {
       ctx.emit('sys.tools.registered', eventPayload);
@@ -231,11 +231,10 @@ export class ToolsService extends DatabaseMixin(ToolTable, SpecialistSettingsTab
   }
 
   private async createToolRecord(params: RegisterToolParams): Promise<Tool> {
-    const id = crypto.randomUUID();
+
     const now = Date.now();
 
-    await this.db.create({
-      id,
+    const record = await this.db.create({
       name: params.name,
       description: params.description,
       category: params.category,
@@ -248,7 +247,7 @@ export class ToolsService extends DatabaseMixin(ToolTable, SpecialistSettingsTab
       createdAt: now,
     });
 
-    const tool = await this.db.findById(id);
+    const tool = await this.db.findById(record.id);
     if (!tool) {
       throw new MeshError({ code: 'NOT_FOUND', message: `Tool '${params.name}' disappeared after creation.`, status: 500 });
     }

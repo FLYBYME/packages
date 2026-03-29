@@ -2,7 +2,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Card, CardHeader, CardBody,
-  Box, Button, SmallText, Badge,
+  Section, Button, SmallText, Badge,
   Table, TableHead, TableBody, TableRow, TableCell,
   Modal, ModalHeader, ModalBody, ModalFooter,
   FormControl,
@@ -55,7 +55,7 @@ export class MemoryExplorerPage extends BrokerPage {
         new ModalHeader({ title: 'Inject Memory' }),
         new ModalBody({
           children: [
-            new Box({
+            new Section({
               className: 'mb-3', children: [
                 new SmallText({ text: 'Content', className: 'd-block fw-bold mb-1' }),
                 new FormControl({
@@ -67,7 +67,7 @@ export class MemoryExplorerPage extends BrokerPage {
                 }),
               ]
             }),
-            new Box({
+            new Section({
               className: 'mb-3', children: [
                 new SmallText({ text: 'Tags (comma-separated)', className: 'd-block fw-bold mb-1' }),
                 new FormControl({
@@ -165,10 +165,10 @@ export class MemoryExplorerPage extends BrokerPage {
 
     return [
       // Header
-      new Box({
+      new Section({
         className: 'd-flex justify-content-between align-items-center mb-4',
         children: [
-          new Box({ tag: 'h2', className: 'text-dark mb-0', children: 'Vector Memory Explorer' }),
+          new Section({ tag: 'h2', className: 'text-dark mb-0', children: 'Vector Memory Explorer' }),
         ],
       }),
       // Search Bar
@@ -177,7 +177,7 @@ export class MemoryExplorerPage extends BrokerPage {
         children: [
           new CardBody({
             children: [
-              new Box({
+              new Section({
                 className: 'd-flex gap-2',
                 children: [
                   new FormControl({
@@ -209,7 +209,7 @@ export class MemoryExplorerPage extends BrokerPage {
         children: [
           new CardHeader({
             children: [
-              new Box({
+              new Section({
                 className: 'd-flex justify-content-between align-items-center',
                 children: [
                   new SmallText({ text: `${memories.length} memories`, className: 'fw-bold' }),
@@ -220,7 +220,7 @@ export class MemoryExplorerPage extends BrokerPage {
           new CardBody({
             className: 'p-0',
             children: memories.length === 0
-              ? [new Box({ className: 'p-4 text-center text-muted', children: 'No memories stored yet. Use "Inject Memory" to add entries.' })]
+              ? [new Section({ className: 'p-4 text-center text-muted', children: 'No memories stored yet. Use "Inject Memory" to add entries.' })]
               : [
                 new Table({
                   className: 'table table-hover table-sm mb-0',
@@ -289,14 +289,14 @@ export class MemoryExplorerPage extends BrokerPage {
                                   className: 'bg-light p-3',
                                   children: [
                                     new SmallText({ text: 'Full Content:', className: 'fw-bold d-block mb-1' }),
-                                    new Box({
+                                    new Section({
                                       tag: 'pre',
                                       className: 'bg-dark text-white p-2 rounded small',
                                       style: { maxHeight: '200px', overflow: 'auto', whiteSpace: 'pre-wrap' },
                                       children: m.content,
                                     }),
                                     new SmallText({ text: 'Metadata:', className: 'fw-bold d-block mt-2 mb-1' }),
-                                    new Box({
+                                    new Section({
                                       tag: 'pre',
                                       className: 'bg-dark text-white p-2 rounded small',
                                       style: { maxHeight: '100px', overflow: 'auto' },

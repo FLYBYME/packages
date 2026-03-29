@@ -1,7 +1,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Row, Col, Card, CardHeader, CardBody,
-  Heading, Badge, Accordion, AccordionItem, SmallText, Box,
+  Heading, Badge, Accordion, AccordionItem, SmallText, Section,
   Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
   FormLabel, FormControl, Button
 } from '@flybyme/isomorphic-ui';
@@ -33,7 +33,7 @@ export class GovernancePage extends BrokerPage {
               placeholder: 'e.g. GR-2026-001',
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newRule.id', (e.target as HTMLInputElement).value) 
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Rule Text' }),
             new FormControl({ 
               id: 'newRuleText', 
@@ -42,7 +42,7 @@ export class GovernancePage extends BrokerPage {
               placeholder: 'Agents must always prioritize state consistency...',
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newRule.text', (e.target as HTMLTextAreaElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Severity' }),
             new FormControl({ 
               id: 'newRuleSeverity', 
@@ -53,7 +53,7 @@ export class GovernancePage extends BrokerPage {
               ],
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newRule.severity', (e.target as HTMLSelectElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Domain' }),
             new FormControl({ 
               id: 'newRuleDomain', 
@@ -145,7 +145,7 @@ export class GovernancePage extends BrokerPage {
                     id: 'constitutionAccordion',
                     children: rules.map(r => new AccordionItem({
                       id: r.ruleId,
-                      header: new Box({
+                      header: new Section({
                         tagName: 'fragment',
                         children: [
                           new Badge({ variant: r.severity === 'HARD' ? 'danger' : 'warning', text: r.severity, className: 'me-2' }),
@@ -154,7 +154,7 @@ export class GovernancePage extends BrokerPage {
                         ]
                       }),
                       children: [
-                        new Box({ text: r.text, className: 'mb-2' }),
+                        new Section({ text: r.text, className: 'mb-2' }),
                         new SmallText({ text: `Proposed By: ${r.proposedBy} | Domain: ${r.domain}`, className: 'text-muted' })
                       ]
                     }))

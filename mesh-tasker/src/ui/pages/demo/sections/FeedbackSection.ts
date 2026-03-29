@@ -1,4 +1,4 @@
-import { Row, Col, Alert, AlertHeading, AlertLink, Box, SmallText, Heading, Badge, Button, Progress, ProgressBar, Spinner, Toast, ToastHeader, ToastBody, ToastContainer } from '@flybyme/isomorphic-ui';
+import { Row, Col, Alert, AlertHeading, AlertLink, Section, SmallText, Heading, Badge, Button, Progress, ProgressBar, Spinner, Toast, ToastHeader, ToastBody, ToastContainer } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class FeedbackSection extends BaseDemoSection {
@@ -30,7 +30,7 @@ export class FeedbackSection extends BaseDemoSection {
                                 children: [
                                     new AlertHeading({ text: 'Operation Successful' }),
                                     'Your changes have been deployed to the mesh network.',
-                                    new Box({ tagName: 'hr' }),
+                                    new Section({ tagName: 'hr' }),
                                     new SmallText({ children: [
                                         'Need help? ',
                                         new AlertLink({ href: '#', text: 'Read the documentation' })
@@ -43,7 +43,7 @@ export class FeedbackSection extends BaseDemoSection {
                         span: 4,
                         children: [
                             new Heading(5, { text: 'Badges', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-2 flex-wrap mb-4',
                                 children: [
                                     new Badge({ variant: 'primary', text: 'Default' }),
@@ -55,7 +55,7 @@ export class FeedbackSection extends BaseDemoSection {
                                 ]
                             }),
                             new Heading(6, { text: 'Button Badges', marginBottom: '2' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-2 flex-wrap',
                                 children: [
                                     new Button({
@@ -80,7 +80,7 @@ export class FeedbackSection extends BaseDemoSection {
             }),
 
             new Heading(5, { text: 'Toasts & Notifications', className: 'mt-4 mb-3' }),
-            new Box({
+            new Section({
                 className: 'position-relative border rounded p-5 bg-light mb-4',
                 style: { minHeight: '300px' },
                 children: [
@@ -91,8 +91,8 @@ export class FeedbackSection extends BaseDemoSection {
                                 delay: 5000,
                                 children: [
                                     new ToastHeader({ children: [
-                                        new Box({ tagName: 'strong', className: 'me-auto', text: 'System' }),
-                                        new Box({ tagName: 'small', text: '11 mins ago' })
+                                        new Section({ tagName: 'strong', className: 'me-auto', text: 'System' }),
+                                        new Section({ tagName: 'small', text: '11 mins ago' })
                                     ]}),
                                     new ToastBody({ text: 'Deployment successful. Your changes are live across the mesh.' })
                                 ]
@@ -104,7 +104,7 @@ export class FeedbackSection extends BaseDemoSection {
                             })
                         ]
                     }),
-                    new Box({ 
+                    new Section({ 
                         className: 'text-center text-muted', 
                         children: 'Toasts will stack here (Bottom-Right)' 
                     })
@@ -155,7 +155,7 @@ export class FeedbackSection extends BaseDemoSection {
                         span: 6,
                         children: [
                             new Heading(6, { text: 'Border Spinners', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-4 align-items-center mb-4',
                                 children: [
                                     new Spinner({ variant: 'primary', label: 'Processing...' }),
@@ -171,7 +171,7 @@ export class FeedbackSection extends BaseDemoSection {
                         span: 6,
                         children: [
                             new Heading(6, { text: 'Grow Spinners', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-4 align-items-center mb-4',
                                 children: [
                                     new Spinner({ spinnerType: 'grow', variant: 'primary' }),
@@ -186,7 +186,7 @@ export class FeedbackSection extends BaseDemoSection {
                 ]
             }),
             new Heading(6, { text: 'Button Spinners & Sizing', marginBottom: '3' }),
-            new Box({
+            new Section({
                 className: 'd-flex gap-4 align-items-center',
                 children: [
                     new Button({

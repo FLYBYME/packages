@@ -1,7 +1,7 @@
 import { IServiceRegistry } from '@flybyme/isomorphic-core';
 import {
     BrokerPage, ComponentChild, BrokerDOM, Row, Col,
-    Box, CardBody, CardFooter, Button, Heading,
+    Section, CardBody, CardFooter, Button, Heading,
     SmallText, Badge, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
     FormLabel, FormControl, FormSelect,
     ButtonGroup, KanbanBoard, KanbanColumn, KanbanCard
@@ -33,7 +33,7 @@ export class Dashboard extends BrokerPage {
                             type: 'text',
                             placeholder: 'Enter task title...'
                         }),
-                        new Box({ className: 'mt-3' }),
+                        new Section({ className: 'mt-3' }),
                         new FormLabel({ text: 'Description' }),
                         new FormControl({
                             id: 'newTaskDesc',
@@ -41,18 +41,18 @@ export class Dashboard extends BrokerPage {
                             tagName: 'textarea',
                             placeholder: 'Task description...'
                         }),
-                        new Box({ className: 'mt-3' }),
+                        new Section({ className: 'mt-3' }),
                         new FormLabel({ text: 'Priority' }),
                         new FormSelect({
                             id: 'newTaskPriority',
                             children: [
-                                new Box({ tagName: 'option', text: 'low', value: 'low' }),
-                                new Box({ tagName: 'option', text: 'medium', value: 'medium', selected: true }),
-                                new Box({ tagName: 'option', text: 'high', value: 'high' }),
-                                new Box({ tagName: 'option', text: 'urgent', value: 'urgent' })
+                                new Section({ tagName: 'option', text: 'low', value: 'low' }),
+                                new Section({ tagName: 'option', text: 'medium', value: 'medium', selected: true }),
+                                new Section({ tagName: 'option', text: 'high', value: 'high' }),
+                                new Section({ tagName: 'option', text: 'urgent', value: 'urgent' })
                             ]
                         }),
-                        new Box({ className: 'mt-3' }),
+                        new Section({ className: 'mt-3' }),
                         new FormLabel({ text: 'Tags (comma separated)' }),
                         new FormControl({
                             id: 'newTaskTags',
@@ -252,17 +252,17 @@ export class Dashboard extends BrokerPage {
                 children: [
                     // Header progress (span the full width above columns)
                     new Col({ span: 12, className: 'mb-2', children: [
-                        new Box({
+                        new Section({
                             className: 'mb-4',
                             children: [
-                                new Box({ className: 'd-flex justify-content-between mb-1', children: [
+                                new Section({ className: 'd-flex justify-content-between mb-1', children: [
                                     new SmallText({ text: 'Project Progress', className: 'text-muted fw-bold' }),
                                     new SmallText({ text: `${progress}%`, className: 'text-muted fw-bold' })
                                 ]}),
-                                new Box({
+                                new Section({
                                     className: 'progress',
                                     style: { height: '10px' },
-                                    children: new Box({
+                                    children: new Section({
                                         className: 'progress-bar bg-success',
                                         role: 'progressbar',
                                         style: { width: `${progress}%` },
@@ -353,7 +353,7 @@ export class Dashboard extends BrokerPage {
                             ]
                         }),
                         task.description && new SmallText({ text: task.description, className: 'text-muted mb-2 d-block' }),
-                        new Box({
+                        new Section({
                             className: 'd-flex gap-1 flex-wrap mb-2',
                             children: (task.tags || []).map((tag: string) => new Badge({ variant: 'light', text: tag, className: 'text-dark border' }))
                         }),

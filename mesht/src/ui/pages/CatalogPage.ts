@@ -2,7 +2,7 @@
 import { 
   BrokerPage, ComponentChild, BrokerDOM, Row, Col, 
   Card, CardHeader, CardBody, Heading, SmallText,
-  Button, DataTable, Badge, Box, FormControl, FormLabel, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
+  Button, DataTable, Badge, Section, FormControl, FormLabel, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
   Spinner
 } from '@flybyme/isomorphic-ui';
 import { CatalogModel } from '../../domains/sys.catalog/catalog.schema';
@@ -79,7 +79,7 @@ export class CatalogPage extends BrokerPage {
                 })
               ]
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Actual Model Name' }),
             new FormControl({
               id: 'model-name',
@@ -87,7 +87,7 @@ export class CatalogPage extends BrokerPage {
               value: '$state.catalog.form.modelName',
               onInput: (e: Event) => state.set('catalog.form.modelName', (e.target as HTMLInputElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Base URL (Optional)' }),
             new FormControl({
               id: 'model-url',
@@ -95,7 +95,7 @@ export class CatalogPage extends BrokerPage {
               value: '$state.catalog.form.baseURL',
               onInput: (e: Event) => state.set('catalog.form.baseURL', (e.target as HTMLInputElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'API Key (Optional)' }),
             new FormControl({
               id: 'model-key',
@@ -103,7 +103,7 @@ export class CatalogPage extends BrokerPage {
               value: '$state.catalog.form.apiKey',
               onInput: (e: Event) => state.set('catalog.form.apiKey', (e.target as HTMLInputElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Max Context Tokens' }),
             new FormControl({
               id: 'model-context',
@@ -254,7 +254,7 @@ export class CatalogPage extends BrokerPage {
                         label: 'Actions',
                         render: (row: CatalogModel) => {
                           const isPinging = pingingMap[row.alias];
-                          return new Box({
+                          return new Section({
                             className: 'd-flex gap-1',
                             children: [
                               new Button({

@@ -269,3 +269,20 @@ export class Form extends BrokerComponent {
     constructor(props: IBaseUIProps = {}) { super('form', props); }
     build(): ComponentChild | ComponentChild[] { return this.props.children; }
 }
+
+/**
+ * Interface for FormOption props.
+ */
+export interface IFormOptionProps extends IBaseUIProps {
+    value?: string;
+    selected?: boolean;
+    disabled?: boolean;
+}
+
+/**
+ * FormOption Component (option)
+ */
+export class FormOption extends BrokerComponent {
+    constructor(props: IFormOptionProps = {}) { super('option', props); }
+    build(): ComponentChild | ComponentChild[] { return this.props.text || this.props.children; }
+}

@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, NavbarToggler, NavbarCollapse, NavbarNav, NavItem, Button, FormControl, Box } from '@flybyme/isomorphic-ui';
+import { Navbar, NavbarBrand, NavbarToggler, NavbarCollapse, NavbarNav, NavItem, Button, FormControl, Section } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class NavbarSection extends BaseDemoSection {
@@ -23,7 +23,7 @@ export class NavbarSection extends BaseDemoSection {
                                     new NavItem({ href: '#', text: 'Service Mesh' })
                                 ]
                             }),
-                            new Box({
+                            new Section({
                                 tagName: 'form',
                                 className: 'd-flex',
                                 children: [
@@ -43,7 +43,7 @@ export class NavbarSection extends BaseDemoSection {
                 children: [
                     new NavbarBrand({ 
                         href: '#', 
-                        children: new Box({ tagName: 'span', className: 'fw-bold', text: '⚡ NodeLink' }) 
+                        children: new Section({ tagName: 'span', className: 'fw-bold', text: '⚡ NodeLink' }) 
                     }),
                     new NavbarToggler({ collapseId: 'navbarLight' }),
                     new NavbarCollapse({

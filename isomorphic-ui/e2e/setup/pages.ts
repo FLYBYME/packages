@@ -1,4 +1,4 @@
-import { BrokerPage, BrokerDOM, Box, Button, Accordion, AccordionItem } from '../../src';
+import { BrokerPage, BrokerDOM, Heading, Button, Accordion, AccordionItem, Badge } from '../../src';
 
 export class CounterPage extends BrokerPage {
     onEnter(_params: any) {}
@@ -11,10 +11,11 @@ export class CounterPage extends BrokerPage {
         }
 
         return [
-            new Box({ tagName: 'h1', text: 'Counter Sandbox', id: 'main-title' }),
-            new Box({ 
+            new Heading(1, { text: 'Counter Sandbox', id: 'main-title' }),
+            new Badge({ 
                 id: 'counter-display', 
-                text: '$state.counter' 
+                text: '$state.counter',
+                size: 'lg'
             }),
             new Button({ 
                 text: 'Increment', 

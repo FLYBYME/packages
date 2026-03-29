@@ -1,4 +1,4 @@
-import { Popover, Tooltip, Offcanvas, OffcanvasHeader, OffcanvasTitle, OffcanvasBody, Button, Row, Col, Heading, Box, Badge } from '@flybyme/isomorphic-ui';
+import { Popover, Tooltip, Offcanvas, OffcanvasHeader, OffcanvasTitle, OffcanvasBody, Button, Row, Col, Heading, Section, Badge } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class OverlaysSection extends BaseDemoSection {
@@ -55,7 +55,7 @@ export class OverlaysSection extends BaseDemoSection {
                         span: 4,
                         children: [
                             new Heading(6, { text: 'Directional', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-2',
                                 children: [
                                     new Tooltip({ tooltipTitle: 'Tooltip on top', placement: 'top', children: new Button({ variant: 'secondary', outline: true, text: 'Top' }) }),
@@ -89,7 +89,7 @@ export class OverlaysSection extends BaseDemoSection {
             }),
 
             new Heading(5, { text: 'Offcanvas Sidebars', className: 'mt-5 mb-4' }),
-            new Box({
+            new Section({
                 className: 'd-flex gap-2',
                 children: [
                     new Button({
@@ -178,7 +178,7 @@ export class OverlaysSection extends BaseDemoSection {
                         span: 4,
                         children: [
                             new Heading(6, { text: 'Variations', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-2',
                                 children: [
                                     new Badge({ variant: 'primary', text: 'New', pill: true }),

@@ -85,23 +85,15 @@ export class ProjectsService extends DatabaseMixin(ProjectsTable)(class { }) {
     const projects = await this.db.find({});
     if (projects.length === 0) {
       this.logger.info('[sys.projects] Seeding default projects...');
-      await this.broker.call('sys.projects.create', {
+      const packages = await this.broker.call('sys.projects.create', {
         id: 'packages',
         name: 'Packages Monorepo',
-        repository: 'https://github.com/FLYBYME/mesh.git',
+        repository: 'https://github.com/FLYBYME/packages.git',
         description: 'Main isomorphic mesh packages monorepo'
       });
 
-      // Default: The 'mesht' repo
-      await this.broker.call('sys.projects.create', {
-        id: 'mesht',
-        name: 'MeshT Operations Grid',
-        repository: 'https://github.com/FLYBYME/mesht.git',
-        description: 'MeshT Gateway and Operations Grid'
-      });
-
       // Select 'packages' as default active
-      await this.broker.call('sys.projects.select', { id: 'packages' });
+      await this.broker.call('sys.projects.select', { id: packages.id });
     }
   }
 
@@ -203,7 +195,7 @@ export class ProjectsService extends DatabaseMixin(ProjectsTable)(class { }) {
       activeProjectRoot: active?.rootPath,
       projectCount: count
     };
-}
+  }
 
   private async ensureProjectWorkspace(project: Project): Promise<Project> {
     if (!project.repository) {

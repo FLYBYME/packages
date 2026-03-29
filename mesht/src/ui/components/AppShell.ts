@@ -2,7 +2,7 @@
 import { 
   BrokerComponent, ComponentChild, 
   Navbar, NavbarBrand, NavbarNav, NavbarItem, NavbarLink,
-  Sidebar, Box, Main,
+  Sidebar, Section, Main,
   SmallText, IBaseUIProps
 } from '@flybyme/isomorphic-ui';
 import { GlobalToastProvider } from './GlobalToastProvider';
@@ -24,10 +24,10 @@ export class AppShell extends BrokerComponent {
             className: 'ms-auto',
             children: [
               new NavbarItem({
-                children: new Box({
+                children: new Section({
                   className: 'd-flex align-items-center gap-2 px-3 py-1 bg-black rounded-pill border border-secondary',
                   children: [
-                    new Box({ 
+                    new Section({ 
                       className: 'rounded-circle bg-success', 
                       style: { width: '8px', height: '8px' },
                       'class.bg-success': '$state.$network.connected',
@@ -45,7 +45,7 @@ export class AppShell extends BrokerComponent {
         ]
       }),
       // Main Layout (Sidebar + Content)
-      new Box({
+      new Section({
         className: 'd-flex flex-grow-1 overflow-hidden',
         children: [
           new Sidebar({
@@ -60,7 +60,7 @@ export class AppShell extends BrokerComponent {
               this.buildNavLink('/governance', 'Governance'),
               this.buildNavLink('/memory', 'Memory'),
               this.buildNavLink('/tools', 'Tools'),
-              new Box({ className: 'mt-auto p-2 border-top border-secondary', children: [
+              new Section({ className: 'mt-auto p-2 border-top border-secondary', children: [
                 new SmallText({ text: 'mesht-gateway', className: 'd-block text-muted x-small' }),
                 new SmallText({ text: 'v1.2.0-stable', className: 'd-block text-muted x-small' })
               ]})

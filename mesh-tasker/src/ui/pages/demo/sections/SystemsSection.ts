@@ -1,4 +1,4 @@
-import { Row, Col, Heading, ListGroup, ListGroupItem, Box, SmallText, Progress, ProgressBar, Spinner } from '@flybyme/isomorphic-ui';
+import { Row, Col, Heading, ListGroup, ListGroupItem, Section, SmallText, Progress, ProgressBar, Spinner } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class SystemsSection extends BaseDemoSection {
@@ -63,20 +63,20 @@ export class SystemsSection extends BaseDemoSection {
                             }),
 
                             new Heading(5, { text: 'System Progress', marginBottom: '3' }),
-                            new Box({ marginBottom: '3', children: [
+                            new Section({ marginBottom: '3', children: [
                                 new SmallText({ text: 'Syncing Data...', displayBlock: true, marginBottom: '1' }),
                                 new Progress({ 
                                     height: 10,
                                     children: syncBar
                                 })
                             ]}),
-                            new Box({ marginBottom: '3', children: [
+                            new Section({ marginBottom: '3', children: [
                                 new SmallText({ text: 'Deployment Status', displayBlock: true, marginBottom: '1' }),
                                 new Progress({ 
                                     children: new ProgressBar({ value: 100, variant: 'success', label: 'Completed' })
                                 })
                             ]}),
-                            new Box({ marginBottom: '3', children: [
+                            new Section({ marginBottom: '3', children: [
                                 new SmallText({ text: 'Multiple Bars', displayBlock: true, marginBottom: '1' }),
                                 new Progress({ 
                                     children: [
@@ -88,7 +88,7 @@ export class SystemsSection extends BaseDemoSection {
                             ]}),
 
                             new Heading(5, { text: 'Spinners', className: 'mt-4 mb-3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-4 mt-2 align-items-center',
                                 children: [
                                     new Spinner({ variant: 'primary' }),

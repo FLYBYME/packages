@@ -4,7 +4,7 @@ import { Badge, IBadgeProps } from '../elements/Badge';
 import { Spinner, ISpinnerProps } from '../elements/Feedback';
 import { ProgressBar, Progress, IProgressBarProps } from '../elements/Progress';
 import { SmallText, Heading } from '../elements/Typography';
-import { Row, Col, Box } from '../elements/Layout';
+import { Row, Col, Section } from '../elements/Layout';
 import { VirtualRouter } from '../../core/VirtualRouter';
 
 export interface INodeStatusCardProps extends IBaseUIProps {
@@ -88,9 +88,10 @@ export class NodeStatusCard extends BrokerComponent {
     }
 
     private buildMetrics(path: string): ComponentChild {
-        return new Box({
+        return new Section({
             children: [
-                new Box({
+                new Col({
+                    span: 12,
                     className: 'mb-2',
                     children: [
                         new Row({
@@ -109,7 +110,8 @@ export class NodeStatusCard extends BrokerComponent {
                         })
                     ]
                 }),
-                new Box({
+                new Col({
+                    span: 12,
                     children: [
                         new Row({
                             justifyContent: 'between',

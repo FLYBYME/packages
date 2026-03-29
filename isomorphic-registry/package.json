@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-registry",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "description": "A standalone isomorphic service and node registry",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FLYBYME/mesh.git"
+    "url": "git+https://github.com/FLYBYME/packages.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

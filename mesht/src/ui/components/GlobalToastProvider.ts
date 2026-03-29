@@ -2,7 +2,7 @@
 import {
   BrokerComponent, ComponentChild, BrokerDOM,
   ToastContainer, Toast, ToastHeader, ToastBody,
-  Box, Button, SmallText, IBaseUIProps
+  Section, Button, SmallText, IBaseUIProps
 } from '@flybyme/isomorphic-ui';
 
 /**
@@ -148,11 +148,11 @@ export class GlobalToastProvider extends BrokerComponent {
       children: [
         new ToastHeader({
           children: [
-            new Box({
+            new Section({
               className: `badge ${riskBadge} me-2`,
               children: req.riskLevel.toUpperCase(),
             }),
-            new Box({
+            new Section({
               className: 'me-auto fw-bold',
               children: `⚠ Tool Approval Required`,
             }),
@@ -160,25 +160,25 @@ export class GlobalToastProvider extends BrokerComponent {
         }),
         new ToastBody({
           children: [
-            new Box({
+            new Section({
               className: 'mb-2',
               children: [
                 new SmallText({ text: `Tool: `, className: 'text-muted' }),
-                new Box({ tag: 'code', className: 'text-dark', children: req.toolName }),
+                new Section({ tag: 'code', className: 'text-dark', children: req.toolName }),
               ],
             }),
-            req.id ? new Box({
+            req.id ? new Section({
               className: 'mb-2',
               children: [
                 new SmallText({ text: `Directive: `, className: 'text-muted' }),
-                new Box({ tag: 'code', className: 'text-dark', children: req.id.slice(0, 8) }),
+                new Section({ tag: 'code', className: 'text-dark', children: req.id.slice(0, 8) }),
               ],
             }) : null,
-            new Box({
+            new Section({
               className: 'mb-2',
               children: [
                 new SmallText({ text: 'Arguments:', className: 'd-block text-muted mb-1' }),
-                new Box({
+                new Section({
                   tag: 'pre',
                   className: 'bg-dark text-white p-2 rounded small mb-0',
                   style: { maxHeight: '120px', overflow: 'auto', fontSize: '11px' },
@@ -186,7 +186,7 @@ export class GlobalToastProvider extends BrokerComponent {
                 }),
               ],
             }),
-            new Box({
+            new Section({
               className: 'd-flex gap-2 mt-2',
               children: [
                 new Button({

@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/isomorphic-mesh",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "description": "A standalone isomorphic networking library",
   "main": "dist/index.js",
   "browser": {
@@ -52,7 +52,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FLYBYME/mesh.git"
+    "url": "git+https://github.com/FLYBYME/packages.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

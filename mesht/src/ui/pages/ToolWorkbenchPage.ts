@@ -2,7 +2,7 @@
 import { 
   BrokerPage, ComponentChild, BrokerDOM, 
   Row, Col, Card, CardHeader, CardBody, Heading,
-  Button, Box, SmallText, FormLabel, FormControl, FormCheck,
+  Button, Section, SmallText, FormLabel, FormControl, FormCheck,
   IBaseUIProps, FormSelect, DataTable, Badge
 } from '@flybyme/isomorphic-ui';
 import { Project, ProjectStatus } from '../../domains/sys.projects/projects.schema';
@@ -13,7 +13,7 @@ import { JSONObject } from '../../shared/json.schema';
 class ProjectSelect extends FormSelect {
   build(): ComponentChild[] {
     const projects = BrokerDOM.getStateService().getValue<Project[]>('projects.all') || [];
-    return projects.map(p => new Box({
+    return projects.map(p => new Section({
       tagName: 'option',
       value: p.id,
       text: p.name,
@@ -140,7 +140,7 @@ export class ToolWorkbenchPage extends BrokerPage {
     const forgedTools = state.getValue<ForgeTool[]>('workbench.forge.tools') || [];
 
     return [
-      new Box({
+      new Section({
         className: 'd-flex gap-3 mb-3 border-bottom pb-2',
         children: [
           new Button({
@@ -164,7 +164,7 @@ export class ToolWorkbenchPage extends BrokerPage {
             span: 3,
             className: 'h-100 border-end overflow-auto',
             children: [
-              new Box({
+              new Section({
                 className: 'p-3 border-bottom mb-3',
                 children: [
                   new FormLabel({ text: 'Project Context' }),
@@ -176,14 +176,14 @@ export class ToolWorkbenchPage extends BrokerPage {
                 ]
               }),
               new Heading(5, { text: 'Tool Explorer', className: 'mb-3 px-3' }),
-              new Box({
+              new Section({
                 className: 'list-group list-group-flush',
                 children: tools.map((tool) => new Button({
                   variant: 'link',
                   className: `list-group-item list-group-item-action border-0 text-start ${selectedTool?.name === tool.name ? 'active text-white' : ''}`,
                   onClick: () => this.selectTool(tool),
                   children: [
-                    new Box({ text: tool.name, className: 'fw-bold d-block' }),
+                    new Section({ text: tool.name, className: 'fw-bold d-block' }),
                     new SmallText({ text: tool.description, className: 'x-small text-truncate d-block' })
                   ]
                 }))
@@ -196,7 +196,7 @@ export class ToolWorkbenchPage extends BrokerPage {
             span: 9,
             className: 'h-100 d-flex flex-column p-4',
             children: selectedTool ? [
-              new Box({
+              new Section({
                 className: 'flex-shrink-0 mb-4',
                 children: [
                   new Heading(3, { text: selectedTool.name }),
@@ -233,11 +233,11 @@ export class ToolWorkbenchPage extends BrokerPage {
               }),
 
               // Output Terminal
-              new Box({
+              new Section({
                 className: 'flex-grow-1 d-flex flex-column',
                 children: [
                   new Heading(6, { text: 'Output Terminal', className: 'mb-2' }),
-                  new Box({
+                  new Section({
                     className: 'flex-grow-1 bg-dark text-light p-3 rounded font-monospace overflow-auto',
                     style: { fontSize: '13px', minHeight: '200px' },
                     text: output ? JSON.stringify(output, null, 2) : 'Ready for execution.'
@@ -245,7 +245,7 @@ export class ToolWorkbenchPage extends BrokerPage {
                 ]
               })
             ] : [
-              new Box({
+              new Section({
                 className: 'h-100 d-flex align-items-center justify-content-center text-muted',
                 text: 'Select a tool from the explorer to begin.'
               })
@@ -306,7 +306,7 @@ export class ToolWorkbenchPage extends BrokerPage {
                     { 
                       key: 'code', 
                       label: 'Code Review',
-                      render: (row: ForgeTool) => new Box({
+                      render: (row: ForgeTool) => new Section({
                         className: 'bg-dark text-warning p-2 rounded small font-monospace',
                         style: { whiteSpace: 'pre-wrap', maxHeight: '150px', overflow: 'auto' },
                         text: row.code
@@ -315,7 +315,7 @@ export class ToolWorkbenchPage extends BrokerPage {
                     {
                       key: 'id',
                       label: 'Actions',
-                      render: (row: ForgeTool) => new Box({
+                      render: (row: ForgeTool) => new Section({
                         className: 'd-flex gap-1',
                         children: [
                           row.status === 'pending_approval' ? new Button({

@@ -25,15 +25,14 @@ export const register = {
 
     const now = Date.now();
     await this.db.create({
-      id,
       type,
       name,
       description,
       manifest,
-      metadata: { 
-        ...metadata, 
-        createdAt: now, 
-        updatedAt: now 
+      metadata: {
+        ...metadata,
+        createdAt: now,
+        updatedAt: now
       },
     });
 

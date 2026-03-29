@@ -1,6 +1,6 @@
 {
   "name": "@flybyme/mesh-cli",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "bin": {
     "mesh": "./dist/bin/mesh.js"
   },
@@ -33,7 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FLYBYME/mesh.git"
+    "url": "git+https://github.com/FLYBYME/packages.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

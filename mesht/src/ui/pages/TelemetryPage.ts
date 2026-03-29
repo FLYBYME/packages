@@ -1,7 +1,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Card, CardBody, Heading, SmallText,
-  Box, Badge, DataTable, Button, Modal, ModalHeader, ModalTitle, ModalBody
+  Section, Badge, DataTable, Button, Modal, ModalHeader, ModalTitle, ModalBody
 } from '@flybyme/isomorphic-ui';
 import { AuditLog } from '../../domains/sys.audit/audit.schema';
 
@@ -44,7 +44,7 @@ export class TelemetryPage extends BrokerPage {
         }),
         new ModalBody({
           children: [
-            new Box({
+            new Section({
               tag: 'pre',
               className: 'bg-dark text-light p-3 rounded small overflow-auto',
               style: { maxHeight: '70vh', whiteSpace: 'pre-wrap' },
@@ -60,7 +60,7 @@ export class TelemetryPage extends BrokerPage {
     const logs = BrokerDOM.getStateService().getValue<AuditLog[]>('telemetry.logs') || [];
 
     return [
-      new Box({
+      new Section({
         className: 'd-flex justify-content-between align-items-center mb-4',
         children: [
           new Heading(4, { text: 'Swarm Telemetry & Cognition Logs' }),
@@ -84,12 +84,12 @@ export class TelemetryPage extends BrokerPage {
                 {
                   key: 'traceId',
                   label: 'Execution Span',
-                  render: (row: AuditLog) => new Box({ tag: 'code', children: row.traceId?.slice(0, 8) || 'N/A' })
+                  render: (row: AuditLog) => new Section({ tag: 'code', children: row.traceId?.slice(0, 8) || 'N/A' })
                 },
                 {
                   key: 'context',
                   label: 'Context',
-                  render: (row: AuditLog) => new Box({
+                  render: (row: AuditLog) => new Section({
                     children: [
                       new SmallText({ text: `Dir: ${row.directiveId?.slice(0, 8) || 'N/A'}`, className: 'd-block fw-bold' }),
                       new SmallText({ text: `Node: ${row.payload?.nodeId || 'N/A'}`, className: 'text-muted' })

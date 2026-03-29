@@ -1,7 +1,7 @@
 // FILE: src/ui/components/AuditTrailTable.ts
 import {
   BrokerComponent, ComponentChild,
-  DataTable, Badge, Box, SmallText, IBaseUIProps
+  DataTable, Badge, Section, SmallText, IBaseUIProps
 } from '@flybyme/isomorphic-ui';
 import { AuditLog } from '../../domains/sys.audit/audit.schema';
 
@@ -53,7 +53,7 @@ export class AuditTrailTable extends BrokerComponent {
         {
           key: 'action',
           label: 'Action',
-          render: (row: AuditTrailRow) => new Box({
+          render: (row: AuditTrailRow) => new Section({
             children: [
               new SmallText({ text: row.action.split('.')[0], className: 'fw-bold me-1' }),
               new SmallText({ text: row.action.split('.').slice(1).join('.'), className: 'text-info' })

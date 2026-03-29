@@ -2,7 +2,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Row, Col, Card, CardHeader, CardBody, CardFooter,
-  Badge, Heading, SmallText, Button, Box,
+  Badge, Heading, SmallText, Button, Section,
   Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
   FormLabel, FormControl, FormCheck, IBaseUIProps
 } from '@flybyme/isomorphic-ui';
@@ -18,7 +18,7 @@ interface ToolSelectionProps extends IBaseUIProps {
   statePath: string;
 }
 
-class ToolSelection extends Box {
+class ToolSelection extends Section {
   private statePath: string;
 
   constructor(props: ToolSelectionProps) {
@@ -109,7 +109,7 @@ export class PersonasPage extends BrokerPage {
               value: '$state.ui.configPersona.prompt',
               className: 'font-monospace small'
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new Row({
               children: [
                 new Col({
@@ -138,7 +138,7 @@ export class PersonasPage extends BrokerPage {
                 })
               ]
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Tool Belt (Select capabilities)' }),
             new ToolSelection({ statePath: 'ui.configPersona.allowedTools' }),
             new Button({
@@ -170,7 +170,7 @@ export class PersonasPage extends BrokerPage {
               placeholder: 'e.g. security_auditor',
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newPersona.alias', (e.target as HTMLInputElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Role' }),
             new FormControl({
               id: 'newPersonaRole',
@@ -183,7 +183,7 @@ export class PersonasPage extends BrokerPage {
               ],
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newPersona.role', (e.target as HTMLSelectElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'System Prompt' }),
             new FormControl({
               id: 'newPersonaPrompt',
@@ -192,14 +192,14 @@ export class PersonasPage extends BrokerPage {
               placeholder: 'Identify security vulnerabilities...',
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newPersona.prompt', (e.target as HTMLTextAreaElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'LLM Deployment' }),
             new FormControl({
               id: 'newPersonaDeployment',
               placeholder: 'e.g. qwen3:4b-instruct',
               onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newPersona.deployment', (e.target as HTMLInputElement).value)
             }),
-            new Box({ className: 'mt-3' }),
+            new Section({ className: 'mt-3' }),
             new FormLabel({ text: 'Allowed Tools' }),
             new ToolSelection({ statePath: 'ui.newPersona.allowedTools' }),
           ]
@@ -363,7 +363,7 @@ export class PersonasPage extends BrokerPage {
               new CardHeader({
                 className: 'd-flex justify-content-between align-items-center',
                 children: [
-                  new Box({
+                  new Section({
                     children: [
                       new Heading(5, { text: p.alias, className: 'mb-0' }),
                       new Badge({ variant: 'primary', text: p.role, className: 'mt-1' })
@@ -380,12 +380,12 @@ export class PersonasPage extends BrokerPage {
               new CardBody({
                 children: [
                   new SmallText({ text: 'Traits', className: 'text-muted fw-bold d-block mb-1' }),
-                  new Box({
+                  new Section({
                     className: 'd-flex gap-1 flex-wrap mb-3',
                     children: (p.traits || []).map((t: string) => new Badge({ variant: 'light', text: t, className: 'text-dark border' }))
                   }),
                   new SmallText({ text: 'Model Deployment', className: 'text-muted fw-bold d-block mb-1' }),
-                  new Box({ text: p.llmDeploymentAlias, className: 'font-monospace small' })
+                  new Section({ text: p.llmDeploymentAlias, className: 'font-monospace small' })
                 ]
               }),
               new CardFooter({

@@ -2,7 +2,7 @@
 import { 
   BrokerPage, ComponentChild, BrokerDOM, Row, Col, 
   Card, CardHeader, CardBody, Heading, SmallText,
-  Button, DataTable, Badge, Box, FormControl, FormLabel
+  Button, DataTable, Badge, Section, FormControl, FormLabel
 } from '@flybyme/isomorphic-ui';
 import { Project, ProjectDeleteResult, ProjectStatus } from '../../domains/sys.projects/projects.schema';
 
@@ -154,7 +154,7 @@ export class ProjectsPage extends BrokerPage {
                         })
                       ]
                     }),
-                    new Box({
+                    new Section({
                       className: 'mt-4 d-flex gap-2',
                       children: [
                         new Button({
@@ -212,7 +212,7 @@ export class ProjectsPage extends BrokerPage {
                       {
                         key: 'id',
                         label: 'Actions',
-                        render: (row: Project) => new Box({
+                        render: (row: Project) => new Section({
                           className: 'd-flex gap-1',
                           children: [
                             new Button({

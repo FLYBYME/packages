@@ -1,7 +1,7 @@
 import {
   BrokerPage, ComponentChild, BrokerDOM,
   Card, CardHeader, CardBody, Heading, SmallText,
-  Box, Badge, Button
+  Section, Badge, Button
 } from '@flybyme/isomorphic-ui';
 import {
   ChatMessage,
@@ -75,24 +75,24 @@ export class DirectiveTracePage extends BrokerPage {
     const loading = state.getValue<boolean>('trace.loading');
 
     if (loading) {
-      return [new Box({ className: 'p-5 text-center text-muted', children: 'Loading trace...' })];
+      return [new Section({ className: 'p-5 text-center text-muted', children: 'Loading trace...' })];
     }
 
     const sections: ComponentChild[] = [];
 
     if (progress.length > 0) {
-      sections.push(new Box({
+      sections.push(new Section({
         className: 'd-flex flex-column gap-3 mb-4',
         children: progress.map((event) => this.buildProgressRow(event)),
       }));
     }
 
     if (auditLogs.length > 0) {
-      sections.push(new Box({
+      sections.push(new Section({
         className: 'mb-4',
         children: [
           new Heading(5, { text: 'Audit Timeline', className: 'mb-3 fw-bold text-uppercase small' }),
-          new Box({
+          new Section({
             className: 'd-flex flex-column gap-3',
             children: auditLogs.map((audit) => this.buildAuditEntry(audit))
           })
@@ -100,7 +100,7 @@ export class DirectiveTracePage extends BrokerPage {
       }));
     }
 
-    sections.push(new Box({
+    sections.push(new Section({
       className: 'd-flex justify-content-between align-items-center mb-4',
       children: [
         new Heading(4, { text: `Cognition Trace: ${id}` }),
@@ -116,9 +116,9 @@ export class DirectiveTracePage extends BrokerPage {
       const hint = auditLogs.length > 0
         ? 'No finalized cognition trace recorded yet. Check the audit timeline above for live progress.'
         : `No cognition history found for directive: ${id}`;
-      sections.push(new Box({ className: 'p-5 text-center text-muted', children: hint }));
+      sections.push(new Section({ className: 'p-5 text-center text-muted', children: hint }));
     } else {
-      sections.push(new Box({
+      sections.push(new Section({
         className: 'd-flex flex-column gap-4',
         children: history.map((log, index) => this.buildTraceCard(log, index + 1))
       }));
@@ -146,7 +146,7 @@ export class DirectiveTracePage extends BrokerPage {
         new CardHeader({
           className: `bg-${isError ? 'danger text-white' : 'light'} d-flex justify-content-between align-items-center`,
           children: [
-            new Box({
+            new Section({
               children: [
                 new Badge({ text: `Cycle ${cycleNum}`, variant: isError ? 'light' : 'primary', className: 'me-2 text-dark' }),
                 new SmallText({ text: log.objective, className: 'fw-bold' })
@@ -159,11 +159,11 @@ export class DirectiveTracePage extends BrokerPage {
           className: 'p-0',
           children: [
             // 1. Raw Message Trace
-            messages.length > 0 ? new Box({
+            messages.length > 0 ? new Section({
               className: 'p-3 border-bottom',
               children: [
                 new Heading(6, { text: 'Message Trace', className: 'text-muted mb-3 uppercase small fw-bold' }),
-                new Box({
+                new Section({
                   className: 'd-flex flex-column gap-3',
                   children: messages.map(msg => this.buildMessageBubble(msg))
                 })
@@ -171,11 +171,11 @@ export class DirectiveTracePage extends BrokerPage {
             }) : null,
 
             // 2. Tool Trace
-            tools.length > 0 ? new Box({
+            tools.length > 0 ? new Section({
               className: 'p-3 border-bottom bg-light',
               children: [
                 new Heading(6, { text: 'Tool Execution Trace', className: 'text-muted mb-3 uppercase small fw-bold' }),
-                new Box({
+                new Section({
                   className: 'd-flex flex-column gap-3',
                   children: tools.map(t => this.buildToolBubble(t))
                 })
@@ -183,11 +183,11 @@ export class DirectiveTracePage extends BrokerPage {
             }) : null,
 
             // 3. Final Result / Verdict
-            new Box({
+            new Section({
               className: 'p-3',
               children: [
                 new Heading(6, { text: `Final Verdict: ${log.verdict}`, className: `mb-2 ${isError ? 'text-danger' : 'text-success'} fw-bold` }),
-                new Box({
+                new Section({
                   tag: 'pre',
                   className: 'bg-dark text-light p-3 rounded small mb-0 overflow-auto',
                   style: { maxHeight: '300px', whiteSpace: 'pre-wrap' },
@@ -218,11 +218,11 @@ export class DirectiveTracePage extends BrokerPage {
        content += '\n\n[Tool Calls]:\n' + JSON.stringify(msg.tool_calls, null, 2);
     }
 
-    return new Box({
+    return new Section({
       className: `p-3 rounded shadow-sm ${colorClass}`,
       children: [
         new SmallText({ text: title, className: 'fw-bold d-block mb-2 uppercase' }),
-        new Box({
+        new Section({
           tag: 'pre',
           className: 'mb-0 small',
           style: { whiteSpace: 'pre-wrap', wordBreak: 'break-word', margin: 0, fontFamily: 'monospace' },
@@ -234,25 +234,25 @@ export class DirectiveTracePage extends BrokerPage {
 
   private buildToolBubble(tool: ToolTraceEntry): ComponentChild {
     const isError = tool.status === 'error';
-    return new Box({
+    return new Section({
       className: `p-3 rounded border border-${isError ? 'danger' : 'info'} bg-white`,
       children: [
         new SmallText({ text: `Tool Call: ${tool.tool}`, className: `fw-bold d-block mb-2 text-${isError ? 'danger' : 'info'}` }),
-        new Box({
+        new Section({
           className: 'mb-2',
           children: [
             new SmallText({ text: 'Arguments:', className: 'd-block text-muted mb-1' }),
-            new Box({
+            new Section({
               tag: 'pre',
               className: 'bg-light p-2 rounded small mb-0',
               children: JSON.stringify(tool.args, null, 2)
             })
           ]
         }),
-        new Box({
+        new Section({
           children: [
             new SmallText({ text: 'Result:', className: 'd-block text-muted mb-1' }),
-            new Box({
+            new Section({
               tag: 'pre',
               className: `${isError ? 'bg-danger text-white' : 'bg-dark text-success'} p-2 rounded small mb-0 overflow-auto`,
               style: { maxHeight: '200px' },
@@ -266,7 +266,7 @@ export class DirectiveTracePage extends BrokerPage {
 
   private buildProgressRow(event: DispatcherCognitionProgressEvent): ComponentChild {
     const stageLabel = event.stage.replace('_', ' ');
-    return new Box({
+    return new Section({
       className: 'p-3 rounded border border-secondary bg-white shadow-sm',
       children: [
         new SmallText({ text: `${new Date(event.timestamp).toLocaleTimeString()} · ${stageLabel}`, className: 'text-muted small mb-1' }),
@@ -289,10 +289,10 @@ export class DirectiveTracePage extends BrokerPage {
       ? JSON.stringify(payload, null, 2)
       : String(payload);
 
-    return new Box({
+    return new Section({
       className: 'border rounded shadow-sm p-3 bg-white',
       children: [
-        new Box({
+        new Section({
           className: 'd-flex justify-content-between align-items-center mb-2',
           children: [
             new SmallText({ text: entry.changeType, className: 'text-uppercase small fw-bold text-dark' }),
@@ -300,7 +300,7 @@ export class DirectiveTracePage extends BrokerPage {
           ]
         }),
         new SmallText({ text: summary, className: 'text-muted mb-2 small' }),
-        new Box({
+        new Section({
           tag: 'pre',
           className: 'bg-dark text-light rounded p-2 small mb-0',
           style: { maxHeight: '220px', overflow: 'auto', whiteSpace: 'pre-wrap' },

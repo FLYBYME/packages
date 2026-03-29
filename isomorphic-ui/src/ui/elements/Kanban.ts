@@ -1,6 +1,8 @@
 import { BrokerComponent, ComponentChild, IBaseUIProps } from '../../core/BrokerComponent';
 import { LayoutComponent, IPrimitiveProps } from '../../core/LayoutComponent';
-import { Container, Row, Col, Box } from './Layout';
+import { Container, Row, Col } from './Layout';
+import { Card, CardHeader, CardBody } from './Card';
+import { Heading } from './Typography';
 
 /**
  * KanbanBoard - The parent container for a Kanban board.
@@ -49,8 +51,8 @@ export class KanbanColumn extends LayoutComponent {
         return new Col({
             span: 12, mdSpan: 6, xlSpan: true,
             className: 'd-flex flex-column',
-            children: new Box({
-                className: 'card bg-light border-0 shadow-sm h-100',
+            children: new Card({
+                className: 'bg-light border-0 shadow-sm h-100',
                 onDragOver: (e: DragEvent) => e.preventDefault(),
                 onDrop: (e: DragEvent) => {
                     e.preventDefault();
@@ -58,15 +60,16 @@ export class KanbanColumn extends LayoutComponent {
                     if (id && props.onCardDrop) props.onCardDrop(id, props.status);
                 },
                 children: [
-                    new Box({
-                        className: 'card-header bg-transparent border-0 py-3 d-flex justify-content-between align-items-center',
+                    new CardHeader({
+                        bgTransparent: true,
+                        className: 'border-0 py-3 d-flex justify-content-between align-items-center',
                         children: [
-                            new Box({ tagName: 'h6', className: 'mb-0 fw-bold', text: props.title }),
+                            new Heading(6, { className: 'mb-0 fw-bold', text: props.title }),
                             ...(Array.isArray(props.headerChildren) ? props.headerChildren : (props.headerChildren ? [props.headerChildren] : []))
                         ]
                     }),
-                    new Box({
-                        className: 'card-body p-3 d-flex flex-column gap-3',
+                    new CardBody({
+                        className: 'p-3 d-flex flex-column gap-3',
                         style: { minHeight: '150px' },
                         children: props.children
                     })

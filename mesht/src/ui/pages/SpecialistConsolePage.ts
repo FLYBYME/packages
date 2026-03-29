@@ -2,7 +2,7 @@
 import { 
   BrokerPage, ComponentChild, BrokerDOM, 
   Row, Col, Card, CardBody,
-  Button, Box, SmallText, FormLabel, FormControl, FormCheck, Badge, FormSelect,
+  Button, Section, SmallText, FormLabel, FormControl, FormCheck, Badge, FormSelect,
   IBaseUIProps
 } from '@flybyme/isomorphic-ui';
 import { Project, ProjectStatus } from '../../domains/sys.projects/projects.schema';
@@ -11,7 +11,7 @@ import { CatalogModel } from '../../domains/sys.catalog/catalog.schema';
 class ProjectSelect extends FormSelect {
   build(): ComponentChild[] {
     const projects = BrokerDOM.getStateService().getValue<Project[]>('projects.all') || [];
-    return projects.map(p => new Box({
+    return projects.map(p => new Section({
       tagName: 'option',
       value: p.id,
       text: p.name,
@@ -187,9 +187,9 @@ export class SpecialistConsolePage extends BrokerPage {
                       this.refreshModels();
                     },
                     children: [
-                      new Box({ tagName: 'option', value: 'gemini', text: 'Gemini CLI' }),
-                      new Box({ tagName: 'option', value: 'copilot', text: 'GitHub Copilot' }),
-                      new Box({ tagName: 'option', value: 'opencode', text: 'OpenCode' })
+                      new Section({ tagName: 'option', value: 'gemini', text: 'Gemini CLI' }),
+                      new Section({ tagName: 'option', value: 'copilot', text: 'GitHub Copilot' }),
+                      new Section({ tagName: 'option', value: 'opencode', text: 'OpenCode' })
                     ]
                   })
                 ]
@@ -215,7 +215,7 @@ export class SpecialistConsolePage extends BrokerPage {
                     value: selectedModel,
                     disabled: working || models.length === 0,
                     onChange: (e: Event) => BrokerDOM.getStateService().set('specialist.ui.model', (e.target as HTMLSelectElement).value),
-                    children: models.map((m: CatalogModel) => new Box({ tagName: 'option', value: m.alias, text: m.alias }))
+                    children: models.map((m: CatalogModel) => new Section({ tagName: 'option', value: m.alias, text: m.alias }))
                   })
                 ]
               }),
@@ -247,17 +247,17 @@ export class SpecialistConsolePage extends BrokerPage {
       }),
 
       // Terminal View
-      new Box({
+      new Section({
         id: 'specialist-terminal',
         className: 'flex-grow-1 bg-dark text-light p-3 rounded font-monospace overflow-auto mb-3',
         style: { fontSize: '14px', border: '1px solid #333' },
-        children: logs.length > 0 ? logs.map((log: SpecialistLog) => new Box({
+        children: logs.length > 0 ? logs.map((log: SpecialistLog) => new Section({
           className: `mb-1 ${this.getLogClass(log.type)}`,
           children: [
             new SmallText({ text: `[${log.source}] `, className: 'opacity-50' }),
-            new Box({ tagName: 'span', text: log.text, style: { whiteSpace: 'pre-wrap' } })
+            new Section({ tagName: 'span', text: log.text, style: { whiteSpace: 'pre-wrap' } })
           ]
-        })) : new Box({ className: 'text-muted italic', text: 'Waiting for specialist activity...' })
+        })) : new Section({ className: 'text-muted italic', text: 'Waiting for specialist activity...' })
       }),
 
       // Input Area

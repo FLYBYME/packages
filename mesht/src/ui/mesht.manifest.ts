@@ -44,7 +44,7 @@ export const MeshTManifest: SiteManifest = {
   build: {
     minify: false,
     sourcemap: true,
-    srcDir: '/home/ubuntu/code/mesht',
+    srcDir: '.',
     entryPoint: './src/ui/client.ts',
     ssr: false
   },

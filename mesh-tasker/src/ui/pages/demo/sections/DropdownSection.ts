@@ -1,4 +1,4 @@
-import { Row, Col, Heading, Dropdown, DropdownToggle, DropdownMenu, DropdownHeader, DropdownItem, DropdownDivider, Button, Box } from '@flybyme/isomorphic-ui';
+import { Row, Col, Heading, Dropdown, DropdownToggle, DropdownMenu, DropdownHeader, DropdownItem, DropdownDivider, Button, Section } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class DropdownSection extends BaseDemoSection {
@@ -26,7 +26,7 @@ export class DropdownSection extends BaseDemoSection {
                             }),
 
                             new Heading(5, { text: 'Auto Close Behavior', className: 'mt-4 mb-3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-2 flex-wrap',
                                 children: [
                                     new Dropdown({
@@ -98,7 +98,7 @@ export class DropdownSection extends BaseDemoSection {
                             }),
 
                             new Heading(5, { text: 'Dropend / Dropstart', className: 'mt-4 mb-3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-2 flex-wrap',
                                 children: [
                                     new Dropdown({

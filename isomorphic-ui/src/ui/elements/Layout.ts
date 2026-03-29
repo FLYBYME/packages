@@ -93,7 +93,31 @@ export class Aside extends LayoutComponent {
     build() { return this.props.children || this.props.text; }
 }
 
-export class Box extends LayoutComponent {
-    constructor(props: IPrimitiveProps = {}) { super(props.tagName || 'div', props); }
+export class Article extends LayoutComponent {
+    constructor(props: IPrimitiveProps = {}) { super('article', props); }
+    build() { return this.props.children || this.props.text; }
+}
+
+export class Footer extends LayoutComponent {
+    constructor(props: IPrimitiveProps = {}) { super('footer', props); }
+    build() { return this.props.children || this.props.text; }
+}
+
+export class NavContainer extends LayoutComponent {
+    constructor(props: IPrimitiveProps = {}) { super('nav', props); }
+    build() { return this.props.children || this.props.text; }
+}
+
+export class Span extends LayoutComponent {
+    constructor(props: IPrimitiveProps = {}) {
+        super('span', props);
+    }
+    build() { return this.props.children || this.props.text; }
+}
+
+export class Code extends LayoutComponent {
+    constructor(props: IPrimitiveProps = {}) {
+        super('code', props);
+    }
     build() { return this.props.children || this.props.text; }
 }

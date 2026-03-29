@@ -1,4 +1,4 @@
-import { Row, Col, Heading, Button, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Box } from '@flybyme/isomorphic-ui';
+import { Row, Col, Heading, Button, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Section } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class ModalSection extends BaseDemoSection {
@@ -10,7 +10,7 @@ export class ModalSection extends BaseDemoSection {
                         span: 6,
                         children: [
                             new Heading(5, { text: 'Triggering Modals', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-3 flex-wrap',
                                 children: [
                                     new Button({ 
@@ -67,7 +67,7 @@ export class ModalSection extends BaseDemoSection {
                                 scrollable: true,
                                 children: [
                                     new ModalHeader({ children: new ModalTitle({ text: 'Scrollable Modal' }) }),
-                                    new ModalBody({ children: new Box({ style: { height: '800px' }, children: 'This content is very tall to demonstrate scrolling behavior within the modal body. Keep scrolling down...' }) }),
+                                    new ModalBody({ children: new Section({ style: { height: '800px' }, children: 'This content is very tall to demonstrate scrolling behavior within the modal body. Keep scrolling down...' }) }),
                                     new ModalFooter({
                                         children: new Button({ variant: 'secondary', label: 'Close', dismiss: 'modal' })
                                     })
@@ -79,7 +79,7 @@ export class ModalSection extends BaseDemoSection {
                         span: 6,
                         children: [
                             new Heading(5, { text: 'Modal Sizing & Fullscreen', marginBottom: '3' }),
-                            new Box({
+                            new Section({
                                 className: 'd-flex gap-3 flex-wrap',
                                 children: [
                                     new Button({ 
@@ -105,10 +105,10 @@ export class ModalSection extends BaseDemoSection {
                                     new ModalBody({
                                         children: new Row({
                                             children: [
-                                                new Col({ span: 4, children: new Box({ className: 'p-4 bg-light text-center rounded', text: '👤 Avatar' }) }),
+                                                new Col({ span: 4, children: new Section({ className: 'p-4 bg-light text-center rounded', text: '👤 Avatar' }) }),
                                                 new Col({ span: 8, children: [
                                                     new Heading(4, { text: 'John Mesh' }),
-                                                    new Box({ text: 'Senior Network Architect', className: 'text-muted mb-3' }),
+                                                    new Section({ text: 'Senior Network Architect', className: 'text-muted mb-3' }),
                                                     'Managing 50+ clusters in US-West regions.'
                                                 ]})
                                             ]

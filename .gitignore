@@ -29,3 +29,5 @@ data/
 */.builds/
 */test-results/
 lint_results.json
+
+mesht/.mesh/*

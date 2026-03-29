@@ -1,4 +1,4 @@
-import { Table, TableHead, TableRow, TableCell, TableBody, Badge, Heading, Box, DataTable } from '@flybyme/isomorphic-ui';
+import { Table, TableHead, TableRow, TableCell, TableBody, Badge, Heading, Section, DataTable } from '@flybyme/isomorphic-ui';
 import { BaseDemoSection } from './BaseDemoSection';
 
 export class DataSection extends BaseDemoSection {
@@ -23,7 +23,7 @@ export class DataSection extends BaseDemoSection {
                 initialEntriesPerPage: 10
             }),
             
-            new Box({ className: 'my-5', children: new Box({ tagName: 'hr' }) }),
+            new Section({ className: 'my-5', children: new Section({ tagName: 'hr' }) }),
 
             new Heading(5, { text: 'Standard Responsive Table', marginBottom: '3' }),
             new Table({
