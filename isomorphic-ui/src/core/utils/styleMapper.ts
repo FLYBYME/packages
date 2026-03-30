@@ -81,6 +81,7 @@ export const mapTypographyProps = (props: TypographyProps): string[] => {
     if (props.textAlign) classes.push(`text-${props.textAlign}`);
     if (props.fontWeight) classes.push(`fw-${props.fontWeight}`);
     if (props.fontSize) classes.push(`fs-${props.fontSize}`);
+    if (props.fontFamily) classes.push(`font-${props.fontFamily}`);
     if (props.fontStyle) classes.push(`fst-${props.fontStyle}`);
     if (props.textDecoration) classes.push(`text-decoration-${props.textDecoration}`);
     if (props.textTransform) classes.push(`text-${props.textTransform}`);

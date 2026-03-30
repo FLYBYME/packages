@@ -50,7 +50,7 @@ export async function bootstrapMeshTasker(config: MeshTaskerConfig = {}): Promis
     };
 
     const networkModule = new NetworkModule(networkConfig);
-    const telemetryModule = new TelemetryModule({ 
+    const telemetryModule = new TelemetryModule({
         logging: {
             enabled: true,
             drains: ['console', 'mesh']
@@ -59,11 +59,7 @@ export async function bootstrapMeshTasker(config: MeshTaskerConfig = {}): Promis
         ...config.mesh?.telemetry
     });
 
-    const databaseModule = new DatabaseModule(config.dbPath ? {
-        adapterType: 'sqlite',
-        adapterConfig: { filename: config.dbPath },
-        enforceTenancy: false
-    } : {
+    const databaseModule = new DatabaseModule({
         adapterType: 'mock',
         enforceTenancy: false
     });
@@ -80,7 +76,7 @@ export async function bootstrapMeshTasker(config: MeshTaskerConfig = {}): Promis
             databaseModule
         ]
     });
-    
+
     // 3. Start the application
     await app.start();
 

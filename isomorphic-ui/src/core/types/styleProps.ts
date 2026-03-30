@@ -63,6 +63,7 @@ export interface TypographyProps {
     textAlign?: 'left' | 'center' | 'right' | 'justify';
     fontWeight?: 'light' | 'normal' | 'medium' | 'bold' | 'bolder';
     fontSize?: 1 | 2 | 3 | 4 | 5 | 6; // Mapping to fs-1, fs-2, etc.
+    fontFamily?: 'monospace' | 'sans-serif' | 'serif';
     fontStyle?: 'italic' | 'normal';
     textDecoration?: 'none' | 'underline' | 'line-through';
     textTransform?: 'lowercase' | 'uppercase' | 'capitalize';

@@ -71,13 +71,14 @@ describe('BrokerComponent', () => {
 
     it('should apply classes and styles from props', () => {
         const comp = new TestComponent('div', {
-            className: 'test-class',
-            style: { color: 'red', marginTop: '10px' }
+            mb: 3,
+            color: 'danger',
+            style: { marginTop: '10px' }
         });
         comp.mount(container);
         
-        expect(comp.element?.className).toContain('test-class');
-        expect(comp.element?.style.color).toBe('red');
+        expect(comp.element?.className).toContain('mb-3');
+        expect(comp.element?.className).toContain('mesh-text-danger');
         expect(comp.element?.style.marginTop).toBe('10px');
     });
 
@@ -129,16 +130,16 @@ describe('BrokerComponent', () => {
     });
 
     it('should update DOM when props change', async () => {
-        const comp = new TestComponent('div', { className: 'old' });
+        const comp = new TestComponent('div', { mb: 1 });
         comp.mount(container);
         
-        expect(comp.element?.className).toBe('old');
-        comp.props.className = 'new';
+        expect(comp.element?.className).toContain('mb-1');
+        comp.setProps({ mb: 5 });
         comp.update();
         
         // Wait for async update
         await new Promise(resolve => queueMicrotask(() => resolve(null)));
-        expect(comp.element?.className).toBe('new');
+        expect(comp.element?.className).toContain('mb-5');
     });
 
     it('should react to state changes in expressions', async () => {

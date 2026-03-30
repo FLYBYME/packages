@@ -18,7 +18,7 @@ export class DirectiveTracePage extends BrokerPage {
   public getPageConfig() { return { title: 'Directive Trace' }; }
 
   constructor() {
-    super('div', { className: 'container-fluid py-4' });
+    super('div', { fluid: true, py: 4 });
   }
 
   public async onEnter(): Promise<void> {
@@ -75,25 +75,30 @@ export class DirectiveTracePage extends BrokerPage {
     const loading = state.getValue<boolean>('trace.loading');
 
     if (loading) {
-      return [new Section({ className: 'p-5 text-center text-muted', children: 'Loading trace...' })];
+      return [new Section({ padding: 5, textAlign: 'center', color: 'muted', children: 'Loading trace...' })];
     }
 
     const sections: ComponentChild[] = [];
 
     if (progress.length > 0) {
       sections.push(new Section({
-        className: 'd-flex flex-column gap-3 mb-4',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
+        mb: 4,
         children: progress.map((event) => this.buildProgressRow(event)),
       }));
     }
 
     if (auditLogs.length > 0) {
       sections.push(new Section({
-        className: 'mb-4',
+        mb: 4,
         children: [
-          new Heading(5, { text: 'Audit Timeline', className: 'mb-3 fw-bold text-uppercase small' }),
+          new Heading(5, { text: 'Audit Timeline', mb: 3, fontWeight: 'bold', textTransform: 'uppercase', fontSize: 6 }),
           new Section({
-            className: 'd-flex flex-column gap-3',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 3,
             children: auditLogs.map((audit) => this.buildAuditEntry(audit))
           })
         ]
@@ -101,7 +106,10 @@ export class DirectiveTracePage extends BrokerPage {
     }
 
     sections.push(new Section({
-      className: 'd-flex justify-content-between align-items-center mb-4',
+      display: 'flex',
+      justifyContent: 'between',
+      alignItems: 'center',
+      mb: 4,
       children: [
         new Heading(4, { text: `Cognition Trace: ${id}` }),
         new Button({
@@ -116,10 +124,12 @@ export class DirectiveTracePage extends BrokerPage {
       const hint = auditLogs.length > 0
         ? 'No finalized cognition trace recorded yet. Check the audit timeline above for live progress.'
         : `No cognition history found for directive: ${id}`;
-      sections.push(new Section({ className: 'p-5 text-center text-muted', children: hint }));
+      sections.push(new Section({ padding: 5, textAlign: 'center', color: 'muted', children: hint }));
     } else {
       sections.push(new Section({
-        className: 'd-flex flex-column gap-4',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
         children: history.map((log, index) => this.buildTraceCard(log, index + 1))
       }));
     }
@@ -141,30 +151,37 @@ export class DirectiveTracePage extends BrokerPage {
     }
 
     return new Card({
-      className: `border-${isError ? 'danger' : 'secondary'}`,
+      borderColor: isError ? 'danger' : 'secondary',
       children: [
         new CardHeader({
-          className: `bg-${isError ? 'danger text-white' : 'light'} d-flex justify-content-between align-items-center`,
+          background: isError ? 'danger' : 'light',
+          color: isError ? 'white' : undefined,
+          display: 'flex',
+          justifyContent: 'between',
+          alignItems: 'center',
           children: [
             new Section({
               children: [
-                new Badge({ text: `Cycle ${cycleNum}`, variant: isError ? 'light' : 'primary', className: 'me-2 text-dark' }),
-                new SmallText({ text: log.objective, className: 'fw-bold' })
+                new Badge({ text: `Cycle ${cycleNum}`, variant: isError ? 'light' : 'primary', mr: 2, color: 'dark' }),
+                new SmallText({ text: log.objective, fontWeight: 'bold' })
               ]
             }),
-            new SmallText({ text: `${new Date(log.createdAt).toLocaleTimeString()} (${log.latencyMs}ms)`, className: isError ? 'text-white-50' : 'text-muted' })
+            new SmallText({ text: `${new Date(log.createdAt).toLocaleTimeString()} (${log.latencyMs}ms)`, color: isError ? 'white-50' : 'muted' })
           ]
         }),
         new CardBody({
-          className: 'p-0',
+          padding: 0,
           children: [
             // 1. Raw Message Trace
             messages.length > 0 ? new Section({
-              className: 'p-3 border-bottom',
+              padding: 3,
+              borderBottom: true,
               children: [
-                new Heading(6, { text: 'Message Trace', className: 'text-muted mb-3 uppercase small fw-bold' }),
+                new Heading(6, { text: 'Message Trace', color: 'muted', mb: 3, textTransform: 'uppercase', fontSize: 6, fontWeight: 'bold' }),
                 new Section({
-                  className: 'd-flex flex-column gap-3',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 3,
                   children: messages.map(msg => this.buildMessageBubble(msg))
                 })
               ]
@@ -172,11 +189,15 @@ export class DirectiveTracePage extends BrokerPage {
 
             // 2. Tool Trace
             tools.length > 0 ? new Section({
-              className: 'p-3 border-bottom bg-light',
+              padding: 3,
+              borderBottom: true,
+              background: 'light',
               children: [
-                new Heading(6, { text: 'Tool Execution Trace', className: 'text-muted mb-3 uppercase small fw-bold' }),
+                new Heading(6, { text: 'Tool Execution Trace', color: 'muted', mb: 3, textTransform: 'uppercase', fontSize: 6, fontWeight: 'bold' }),
                 new Section({
-                  className: 'd-flex flex-column gap-3',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 3,
                   children: tools.map(t => this.buildToolBubble(t))
                 })
               ]
@@ -184,12 +205,18 @@ export class DirectiveTracePage extends BrokerPage {
 
             // 3. Final Result / Verdict
             new Section({
-              className: 'p-3',
+              padding: 3,
               children: [
-                new Heading(6, { text: `Final Verdict: ${log.verdict}`, className: `mb-2 ${isError ? 'text-danger' : 'text-success'} fw-bold` }),
+                new Heading(6, { text: `Final Verdict: ${log.verdict}`, mb: 2, color: isError ? 'danger' : 'success', fontWeight: 'bold' }),
                 new Section({
-                  tag: 'pre',
-                  className: 'bg-dark text-light p-3 rounded small mb-0 overflow-auto',
+                  tagName: 'pre',
+                  background: 'dark',
+                  color: 'light',
+                  padding: 3,
+                  rounded: true,
+                  fontSize: 6,
+                  mb: 0,
+                  overflow: 'auto',
                   style: { maxHeight: '300px', whiteSpace: 'pre-wrap' },
                   children: log.response || log.errorMessage || 'No response recorded.'
                 })
@@ -204,14 +231,14 @@ export class DirectiveTracePage extends BrokerPage {
   private buildMessageBubble(msg: ChatMessage): ComponentChild {
     const isAssistant = msg.role === 'assistant';
     const isSystem = msg.role === 'system';
-    const isTool = msg.role === 'tool';
     
-    let colorClass = 'bg-secondary text-white'; // user
+    let background = 'secondary'; // user
+    let color = 'white';
     let title = 'User';
     
-    if (isAssistant) { colorClass = 'bg-primary text-white'; title = 'Assistant'; }
-    if (isSystem) { colorClass = 'bg-dark text-white'; title = 'System Prompt'; }
-    if (isTool) { colorClass = 'bg-info text-dark'; title = `Tool Result: ${msg.name}`; }
+    if (isAssistant) { background = 'primary'; color = 'white'; title = 'Assistant'; }
+    if (isSystem) { background = 'dark'; color = 'white'; title = 'System Prompt'; }
+    if (msg.role === 'tool') { background = 'info'; color = 'dark'; title = `Tool Result: ${msg.name}`; }
 
     let content = msg.content;
     if (isAssistant && msg.tool_calls) {
@@ -219,13 +246,19 @@ export class DirectiveTracePage extends BrokerPage {
     }
 
     return new Section({
-      className: `p-3 rounded shadow-sm ${colorClass}`,
+      padding: 3,
+      rounded: true,
+      shadow: 'sm',
+      background,
+      color,
       children: [
-        new SmallText({ text: title, className: 'fw-bold d-block mb-2 uppercase' }),
+        new SmallText({ text: title, fontWeight: 'bold', display: 'block', mb: 2, textTransform: 'uppercase' }),
         new Section({
-          tag: 'pre',
-          className: 'mb-0 small',
-          style: { whiteSpace: 'pre-wrap', wordBreak: 'break-word', margin: 0, fontFamily: 'monospace' },
+          tagName: 'pre',
+          mb: 0,
+          fontSize: 6,
+          fontFamily: 'monospace',
+          style: { whiteSpace: 'pre-wrap', wordBreak: 'break-word', margin: 0 },
           children: content
         })
       ]
@@ -235,26 +268,40 @@ export class DirectiveTracePage extends BrokerPage {
   private buildToolBubble(tool: ToolTraceEntry): ComponentChild {
     const isError = tool.status === 'error';
     return new Section({
-      className: `p-3 rounded border border-${isError ? 'danger' : 'info'} bg-white`,
+      padding: 3,
+      rounded: true,
+      border: true,
+      borderColor: isError ? 'danger' : 'info',
+      background: 'white',
       children: [
-        new SmallText({ text: `Tool Call: ${tool.tool}`, className: `fw-bold d-block mb-2 text-${isError ? 'danger' : 'info'}` }),
+        new SmallText({ text: `Tool Call: ${tool.tool}`, fontWeight: 'bold', display: 'block', mb: 2, color: isError ? 'danger' : 'info' }),
         new Section({
-          className: 'mb-2',
+          mb: 2,
           children: [
-            new SmallText({ text: 'Arguments:', className: 'd-block text-muted mb-1' }),
+            new SmallText({ text: 'Arguments:', display: 'block', color: 'muted', mb: 1 }),
             new Section({
-              tag: 'pre',
-              className: 'bg-light p-2 rounded small mb-0',
+              tagName: 'pre',
+              background: 'light',
+              padding: 2,
+              rounded: true,
+              fontSize: 6,
+              mb: 0,
               children: JSON.stringify(tool.args, null, 2)
             })
           ]
         }),
         new Section({
           children: [
-            new SmallText({ text: 'Result:', className: 'd-block text-muted mb-1' }),
+            new SmallText({ text: 'Result:', display: 'block', color: 'muted', mb: 1 }),
             new Section({
-              tag: 'pre',
-              className: `${isError ? 'bg-danger text-white' : 'bg-dark text-success'} p-2 rounded small mb-0 overflow-auto`,
+              tagName: 'pre',
+              background: isError ? 'danger' : 'dark',
+              color: isError ? 'white' : 'success',
+              padding: 2,
+              rounded: true,
+              fontSize: 6,
+              mb: 0,
+              overflow: 'auto',
               style: { maxHeight: '200px' },
               children: isError ? tool.error : JSON.stringify(tool.result, null, 2)
             })
@@ -267,13 +314,20 @@ export class DirectiveTracePage extends BrokerPage {
   private buildProgressRow(event: DispatcherCognitionProgressEvent): ComponentChild {
     const stageLabel = event.stage.replace('_', ' ');
     return new Section({
-      className: 'p-3 rounded border border-secondary bg-white shadow-sm',
+      padding: 3,
+      rounded: true,
+      border: true,
+      borderColor: 'secondary',
+      background: 'white',
+      shadow: 'sm',
       children: [
-        new SmallText({ text: `${new Date(event.timestamp).toLocaleTimeString()} · ${stageLabel}`, className: 'text-muted small mb-1' }),
-        new SmallText({ text: event.detail, className: 'fw-bold d-block mb-1' }),
+        new SmallText({ text: `${new Date(event.timestamp).toLocaleTimeString()} · ${stageLabel}`, color: 'muted', fontSize: 6, mb: 1 }),
+        new SmallText({ text: event.detail, fontWeight: 'bold', display: 'block', mb: 1 }),
         new SmallText({
           text: event.toolCallsMade ? `Tools run: ${event.toolCallsMade}` : 'Tools pending',
-          className: 'text-muted small mb-0'
+          color: 'muted',
+          fontSize: 6,
+          mb: 0
         })
       ]
     });
@@ -284,25 +338,37 @@ export class DirectiveTracePage extends BrokerPage {
     const payload = entry.payload ?? {};
     const stage = typeof payload === 'object' && payload !== null ? (payload as Record<string, unknown>).stage : undefined;
     const detail = typeof payload === 'object' && payload !== null ? (payload as Record<string, unknown>).detail : undefined;
-    const summary = detail || stage || 'Audit event recorded.';
+    const summary = (detail || stage || 'Audit event recorded.') as string;
     const payloadPreview = typeof payload === 'object' && payload !== null
       ? JSON.stringify(payload, null, 2)
       : String(payload);
 
     return new Section({
-      className: 'border rounded shadow-sm p-3 bg-white',
+      border: true,
+      rounded: true,
+      shadow: 'sm',
+      padding: 3,
+      background: 'white',
       children: [
         new Section({
-          className: 'd-flex justify-content-between align-items-center mb-2',
+          display: 'flex',
+          justifyContent: 'between',
+          alignItems: 'center',
+          mb: 2,
           children: [
-            new SmallText({ text: entry.changeType, className: 'text-uppercase small fw-bold text-dark' }),
-            new SmallText({ text: when, className: 'text-muted small' })
+            new SmallText({ text: entry.changeType, textTransform: 'uppercase', fontSize: 6, fontWeight: 'bold', color: 'dark' }),
+            new SmallText({ text: when, color: 'muted', fontSize: 6 })
           ]
         }),
-        new SmallText({ text: summary, className: 'text-muted mb-2 small' }),
+        new SmallText({ text: summary, color: 'muted', mb: 2, fontSize: 6 }),
         new Section({
-          tag: 'pre',
-          className: 'bg-dark text-light rounded p-2 small mb-0',
+          tagName: 'pre',
+          background: 'dark',
+          color: 'light',
+          rounded: true,
+          padding: 2,
+          fontSize: 6,
+          mb: 0,
           style: { maxHeight: '220px', overflow: 'auto', whiteSpace: 'pre-wrap' },
           children: payloadPreview
         })

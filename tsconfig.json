@@ -57,6 +57,9 @@
         },
         {
             "path": "mesh-tasker"
+        },
+        {
+            "path": "mesht"
         }
     ]
 }

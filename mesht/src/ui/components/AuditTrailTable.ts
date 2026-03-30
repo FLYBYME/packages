@@ -41,7 +41,7 @@ export class AuditTrailTable extends BrokerComponent {
           label: 'Timestamp',
           fontSize: 6,
           color: 'muted',
-          className: 'font-monospace'
+          fontFamily: 'monospace'
         },
         {
           key: 'domain',

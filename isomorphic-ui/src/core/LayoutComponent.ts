@@ -17,7 +17,7 @@ export interface IPrimitiveProps extends IBaseUIProps {
 
     // Borders & Shadow
     borderRadius?: string | number;
-    border?: string;
+    border?: string | boolean;
     borderTop?: string | boolean;
     borderBottom?: string | boolean;
     borderLeft?: string | boolean;
@@ -71,6 +71,7 @@ export abstract class LayoutComponent extends BrokerComponent {
         if (props.overflowY) classes.push(`overflow-y-${props.overflowY}`);
 
         // 5. Borders
+        if (props.border === true) classes.push('border border-secondary');
         if (props.borderTop) classes.push('border-top border-secondary');
         if (props.borderBottom) classes.push('border-bottom border-secondary');
         if (props.borderLeft) classes.push('border-start border-secondary');
@@ -102,7 +103,7 @@ export abstract class LayoutComponent extends BrokerComponent {
         if (props.maxWidth) styles.maxWidth = typeof props.maxWidth === 'number' ? `${props.maxWidth}px` : props.maxWidth;
         if (props.maxHeight) styles.maxHeight = typeof props.maxHeight === 'number' ? `${props.maxHeight}px` : props.maxHeight;
 
-        if (props.border) styles.border = props.border;
+        if (typeof props.border === 'string') styles.border = props.border;
         if (typeof props.borderBottom === 'string') styles.borderBottom = props.borderBottom;
         if (typeof props.borderRight === 'string') styles.borderRight = props.borderRight;
 
