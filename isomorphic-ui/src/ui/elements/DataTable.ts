@@ -102,11 +102,11 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
             // Explicitly set the value property to ensure it reflects what the user typed
             el.value = this.searchQuery;
             el.focus();
-            
+
             // Move cursor to the end of the text
             const len = this.searchQuery.length;
             el.setSelectionRange(len, len);
-            
+
             this.shouldRestoreFocus = false;
         }
     }
@@ -117,7 +117,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
         if (this.searchQuery) {
             const query = this.searchQuery.toLowerCase();
             processed = processed.filter(item => {
-                return Object.values(item as Record<string, unknown>).some(val => 
+                return Object.values(item as Record<string, unknown>).some(val =>
                     String(val).toLowerCase().includes(query)
                 );
             });
@@ -127,7 +127,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
             processed.sort((a, b) => {
                 const valA = (a as Record<string, unknown>)[this.sortColumn!] as string | number;
                 const valB = (b as Record<string, unknown>)[this.sortColumn!] as string | number;
-                
+
                 if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
                 if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
                 return 0;
@@ -141,7 +141,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
         const processedData = this.getProcessedData();
         const totalEntries = processedData.length;
         const totalPages = Math.ceil(totalEntries / this.entriesPerPage) || 1;
-        
+
         if (this.currentPage > totalPages && totalPages > 0) {
             this.currentPage = totalPages;
         }
@@ -160,9 +160,9 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
             ]
         }, this.handleEntriesChange);
 
-        this.searchInput = new SearchInput({ 
-            size: 'sm', 
-            type: 'text', 
+        this.searchInput = new SearchInput({
+            size: 'sm',
+            type: 'text',
             value: this.searchQuery,
             placeholder: 'Filter...'
         }, this.handleSearch);
@@ -175,8 +175,8 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
                     className: 'd-flex align-items-center gap-2',
                     children: [
                         new Text({ text: 'Show' }),
-                        new Container({ 
-                            style: { width: '80px' }, 
+                        new Container({
+                            style: { width: '80px' },
                             children: this.entriesSelect
                         }),
                         new Text({ text: 'entries' })
@@ -205,7 +205,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
                     sortIndicator = ' ↕';
                 }
             }
-            
+
             return new TableCell({
                 isHeader: true,
                 style: col.sortable ? { cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap' } : { whiteSpace: 'nowrap' },
@@ -258,11 +258,11 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
         });
 
         const paginationItems = [];
-        
+
         paginationItems.push(new PageItem({
             disabled: this.currentPage === 1,
-            children: new PageLink({ 
-                text: 'Previous', 
+            children: new PageLink({
+                text: 'Previous',
                 onClick: (e: Event) => { e.preventDefault(); if (this.currentPage > 1) this.setPage(this.currentPage - 1); }
             })
         }));
@@ -278,7 +278,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
         for (let i = startPage; i <= endPage; i++) {
             paginationItems.push(new PageItem({
                 active: this.currentPage === i,
-                children: new PageLink({ 
+                children: new PageLink({
                     text: String(i),
                     onClick: (e: Event) => { e.preventDefault(); this.setPage(i); }
                 })
@@ -287,7 +287,7 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
 
         paginationItems.push(new PageItem({
             disabled: this.currentPage === totalPages || totalPages === 0,
-            children: new PageLink({ 
+            children: new PageLink({
                 text: 'Next',
                 onClick: (e: Event) => { e.preventDefault(); if (this.currentPage < totalPages) this.setPage(this.currentPage + 1); }
             })
@@ -298,8 +298,8 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
             children: [
                 new Col({
                     span: 6,
-                    children: new Text({ 
-                        text: `Showing ${totalEntries > 0 ? startIndex + 1 : 0} to ${endIndex} of ${totalEntries} entries` 
+                    children: new Text({
+                        text: `Showing ${totalEntries > 0 ? startIndex + 1 : 0} to ${endIndex} of ${totalEntries} entries`
                     })
                 }),
                 new Col({
@@ -316,7 +316,10 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
 
         return [
             topControls,
-            new Container({ className: 'table-responsive border rounded', children: dataTable }),
+            new Container({
+                className: 'table-responsive rounded',
+                children: dataTable
+            }),
             bottomControls
         ];
     }
