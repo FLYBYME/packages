@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const JSONValueSchema: z.ZodType<any> = z.lazy(() =>
+export const JSONValueSchema: z.ZodType = z.lazy(() =>
   z.union([
     z.string(),
     z.number(),

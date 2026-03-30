@@ -41,8 +41,11 @@ export class GlobalToastProvider extends BrokerComponent {
   constructor(props: IBaseUIProps = {}) {
     super('div', {
       id: 'hitl-toast-provider',
-      className: 'position-fixed bottom-0 end-0 p-3',
-      style: { zIndex: '1090' },
+      position: 'fixed',
+      bottom: 0,
+      right: 0,
+      padding: 3,
+      zIndex: 1090,
       ...props,
     });
   }
@@ -129,31 +132,38 @@ export class GlobalToastProvider extends BrokerComponent {
 
     return [
       new ToastContainer({
-        className: 'position-fixed bottom-0 end-0 p-3',
-        style: { zIndex: '1090' },
+        position: 'fixed',
+        bottom: 0,
+        right: 0,
+        padding: 3,
+        zIndex: 1090,
         children: pending.map(req => this.buildApprovalToast(req)),
       }),
     ];
   }
 
   private buildApprovalToast(req: ApprovalRequest): ComponentChild {
-    const riskBadge = req.riskLevel === 'dangerous' ? 'bg-danger' : req.riskLevel === 'moderate' ? 'bg-warning' : 'bg-info';
+    const riskColor = req.riskLevel === 'dangerous' ? 'danger' : (req.riskLevel === 'moderate' ? 'warning' : 'info');
     const argsPreview = JSON.stringify(req.arguments, null, 2).slice(0, 200);
 
     return new Toast({
       autohide: false,
       variant: req.riskLevel === 'dangerous' ? 'danger' : 'warning',
-      className: 'show mb-2',
+      mb: 2,
       style: { minWidth: '360px' },
       children: [
         new ToastHeader({
           children: [
             new Section({
-              className: `badge ${riskBadge} me-2`,
+              background: riskColor,
+              mr: 2,
+              rounded: true,
+              px: 2,
               children: req.riskLevel.toUpperCase(),
             }),
             new Section({
-              className: 'me-auto fw-bold',
+              mr: 'auto',
+              fontWeight: 'bold',
               children: `⚠ Tool Approval Required`,
             }),
           ],
@@ -161,42 +171,53 @@ export class GlobalToastProvider extends BrokerComponent {
         new ToastBody({
           children: [
             new Section({
-              className: 'mb-2',
+              mb: 2,
               children: [
-                new SmallText({ text: `Tool: `, className: 'text-muted' }),
-                new Section({ tag: 'code', className: 'text-dark', children: req.toolName }),
+                new SmallText({ text: `Tool: `, color: 'muted' }),
+                new Section({ tagName: 'code', color: 'dark', children: req.toolName }),
               ],
             }),
             req.id ? new Section({
-              className: 'mb-2',
+              mb: 2,
               children: [
-                new SmallText({ text: `Directive: `, className: 'text-muted' }),
-                new Section({ tag: 'code', className: 'text-dark', children: req.id.slice(0, 8) }),
+                new SmallText({ text: `Directive: `, color: 'muted' }),
+                new Section({ tagName: 'code', color: 'dark', children: req.id.slice(0, 8) }),
               ],
             }) : null,
             new Section({
-              className: 'mb-2',
+              mb: 2,
               children: [
-                new SmallText({ text: 'Arguments:', className: 'd-block text-muted mb-1' }),
+                new SmallText({ text: 'Arguments:', display: 'block', color: 'muted', mb: 1 }),
                 new Section({
-                  tag: 'pre',
-                  className: 'bg-dark text-white p-2 rounded small mb-0',
+                  tagName: 'pre',
+                  background: 'dark',
+                  color: 'white',
+                  padding: 2,
+                  rounded: true,
+                  fontSize: 6,
+                  mb: 0,
                   style: { maxHeight: '120px', overflow: 'auto', fontSize: '11px' },
                   children: argsPreview,
                 }),
               ],
             }),
             new Section({
-              className: 'd-flex gap-2 mt-2',
+              display: 'flex',
+              gap: 2,
+              mt: 2,
               children: [
                 new Button({
                   text: '✓ Approve',
-                  className: 'btn btn-success btn-sm flex-grow-1',
+                  variant: 'success',
+                  size: 'sm',
+                  flexGrow: 1,
                   onClick: () => this.resolveApproval(req, true),
                 }),
                 new Button({
                   text: '✕ Reject',
-                  className: 'btn btn-danger btn-sm flex-grow-1',
+                  variant: 'danger',
+                  size: 'sm',
+                  flexGrow: 1,
                   onClick: () => this.resolveApproval(req, false),
                 }),
               ],

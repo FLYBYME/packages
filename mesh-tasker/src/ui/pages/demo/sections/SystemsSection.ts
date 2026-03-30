@@ -16,7 +16,7 @@ export class SystemsSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Default List Group', marginBottom: '3' }),
                             new ListGroup({
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new ListGroupItem({ active: true, text: 'Active Mesh Node' }),
                                     new ListGroupItem({ text: 'Secondary Gateway' }),
@@ -28,7 +28,7 @@ export class SystemsSection extends BaseDemoSection {
                             new Heading(5, { text: 'Flush List Group', marginBottom: '3' }),
                             new ListGroup({
                                 flush: true,
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new ListGroupItem({ text: 'An item' }),
                                     new ListGroupItem({ text: 'A second item' }),
@@ -39,7 +39,7 @@ export class SystemsSection extends BaseDemoSection {
                             new Heading(5, { text: 'Numbered List Group', marginBottom: '3' }),
                             new ListGroup({
                                 numbered: true,
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new ListGroupItem({ text: 'Initialize Cluster' }),
                                     new ListGroupItem({ text: 'Verify Nodes' }),
@@ -54,7 +54,7 @@ export class SystemsSection extends BaseDemoSection {
                             new Heading(5, { text: 'Horizontal List Group', marginBottom: '3' }),
                             new ListGroup({
                                 horizontal: true,
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new ListGroupItem({ text: '1' }),
                                     new ListGroupItem({ text: '2' }),
@@ -87,9 +87,9 @@ export class SystemsSection extends BaseDemoSection {
                                 })
                             ]}),
 
-                            new Heading(5, { text: 'Spinners', className: 'mt-4 mb-3' }),
+                            new Heading(5, { text: 'Spinners', mt: 4, mb: 3 }),
                             new Section({
-                                className: 'd-flex gap-4 mt-2 align-items-center',
+                                display: 'flex', gap: 4, mt: 2, alignItems: 'center',
                                 children: [
                                     new Spinner({ variant: 'primary' }),
                                     new Spinner({ type: 'grow', variant: 'success' }),

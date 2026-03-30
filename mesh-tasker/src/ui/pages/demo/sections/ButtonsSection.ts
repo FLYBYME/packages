@@ -6,7 +6,7 @@ export class ButtonsSection extends BaseDemoSection {
         super('Buttons & Actions', [
             new Heading(5, { text: 'Base Variations', marginBottom: '3' }),
             new Section({
-                className: 'd-flex gap-3 flex-wrap align-items-center mb-4',
+                display: 'flex', gap: 3, alignItems: 'center', mb: 4, className: 'flex-wrap',
                 children: [
                     new Button({ variant: 'primary', label: 'Primary Action' }),
                     new Button({ variant: 'secondary', outline: true, label: 'Secondary Outline' }),
@@ -17,9 +17,9 @@ export class ButtonsSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Button Sizes', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Button Sizes', mt: 4, mb: 3 }),
             new Section({
-                className: 'd-flex gap-3 align-items-center mb-4',
+                display: 'flex', gap: 3, alignItems: 'center', mb: 4,
                 children: [
                     new Button({ variant: 'primary', size: 'lg', label: 'Large Button' }),
                     new Button({ variant: 'primary', label: 'Default Button' }),
@@ -27,9 +27,9 @@ export class ButtonsSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Outline Variations', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Outline Variations', mt: 4, mb: 3 }),
             new Section({
-                className: 'd-flex gap-3 flex-wrap align-items-center mb-4',
+                display: 'flex', gap: 3, alignItems: 'center', mb: 4, className: 'flex-wrap',
                 children: [
                     new Button({ variant: 'primary', outline: true, label: 'Primary' }),
                     new Button({ variant: 'secondary', outline: true, label: 'Secondary' }),
@@ -40,21 +40,21 @@ export class ButtonsSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Block Buttons', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Block Buttons', mt: 4, mb: 3 }),
             new Row({
                 children: [
                     new Col({
                         span: 6,
-                        children: new Button({ variant: 'primary', className: 'w-100 mb-2', label: 'Block Button 1' })
+                        children: new Button({ variant: 'primary', fullWidth: true, mb: 2, label: 'Block Button 1' })
                     }),
                     new Col({
                         span: 6,
-                        children: new Button({ variant: 'secondary', className: 'w-100 mb-2', label: 'Block Button 2' })
+                        children: new Button({ variant: 'secondary', fullWidth: true, mb: 2, label: 'Block Button 2' })
                     })
                 ]
             }),
 
-            new Heading(5, { text: 'Button Groups', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Button Groups', mt: 4, mb: 3 }),
             new Row({
                 children: [
                     new Col({
@@ -68,7 +68,7 @@ export class ButtonsSection extends BaseDemoSection {
                                     new Button({ variant: 'secondary', label: 'Right' })
                                 ]
                             }),
-                            new Section({ className: 'mt-3' }),
+                            new Section({ mt: 3 }),
                             new ButtonGroup({
                                 vertical: true,
                                 children: [
@@ -100,7 +100,7 @@ export class ButtonsSection extends BaseDemoSection {
                                     })
                                 ]
                             }),
-                            new Section({ className: 'mt-4' }),
+                            new Section({ mt: 4 }),
                             new ButtonGroup({
                                 ariaLabel: 'Toggle group',
                                 children: [

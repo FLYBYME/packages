@@ -11,7 +11,7 @@ export class ModalSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Triggering Modals', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex gap-3 flex-wrap',
+                                display: 'flex', gap: 3, className: 'flex-wrap',
                                 children: [
                                     new Button({ 
                                         variant: 'primary', 
@@ -80,7 +80,7 @@ export class ModalSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Modal Sizing & Fullscreen', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex gap-3 flex-wrap',
+                                display: 'flex', gap: 3, className: 'flex-wrap',
                                 children: [
                                     new Button({ 
                                         variant: 'success', 
@@ -105,10 +105,10 @@ export class ModalSection extends BaseDemoSection {
                                     new ModalBody({
                                         children: new Row({
                                             children: [
-                                                new Col({ span: 4, children: new Section({ className: 'p-4 bg-light text-center rounded', text: '👤 Avatar' }) }),
+                                                new Col({ span: 4, children: new Section({ padding: 4, textAlign: 'center', className: 'bg-light rounded', text: '👤 Avatar' }) }),
                                                 new Col({ span: 8, children: [
                                                     new Heading(4, { text: 'John Mesh' }),
-                                                    new Section({ text: 'Senior Network Architect', className: 'text-muted mb-3' }),
+                                                    new Section({ text: 'Senior Network Architect', color: 'muted', mb: 3 }),
                                                     'Managing 50+ clusters in US-West regions.'
                                                 ]})
                                             ]

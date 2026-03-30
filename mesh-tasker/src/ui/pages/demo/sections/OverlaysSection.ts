@@ -48,7 +48,7 @@ export class OverlaysSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Tooltips', className: 'mt-5 mb-4' }),
+            new Heading(5, { text: 'Tooltips', mt: 5, mb: 4 }),
             new Row({
                 children: [
                     new Col({
@@ -56,7 +56,7 @@ export class OverlaysSection extends BaseDemoSection {
                         children: [
                             new Heading(6, { text: 'Directional', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex gap-2',
+                                display: 'flex', gap: 2,
                                 children: [
                                     new Tooltip({ tooltipTitle: 'Tooltip on top', placement: 'top', children: new Button({ variant: 'secondary', outline: true, text: 'Top' }) }),
                                     new Tooltip({ tooltipTitle: 'Tooltip on bottom', placement: 'bottom', children: new Button({ variant: 'secondary', outline: true, text: 'Bottom' }) })
@@ -88,9 +88,9 @@ export class OverlaysSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Offcanvas Sidebars', className: 'mt-5 mb-4' }),
+            new Heading(5, { text: 'Offcanvas Sidebars', mt: 5, mb: 4 }),
             new Section({
-                className: 'd-flex gap-2',
+                display: 'flex', gap: 2,
                 children: [
                     new Button({
                         variant: 'primary',
@@ -133,7 +133,7 @@ export class OverlaysSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Badges & Indicators', className: 'mt-5 mb-4' }),
+            new Heading(5, { text: 'Badges & Indicators', mt: 5, mb: 4 }),
             new Row({
                 children: [
                     new Col({
@@ -179,7 +179,7 @@ export class OverlaysSection extends BaseDemoSection {
                         children: [
                             new Heading(6, { text: 'Variations', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex gap-2',
+                                display: 'flex', gap: 2,
                                 children: [
                                     new Badge({ variant: 'primary', text: 'New', pill: true }),
                                     new Badge({ variant: 'success', text: 'Active' }),

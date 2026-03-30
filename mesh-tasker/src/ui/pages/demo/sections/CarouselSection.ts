@@ -17,7 +17,7 @@ export class CarouselSection extends BaseDemoSection {
                                 children: [
                                     new CarouselItem({
                                         children: [
-                                            new Section({ tagName: 'img', src: 'https://placehold.co/1200x500/007bff/white?text=Mesh+Architecture', className: 'd-block w-100 rounded', alt: 'Slide 1' }),
+                                            new Section({ tagName: 'img', src: 'https://placehold.co/1200x500/007bff/white?text=Mesh+Architecture', fullWidth: true, className: 'd-block rounded', alt: 'Slide 1' }),
                                             new CarouselCaption({
                                                 children: [
                                                     new Heading(3, { text: 'Mesh Networking' }),
@@ -28,7 +28,7 @@ export class CarouselSection extends BaseDemoSection {
                                     }),
                                     new CarouselItem({
                                         children: [
-                                            new Section({ tagName: 'img', src: 'https://placehold.co/1200x500/28a745/white?text=Global+Distribution', className: 'd-block w-100 rounded', alt: 'Slide 2' }),
+                                            new Section({ tagName: 'img', src: 'https://placehold.co/1200x500/28a745/white?text=Global+Distribution', fullWidth: true, className: 'd-block rounded', alt: 'Slide 2' }),
                                             new CarouselCaption({
                                                 children: [
                                                     new Heading(3, { text: 'Global Reach' }),
@@ -39,7 +39,7 @@ export class CarouselSection extends BaseDemoSection {
                                     }),
                                     new CarouselItem({
                                         children: [
-                                            new Section({ tagName: 'img', src: 'https://placehold.co/1200x500/dc3545/white?text=Real-time+Reactivity', className: 'd-block w-100 rounded', alt: 'Slide 3' }),
+                                            new Section({ tagName: 'img', src: 'https://placehold.co/1200x500/dc3545/white?text=Real-time+Reactivity', fullWidth: true, className: 'd-block rounded', alt: 'Slide 3' }),
                                             new CarouselCaption({
                                                 children: [
                                                     new Heading(3, { text: 'Real-time Sync' }),
@@ -61,8 +61,8 @@ export class CarouselSection extends BaseDemoSection {
                                 ride: 'carousel',
                                 interval: 3000,
                                 children: [
-                                    new CarouselItem({ children: new Section({ tagName: 'img', src: 'https://placehold.co/600x600/343a40/white?text=Node+A', className: 'd-block w-100 rounded' }) }),
-                                    new CarouselItem({ children: new Section({ tagName: 'img', src: 'https://placehold.co/600x600/6c757d/white?text=Node+B', className: 'd-block w-100 rounded' }) })
+                                    new CarouselItem({ children: new Section({ tagName: 'img', src: 'https://placehold.co/600x600/343a40/white?text=Node+A', fullWidth: true, className: 'd-block rounded' }) }),
+                                    new CarouselItem({ children: new Section({ tagName: 'img', src: 'https://placehold.co/600x600/6c757d/white?text=Node+B', fullWidth: true, className: 'd-block rounded' }) })
                                 ]
                             })
                         ]

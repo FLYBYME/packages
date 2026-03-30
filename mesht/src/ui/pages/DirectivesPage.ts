@@ -1,112 +1,36 @@
-import {
-  BrokerPage, ComponentChild, BrokerDOM,
-  Card, CardHeader, CardBody, Badge, Heading, SmallText,
-  Button, Section, DataTable,
+// FILE: src/ui/pages/DirectivesPage.ts
+import { 
+  BrokerPage, ComponentChild, BrokerDOM, 
+  DataTable, Badge, Section, SmallText,
+  Button, Card, CardHeader, CardBody, Heading,
   Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
-  FormLabel, FormControl, FormSelect
+  FormControl, FormLabel, FormSelect, FormOption
 } from '@flybyme/isomorphic-ui';
 import { Directive } from '../../domains/sys.directives/directives.schema';
-import { LiveInspector } from '../components/LiveInspector';
 import { Project, ProjectStatus } from '../../domains/sys.projects/projects.schema';
-import { SubmitDirectiveResult } from '../../domains/sys.interface/interface.schema';
-
-class ProjectSelect extends FormSelect {
-  build(): ComponentChild[] {
-    const projects = BrokerDOM.getStateService().getValue<Project[]>('projects.all') || [];
-    return projects.map(p => new Section({
-      tagName: 'option',
-      value: p.id,
-      text: p.name,
-      selected: BrokerDOM.getStateService().getValue('ui.newDirective.projectId') === p.id ? true : undefined
-    }));
-  }
-}
+import { LiveInspector } from '../components/LiveInspector';
 
 export class DirectivesPage extends BrokerPage {
+  private unsubs: (() => void)[] = [];
   private createModal?: Modal;
   private inspectorModal?: Modal;
-  private unsubs: Array<() => void> = [];
-
-  public getSEO() { return { defaultTitle: 'Directives' }; }
-  public getPageConfig() { return { title: 'Directives' }; }
 
   constructor() {
-    super('div', { className: 'container-fluid py-4 h-100 d-flex flex-column' });
-    this.initCreateModal();
-    this.initInspectorModal();
+    super('div', { className: 'mesh-directives-page h-100 d-flex flex-column' });
   }
 
-  private initInspectorModal() {
-    const state = BrokerDOM.getStateService();
-    this.inspectorModal = new Modal({
-      id: 'inspectorModal',
-      size: 'xl',
-      onHide: () => state.set('ui.selectedDirectiveID', null),
-      children: [
-        new ModalHeader({
-          onClose: () => this.inspectorModal?.hide(),
-          children: new ModalTitle({ text: 'Directive FSM Inspector' })
-        }),
-        new ModalBody({
-          className: 'p-0',
-          style: { height: '85vh' },
-          children: [
-            new LiveInspector({
-              directiveID: '$state.ui.selectedDirectiveID'
-            })
-          ]
-        })
-      ]
-    });
-
-    // Reactive hide
-    this.unsubs.push(state.subscribe('ui.selectedDirectiveID', (id) => {
-      if (!id) this.inspectorModal?.hide();
-    }));
+  public getSEO() {
+    return { defaultTitle: 'Directives Grid' };
   }
 
-  private initCreateModal() {
-    this.createModal = new Modal({
-      id: 'createDirectiveModal',
-      children: [
-        new ModalHeader({ 
-          onClose: () => this.createModal?.hide(),
-          children: new ModalTitle({ text: 'New Grid Directive' }) 
-        }),
-        new ModalBody({
-          children: [
-            new FormLabel({ text: 'Title' }),
-            new FormControl({
-              id: 'directiveTitle',
-              type: 'text',
-              placeholder: 'Internal Refactoring',
-              onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newDirective.title', (e.target as HTMLInputElement).value)
-            }),
-            new Section({ className: 'mt-3' }),
-            new FormLabel({ text: 'Project' }),
-            new ProjectSelect({
-              id: 'directiveProject',
-              value: '$state.ui.newDirective.projectId',
-              onChange: (e: Event) => BrokerDOM.getStateService().set('ui.newDirective.projectId', (e.target as HTMLSelectElement).value)
-            }),
-            new Section({ className: 'mt-3' }),
-            new FormLabel({ text: 'Objective' }),
-            new FormControl({
-              id: 'directiveObjective',
-              type: 'textarea',
-              placeholder: 'Explain what the agent should do...',
-              onInput: (e: Event) => BrokerDOM.getStateService().set('ui.newDirective.objective', (e.target as HTMLTextAreaElement).value)
-            }),
-          ]
-        }),
-        new ModalFooter({
-          children: [
-            new Button({ variant: 'secondary', text: 'Cancel', onClick: () => this.createModal?.hide() }),
-            new Button({ variant: 'primary', text: 'Launch', onClick: () => this.submitDirective() })
-          ]
-        })
-      ]
-    });
+  public getPageConfig() {
+    return { title: 'Directives' };
+  }
+
+  override onMount(): void {
+    super.onMount();
+    this.createModal = (this.element?.querySelector('#create-directive-modal') as unknown as { __brokerInstance?: Modal })?.__brokerInstance;
+    this.inspectorModal = (this.element?.querySelector('#inspector-modal') as unknown as { __brokerInstance?: Modal })?.__brokerInstance;
   }
 
   public async onEnter(): Promise<void> {
@@ -158,44 +82,50 @@ export class DirectivesPage extends BrokerPage {
 
     return [
       new Section({
-        className: 'flex-grow-1 position-relative overflow-hidden d-flex',
+        flexGrow: 1,
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
         children: [
           new Section({
-            className: 'flex-grow-1 overflow-auto p-4',
+            flexGrow: 1,
+            overflow: 'auto',
+            padding: 4,
             children: new Card({
               children: [
-                new CardHeader({ children: new Heading(5, { text: 'Directives', className: 'mb-0' }) }),
+                new CardHeader({ children: new Heading(5, { text: 'Directives', mb: 0 }) }),
                 new CardBody({
                   children: new DataTable<Directive>({
                     columns: [
                       { key: 'id', label: 'ID', render: (row: Directive) => new SmallText({ text: row.id.slice(0, 8), className: 'font-monospace' }) },
                       { key: 'title', label: 'Title' },
-                      { key: 'projectId', label: 'Project', render: (row: Directive) => new SmallText({ text: row.projectId || 'None', className: 'text-muted' }) },
-                      { key: 'status', label: 'Status', render: (row: Directive) => new Badge({ 
-                        text: row.status.toUpperCase(), 
-                        variant: row.status === 'running' ? 'primary' : row.status === 'completed' ? 'success' : row.status === 'failed' ? 'danger' : row.status === 'paused' ? 'warning' : 'secondary' 
+                      { key: 'projectId', label: 'Project', color: 'muted', render: (row: Directive) => new SmallText({ text: row.projectId || 'None' }) },
+                      { key: 'status', label: 'Status', render: (row: Directive) => new Badge({
+                        text: row.status.toUpperCase(),
+                        variant: row.status === 'running' ? 'primary' : row.status === 'completed' ? 'success' : row.status === 'failed' ? 'danger' : row.status === 'paused' ? 'warning' : 'secondary'
                       }) },
-                      { key: 'currentNode', label: 'Node', render: (row: Directive) => new Badge({ variant: 'light', text: row.currentNode, className: 'text-dark border' }) },
+                      { key: 'currentNode', label: 'Node', render: (row: Directive) => new Badge({ variant: 'light', text: row.currentNode, color: 'dark', border: true }) },
                       { key: 'assignedPersona', label: 'Persona', render: (row: Directive) => new SmallText({ text: row.assignedPersona || 'Unassigned' }) },
                       { key: 'id', label: 'Actions', render: (row: Directive) => new Section({
-                        className: 'd-flex gap-1',
+                        display: 'flex',
+                        gap: 1,
                         children: [
-                          new Button({ 
-                            size: 'sm', 
-                            variant: 'info', 
-                            text: 'Inspect', 
+                          new Button({
+                            size: 'sm',
+                            variant: 'info',
+                            text: 'Inspect',
                             onClick: () => {
                               BrokerDOM.getStateService().set('ui.selectedDirectiveID', row.id);
                               this.inspectorModal?.show();
-                            } 
+                            }
                           }),
-                          new Button({ 
-                            size: 'sm', 
-                            variant: 'secondary', 
-                            text: 'Trace', 
+                          new Button({
+                            size: 'sm',
+                            variant: 'secondary',
+                            text: 'Trace',
                             onClick: () => {
                               BrokerDOM.navigate(`/directive-trace?id=${row.id}`);
-                            } 
+                            }
                           }),
                           row.status === 'running' ? new Button({ size: 'sm', variant: 'warning', text: 'Pause', onClick: () => this.pauseDirective(row.id) }) : null,
                           row.status === 'paused' ? new Button({ size: 'sm', variant: 'success', text: 'Resume', onClick: () => this.resumeDirective(row.id) }) : null,
@@ -211,63 +141,127 @@ export class DirectivesPage extends BrokerPage {
           })
         ]
       }),
-      this.createModal!,
-      this.inspectorModal!
+
+      this.buildCreateModal(),
+      this.buildInspectorModal()
     ];
   }
 
-  private async pauseDirective(id: string) {
+  private buildCreateModal(): Modal {
+    const state = BrokerDOM.getStateService();
+    const projects = state.getValue<Project[]>('projects.all') || [];
+
+    return new Modal({
+      id: 'create-directive-modal',
+      size: 'lg',
+      centered: true,
+      children: [
+        new ModalHeader({ children: new ModalTitle({ text: 'Launch New Directive' }) }),
+        new ModalBody({
+          children: [
+            new Section({
+              mb: 3,
+              children: [
+                new FormLabel({ text: 'Project Context' }),
+                new FormSelect({
+                  value: state.getValue<string>('ui.newDirective.projectId') || '',
+                  onChange: (e: Event) => state.set('ui.newDirective.projectId', (e.target as HTMLSelectElement).value),
+                  children: [
+                    new FormOption({ value: '', text: '-- Select Project --' }),
+                    ...projects.map(p => new FormOption({ value: p.id, text: `${p.name} (${p.id})` }))
+                  ]
+                })
+              ]
+            }),
+            new Section({
+              mb: 3,
+              children: [
+                new FormLabel({ text: 'Directive Title' }),
+                new FormControl({
+                  placeholder: 'e.g., Refactor Auth Domain',
+                  value: state.getValue<string>('ui.newDirective.title') || '',
+                  onInput: (e: Event) => state.set('ui.newDirective.title', (e.target as HTMLInputElement).value)
+                })
+              ]
+            }),
+            new Section({
+              children: [
+                new FormLabel({ text: 'Objective' }),
+                new FormControl({
+                  type: 'textarea',
+                  placeholder: 'What is the end goal?',
+                  style: { height: '150px' },
+                  value: state.getValue<string>('ui.newDirective.objective') || '',
+                  onInput: (e: Event) => state.set('ui.newDirective.objective', (e.target as HTMLTextAreaElement).value)
+                })
+              ]
+            })
+          ]
+        }),
+        new ModalFooter({
+          children: [
+            new Button({ variant: 'secondary', text: 'Cancel', onClick: () => this.createModal?.hide() }),
+            new Button({ 
+              variant: 'primary', 
+              text: 'Launch Grid', 
+              onClick: () => this.createDirective() 
+            })
+          ]
+        })
+      ]
+    });
+  }
+
+  private buildInspectorModal(): Modal {
+    return new Modal({
+      id: 'inspector-modal',
+      fullscreen: 'lg',
+      scrollable: true,
+      children: new LiveInspector({ 
+        directiveID: '$state.ui.selectedDirectiveID' as unknown as string,
+        onClose: () => this.inspectorModal?.hide()
+      })
+    });
+  }
+
+  private async createDirective() {
+    const state = BrokerDOM.getStateService();
+    const projectId = state.getValue<string>('ui.newDirective.projectId');
+    const title = state.getValue<string>('ui.newDirective.title');
+    const objective = state.getValue<string>('ui.newDirective.objective');
+
+    if (!projectId || !title || !objective) {
+      this.logger.warn('Missing required fields');
+      return;
+    }
+
     try {
-      await BrokerDOM.getBroker().call('sys.directives.updateContext', {
-        id,
-        contextMutation: {},
-        status: 'paused'
+      await BrokerDOM.getBroker().call('sys.directives.create', {
+        projectId,
+        title,
+        objective
       });
-      this.refresh();
+      this.createModal?.hide();
+      state.set('ui.newDirective.title', '');
+      state.set('ui.newDirective.objective', '');
     } catch (err) {
-      this.logger.error('Failed to pause directive', err);
+      this.logger.error('Failed to create directive', err);
     }
   }
 
+  private async pauseDirective(id: string) {
+    await BrokerDOM.getBroker().call('sys.directives.pause', { id });
+    this.refresh();
+  }
+
   private async resumeDirective(id: string) {
-    try {
-      await BrokerDOM.getBroker().call('sys.directives.resume', { id });
-      this.refresh();
-    } catch (err) {
-      this.logger.error('Failed to resume directive', err);
-    }
+    await BrokerDOM.getBroker().call('sys.directives.resume', { id });
+    this.refresh();
   }
 
   private async cancelDirective(id: string) {
     if (!confirm('Are you sure you want to cancel this directive?')) return;
-    try {
-      await BrokerDOM.getBroker().call('sys.directives.cancel', { id });
-      this.refresh();
-    } catch (err) {
-      this.logger.error('Failed to cancel directive', err);
-    }
-  }
-
-  private async submitDirective() {
-    const state = BrokerDOM.getStateService();
-    const title = state.getValue<string>('ui.newDirective.title');
-    const objective = state.getValue<string>('ui.newDirective.objective');
-    const projectId = state.getValue<string>('ui.newDirective.projectId');
-
-    if (!title || !objective) return;
-
-    try {
-      await BrokerDOM.getBroker().call<SubmitDirectiveResult>('sys.interface.submit', {
-        title,
-        objective,
-        projectId
-      });
-      this.createModal?.hide();
-      this.refresh();
-      state.set('ui.newDirective.objective', '');
-    } catch (err) {
-      // Use the UI library for feedback if possible, or just log
-      this.logger.error('Launch error', err);
-    }
+    await BrokerDOM.getBroker().call('sys.directives.cancel', { id });
+    this.refresh();
   }
 }

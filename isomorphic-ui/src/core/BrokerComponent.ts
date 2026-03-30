@@ -1,25 +1,16 @@
 import { BrokerDOM } from '../BrokerDOM';
 import { IMeshApp, ILogger } from '@flybyme/isomorphic-core';
+import { StyleProps } from './types/styleProps';
+import { mapStyleProps } from './utils/styleMapper';
 
 export type ComponentChild = string | number | boolean | null | undefined | BrokerComponent;
 
-export interface ILayoutProps {
+export interface ILayoutProps extends StyleProps {
     flex?: boolean | number | string;
-    direction?: 'row' | 'col' | 'row-reverse' | 'col-reverse';
-    gap?: number | string;
+    direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse' | 'col' | 'col-reverse';
     align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-    alignItems?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
     justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-    justifyContent?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
     wrap?: boolean | 'wrap' | 'nowrap' | 'reverse';
-    padding?: number | string;
-    paddingX?: number | string;
-    paddingY?: number | string;
-    margin?: number | string;
-    marginX?: number | string;
-    marginY?: number | string;
-    marginTop?: number | string;
-    marginBottom?: number | string;
     weight?: 'light' | 'normal' | 'bold';
     unstyled?: boolean;
     fullWidth?: boolean;
@@ -32,7 +23,6 @@ export interface IBaseUIProps extends ILayoutProps {
     key?: string | number;
     text?: string | number;
     children?: ComponentChild | ComponentChild[];
-    className?: string;
     style?: Record<string, string | number>;
     color?: string;
     background?: string;
@@ -62,7 +52,8 @@ export abstract class BrokerComponent {
     private _isRendering = false;
 
     protected static RESERVED_PROPS = new Set([
-        'key', 'text', 'children', 'className', 'style', 'variant', 'size', 'tagName', 'label', 'ariaLabel',
+        'key', 'text', 'children',
+        'style', 'variant', 'size', 'tagName', 'label', 'ariaLabel',
         'flex', 'direction', 'gap', 'align', 'alignItems', 'justify', 'justifyContent', 'wrap',
         'padding', 'paddingX', 'paddingY', 'margin', 'marginX', 'marginY', 'marginTop', 'marginBottom',
         'weight', 'unstyled', 'fullWidth', 'shadow', 'rounded', 'background', 'color', 'textCenter',
@@ -111,14 +102,6 @@ export abstract class BrokerComponent {
 
     protected getUtilityClasses(props: IBaseUIProps): string[] {
         const c: string[] = [];
-        if (props.paddingY) c.push(`py-${props.paddingY}`);
-        if (props.paddingX) c.push(`px-${props.paddingX}`);
-        if (props.padding) c.push(`p-${props.padding}`);
-        if (props.marginY) c.push(`my-${props.marginY}`);
-        if (props.marginX) c.push(`mx-${props.marginX}`);
-        if (props.margin) c.push(`m-${props.margin}`);
-        if (props.marginBottom) c.push(`mb-${props.marginBottom}`);
-        if (props.marginTop) c.push(`mt-${props.marginTop}`);
         if (props.weight) c.push(`fw-${props.weight}`);
         if (props.unstyled) c.push('list-unstyled');
         if (props.fullWidth) c.push('w-100');
@@ -127,7 +110,10 @@ export abstract class BrokerComponent {
         if (props.rounded === true) c.push('rounded');
         else if (props.rounded) c.push(`rounded-${props.rounded}`);
         if (props.background) c.push(`mesh-bg-${props.background}`);
-        if (props.color) c.push(`mesh-text-${props.color}`);
+
+        // Use mapStyleProps to handle all margin, padding, flex, typography mapped correctly.
+        // We import it locally to avoid circular dependency issues at the top level if needed, or just import it at top.
+        // Actually it's imported at top? No we need to import it at top.
         return c;
     }
 
@@ -144,7 +130,7 @@ export abstract class BrokerComponent {
             this.getVariantClasses(props.variant),
             this.getSizeClasses(props.size),
             ...this.getUtilityClasses(props),
-            this.evaluateExpression(props.className) as string
+            ...mapStyleProps(props)
         ];
         const classStr = this.clsx(...classes);
         if (classStr) {
@@ -168,7 +154,7 @@ export abstract class BrokerComponent {
         // 3. Attributes & Events
         const BOOLEAN_PROPS = ['disabled', 'checked', 'selected', 'readonly', 'required'];
         const DIRECT_PROPS = ['value', 'innerText', 'innerHTML', 'dangerouslySetInnerHTML'];
-        
+
         Object.entries(props).forEach(([k, v]) => {
             if (k.startsWith('on') && typeof v === 'function') {
                 const eventName = k.toLowerCase();
@@ -237,7 +223,7 @@ export abstract class BrokerComponent {
 
         // 3. Transform the string into safely executable code
         const isPure = expr.trim().startsWith('$state.');
-        
+
         let finalBody: string;
         if (isPure) {
             finalBody = expr.replace(
@@ -435,7 +421,7 @@ export abstract class BrokerComponent {
 
         // Only recycle if constructor AND tagName matches AND it is actually an Element
         if (this.isComp(newNode) && this.isComp(oldNode) &&
-            newNode.constructor === oldNode.constructor && 
+            newNode.constructor === oldNode.constructor &&
             newNode.tagName === oldNode.tagName &&
             dom.nodeType === Node.ELEMENT_NODE) {
 
@@ -573,7 +559,7 @@ export abstract class BrokerComponent {
             } else {
                 this.element = document.createElement(this.tagName);
             }
-            
+
             const el = this.element!;
             (el as unknown as Record<string, unknown>).__brokerInstance = this;
 
@@ -634,6 +620,13 @@ export abstract class BrokerComponent {
         if (p.align || p.alignItems) s.alignItems = (p.align || p.alignItems) + ' !important';
         if (p.justify || p.justifyContent) s.justifyContent = (p.justify || p.justifyContent) + ' !important';
         if (p.wrap) s.flexWrap = (p.wrap === true ? 'wrap' : p.wrap) + ' !important';
+
+        if (p.top !== undefined && ![0, 50, 100].includes(p.top as number)) s.top = typeof p.top === 'number' ? `${p.top}px` : p.top;
+        if (p.bottom !== undefined && ![0, 50, 100].includes(p.bottom as number)) s.bottom = typeof p.bottom === 'number' ? `${p.bottom}px` : p.bottom;
+        if (p.left !== undefined && ![0, 50, 100].includes(p.left as number)) s.left = typeof p.left === 'number' ? `${p.left}px` : p.left;
+        if (p.right !== undefined && ![0, 50, 100].includes(p.right as number)) s.right = typeof p.right === 'number' ? `${p.right}px` : p.right;
+        if (p.zIndex !== undefined) s.zIndex = p.zIndex;
+
         return s;
     }
 

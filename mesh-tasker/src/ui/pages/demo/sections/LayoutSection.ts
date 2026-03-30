@@ -11,7 +11,7 @@ export class LayoutSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Standard Accordion', marginBottom: '3' }),
                             new Accordion({
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new AccordionItem({
                                         header: 'Dynamic Rendering',
@@ -28,7 +28,7 @@ export class LayoutSection extends BaseDemoSection {
                             new Heading(5, { text: 'Flush Accordion', marginBottom: '3' }),
                             new Accordion({
                                 flush: true,
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new AccordionItem({
                                         header: 'Flush Item #1',
@@ -47,7 +47,7 @@ export class LayoutSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Feature Cards', marginBottom: '3' }),
                             new Card({
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new CardHeader({ text: 'Feature Container' }),
                                     new CardBody({
@@ -57,7 +57,7 @@ export class LayoutSection extends BaseDemoSection {
                                             new CardText({ text: 'Cards can wrap any complexity of children while maintaining style.' })
                                         ]
                                     }),
-                                    new CardFooter({ text: '2 days ago', className: 'text-muted' })
+                                    new CardFooter({ text: '2 days ago', color: 'muted' })
                                 ]
                             }),
 
@@ -65,7 +65,7 @@ export class LayoutSection extends BaseDemoSection {
                             new Card({
                                 variant: 'primary',
                                 textVariant: 'white',
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new CardHeader({ text: 'Primary Theme' }),
                                     new CardBody({
@@ -81,7 +81,7 @@ export class LayoutSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Card Groups', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Card Groups', mt: 4, mb: 3 }),
             new CardGroup({
                 children: [
                     new Card({

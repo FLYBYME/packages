@@ -8,7 +8,7 @@ export abstract class BaseDemoSection extends Section {
         super({
             marginBottom: '5',
             children: [
-                new Heading(3, { text: title, marginBottom: '3', className: 'text-primary' }),
+                new Heading(3, { text: title, marginBottom: '3', color: 'primary' }),
                 new Section({
                     padding: '4',
                     className: 'card shadow-sm border-0',

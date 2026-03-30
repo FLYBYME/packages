@@ -13,7 +13,7 @@ export class Dashboard extends BrokerPage {
     private createModal?: Modal;
 
     constructor() {
-        super('div', { className: 'mesh-dashboard d-flex flex-column' });
+        super('div', { display: 'flex', flexDirection: 'column', className: 'mesh-dashboard' });
         this.initCreateModal();
     }
 
@@ -33,7 +33,7 @@ export class Dashboard extends BrokerPage {
                             type: 'text',
                             placeholder: 'Enter task title...'
                         }),
-                        new Section({ className: 'mt-3' }),
+                        new Section({ mt: 3 }),
                         new FormLabel({ text: 'Description' }),
                         new FormControl({
                             id: 'newTaskDesc',
@@ -41,7 +41,7 @@ export class Dashboard extends BrokerPage {
                             tagName: 'textarea',
                             placeholder: 'Task description...'
                         }),
-                        new Section({ className: 'mt-3' }),
+                        new Section({ mt: 3 }),
                         new FormLabel({ text: 'Priority' }),
                         new FormSelect({
                             id: 'newTaskPriority',
@@ -52,7 +52,7 @@ export class Dashboard extends BrokerPage {
                                 new Section({ tagName: 'option', text: 'urgent', value: 'urgent' })
                             ]
                         }),
-                        new Section({ className: 'mt-3' }),
+                        new Section({ mt: 3 }),
                         new FormLabel({ text: 'Tags (comma separated)' }),
                         new FormControl({
                             id: 'newTaskTags',
@@ -251,13 +251,13 @@ export class Dashboard extends BrokerPage {
             new KanbanBoard({
                 children: [
                     // Header progress (span the full width above columns)
-                    new Col({ span: 12, className: 'mb-2', children: [
+                    new Col({ span: 12, mb: 2, children: [
                         new Section({
-                            className: 'mb-4',
+                            mb: 4,
                             children: [
-                                new Section({ className: 'd-flex justify-content-between mb-1', children: [
-                                    new SmallText({ text: 'Project Progress', className: 'text-muted fw-bold' }),
-                                    new SmallText({ text: `${progress}%`, className: 'text-muted fw-bold' })
+                                new Section({ display: 'flex', justifyContent: 'between', mb: 1, children: [
+                                    new SmallText({ text: 'Project Progress', color: 'muted', weight: 'bold' }),
+                                    new SmallText({ text: `${progress}%`, color: 'muted', weight: 'bold' })
                                 ]}),
                                 new Section({
                                     className: 'progress',
@@ -298,7 +298,7 @@ export class Dashboard extends BrokerPage {
             title,
             status: statusFilter,
             onCardDrop: (id, newStatus) => this.handleDrop(id, newStatus),
-            headerChildren: new Badge({ variant: 'light', text: columnTasks.length.toString(), className: 'text-dark' }),
+            headerChildren: new Badge({ variant: 'light', text: columnTasks.length.toString(), color: 'dark' }),
             children: columnTasks.map(task => this.buildTaskCard(task))
         });
     }
@@ -340,28 +340,28 @@ export class Dashboard extends BrokerPage {
             id: task.id,
             children: [
                 new CardBody({
-                    className: 'p-3',
+                    padding: 3,
                     children: [
                         new Row({
                             justifyContent: 'between',
                             children: [
-                                new Col({ children: new Heading(6, { text: task.title || 'Untitled Task', className: 'mb-1' }) }),
+                                new Col({ children: new Heading(6, { text: task.title || 'Untitled Task', mb: 1 }) }),
                                 new Col({ 
-                                    className: 'text-end',
+                                    textAlign: 'right',
                                     children: new Badge({ variant: pColor, text: task.priority || 'medium', className: 'ms-2' })
                                 })
                             ]
                         }),
-                        task.description && new SmallText({ text: task.description, className: 'text-muted mb-2 d-block' }),
+                        task.description && new SmallText({ text: task.description, color: 'muted', mb: 2, className: 'd-block' }),
                         new Section({
-                            className: 'd-flex gap-1 flex-wrap mb-2',
-                            children: (task.tags || []).map((tag: string) => new Badge({ variant: 'light', text: tag, className: 'text-dark border' }))
+                            display: 'flex', gap: 1, mb: 2, className: 'flex-wrap',
+                            children: (task.tags || []).map((tag: string) => new Badge({ variant: 'light', text: tag, color: 'dark', className: 'border' }))
                         }),
-                        new SmallText({ text: task.id, className: 'text-muted x-small font-monospace' })
+                        new SmallText({ text: task.id, color: 'muted', className: 'x-small font-monospace' })
                     ]
                 }),
                 new CardFooter({
-                    className: 'bg-transparent p-2 border-top border-secondary border-opacity-10 d-flex justify-content-between',
+                    padding: 2, display: 'flex', justifyContent: 'between', className: 'bg-transparent border-top border-secondary border-opacity-10',
                     children: [
                         new ButtonGroup({
                             ariaLabel: 'Task actions',

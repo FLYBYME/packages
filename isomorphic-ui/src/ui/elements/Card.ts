@@ -127,8 +127,10 @@ export class CardTitle extends BrokerComponent {
  * Card Subtitle (h6 muted default).
  */
 export class CardSubtitle extends BrokerComponent {
-    constructor(props: IBaseUIProps = {}) { super('h6', props); }
-    protected override getBaseClasses() { return 'card-subtitle mb-2 text-muted'; }
+    constructor(props: IBaseUIProps = {}) { 
+        super('h6', { mb: 2, color: 'muted', ...props }); 
+    }
+    protected override getBaseClasses() { return 'card-subtitle'; }
     build() { return this.props.text || this.props.children; }
 }
 

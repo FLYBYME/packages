@@ -7,7 +7,7 @@ export class NavigationSection extends BaseDemoSection {
             new Heading(5, { text: 'Breadcrumbs', marginBottom: '3' }),
             new Breadcrumb({
                 divider: "'>'",
-                className: 'mb-4',
+                mb: 4,
                 children: [
                     new BreadcrumbItem({ href: '#', text: 'Design System' }),
                     new BreadcrumbItem({ href: '#', text: 'Components' }),
@@ -17,7 +17,7 @@ export class NavigationSection extends BaseDemoSection {
 
             new Heading(5, { text: 'Pagination', marginBottom: '3' }),
             new Section({
-                className: 'd-flex gap-4 flex-wrap align-items-center',
+                display: 'flex', gap: 4, alignItems: 'center', className: 'flex-wrap',
                 children: [
                     // Standard
                     new Pagination({

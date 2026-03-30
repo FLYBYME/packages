@@ -9,7 +9,13 @@ import { GlobalToastProvider } from './GlobalToastProvider';
 
 export class AppShell extends BrokerComponent {
   constructor(props: IBaseUIProps = {}) {
-    super('div', { className: 'mesh-app-shell vh-100 d-flex flex-column', ...props });
+    super('div', { 
+        className: 'mesh-app-shell',
+        height: 'screen',
+        display: 'flex',
+        flexDirection: 'column',
+        ...props 
+    });
   }
 
   build(): ComponentChild[] {
@@ -17,25 +23,35 @@ export class AppShell extends BrokerComponent {
       // Top Navbar
       new Navbar({
         variant: 'dark',
-        className: 'bg-dark border-bottom border-secondary',
+        background: 'dark',
+        borderBottom: true,
         children: [
-          new NavbarBrand({ text: 'MeshT Console', className: 'fw-bold text-info' }),
+          new NavbarBrand({ text: 'MeshT Console', fontWeight: 'bold', color: 'info' }),
           new NavbarNav({
-            className: 'ms-auto',
+            ml: 'auto',
             children: [
               new NavbarItem({
                 children: new Section({
-                  className: 'd-flex align-items-center gap-2 px-3 py-1 bg-black rounded-pill border border-secondary',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2,
+                  px: 3,
+                  py: 1,
+                  background: 'black',
+                  rounded: 'pill',
+                  border: 'secondary',
                   children: [
                     new Section({ 
-                      className: 'rounded-circle bg-success', 
+                      rounded: 'circle',
+                      background: 'success', 
                       style: { width: '8px', height: '8px' },
                       'class.bg-success': '$state.$network.connected',
                       'class.bg-danger': '!$state.$network.connected'
                     }),
                     new SmallText({ 
                       text: '$state.$network.connected ? "Grid Online" : "Grid Offline"', 
-                      className: 'text-white x-small' 
+                      color: 'white',
+                      fontSize: 6
                     })
                   ]
                 })
@@ -46,10 +62,15 @@ export class AppShell extends BrokerComponent {
       }),
       // Main Layout (Sidebar + Content)
       new Section({
-        className: 'd-flex flex-grow-1 overflow-hidden',
+        display: 'flex',
+        flexGrow: 1,
+        overflow: 'hidden',
         children: [
           new Sidebar({
-            className: 'bg-dark border-end border-secondary text-white p-3',
+            background: 'dark',
+            borderRight: true,
+            color: 'white',
+            padding: 3,
             style: { width: '240px' },
             children: [
               this.buildNavLink('/', 'Dashboard'),
@@ -60,14 +81,21 @@ export class AppShell extends BrokerComponent {
               this.buildNavLink('/governance', 'Governance'),
               this.buildNavLink('/memory', 'Memory'),
               this.buildNavLink('/tools', 'Tools'),
-              new Section({ className: 'mt-auto p-2 border-top border-secondary', children: [
-                new SmallText({ text: 'mesht-gateway', className: 'd-block text-muted x-small' }),
-                new SmallText({ text: 'v1.2.0-stable', className: 'd-block text-muted x-small' })
-              ]})
+              new Section({ 
+                  mt: 'auto', 
+                  padding: 2, 
+                  borderTop: true, 
+                  children: [
+                    new SmallText({ text: 'mesht-gateway', display: 'block', color: 'muted', fontSize: 6 }),
+                    new SmallText({ text: 'v1.2.0-stable', display: 'block', color: 'muted', fontSize: 6 })
+                  ]
+              })
             ]
           }),
           new Main({
-            className: 'flex-grow-1 overflow-auto bg-light',
+            flexGrow: 1,
+            overflow: 'auto',
+            background: 'light',
             children: this.props.children
           })
         ]
@@ -80,10 +108,15 @@ export class AppShell extends BrokerComponent {
   private buildNavLink(path: string, label: string): ComponentChild {
     return new NavbarLink({
       href: path,
-      className: 'nav-link text-white-50 py-2 px-3 rounded mb-1 transition-all hover-bg-secondary cursor-pointer',
+      className: 'transition-all hover-bg-secondary cursor-pointer',
       'class.active': `$router.path === "${path}"`,
       'class.text-white': `$router.path === "${path}"`,
       'class.bg-secondary': `$router.path === "${path}"`,
+      py: 2,
+      px: 3,
+      rounded: true,
+      mb: 1,
+      color: 'white-50', // Custom color suffix should work via mesh-text-white-50
       text: label
     });
   }

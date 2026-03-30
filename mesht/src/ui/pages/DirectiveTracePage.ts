@@ -282,8 +282,8 @@ export class DirectiveTracePage extends BrokerPage {
   private buildAuditEntry(entry: AuditLog): ComponentChild {
     const when = new Date(entry.timestamp).toLocaleTimeString();
     const payload = entry.payload ?? {};
-    const stage = typeof payload === 'object' && payload !== null ? (payload as any).stage : undefined;
-    const detail = typeof payload === 'object' && payload !== null ? (payload as any).detail : undefined;
+    const stage = typeof payload === 'object' && payload !== null ? (payload as Record<string, unknown>).stage : undefined;
+    const detail = typeof payload === 'object' && payload !== null ? (payload as Record<string, unknown>).detail : undefined;
     const summary = detail || stage || 'Audit event recorded.';
     const payloadPreview = typeof payload === 'object' && payload !== null
       ? JSON.stringify(payload, null, 2)

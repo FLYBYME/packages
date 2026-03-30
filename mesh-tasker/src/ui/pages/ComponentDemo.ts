@@ -27,7 +27,7 @@ import { OverlaysSection } from './demo/sections/OverlaysSection';
 export class ComponentDemo extends BrokerPage {
     constructor() {
         super('div', {
-            className: 'pb-5'
+            pb: 5
         });
     }
 

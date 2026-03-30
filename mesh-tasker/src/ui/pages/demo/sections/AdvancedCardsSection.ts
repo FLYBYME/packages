@@ -31,7 +31,7 @@ export class AdvancedCardsSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Image Overlay', marginBottom: '3' }),
                             new Card({
-                                className: 'text-white border-0 overflow-hidden',
+                                color: 'white', className: 'border-0 overflow-hidden',
                                 children: [
                                     new CardImage({ src: 'https://placehold.co/800x400', overlay: true, alt: 'Background' }),
                                     new CardImgOverlay({

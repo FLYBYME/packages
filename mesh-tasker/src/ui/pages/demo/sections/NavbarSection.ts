@@ -7,7 +7,7 @@ export class NavbarSection extends BaseDemoSection {
             new Navbar({
                 expand: 'lg',
                 variant: 'dark',
-                className: 'bg-dark rounded shadow-sm mb-4',
+                mb: 4, className: 'bg-dark rounded shadow-sm',
                 container: 'fluid',
                 children: [
                     new NavbarBrand({ href: '#', text: 'MeshOS' }),
@@ -25,7 +25,7 @@ export class NavbarSection extends BaseDemoSection {
                             }),
                             new Section({
                                 tagName: 'form',
-                                className: 'd-flex',
+                                display: 'flex',
                                 children: [
                                     new FormControl({ type: 'search', placeholder: 'Cluster ID', className: 'me-2' }),
                                     new Button({ variant: 'info', outline: true, label: 'Monitor', type: 'submit' })
@@ -39,11 +39,11 @@ export class NavbarSection extends BaseDemoSection {
             new Navbar({
                 expand: 'md',
                 variant: 'light',
-                className: 'bg-light border rounded mb-4',
+                mb: 4, className: 'bg-light border rounded',
                 children: [
                     new NavbarBrand({ 
                         href: '#', 
-                        children: new Section({ tagName: 'span', className: 'fw-bold', text: '⚡ NodeLink' }) 
+                        children: new Section({ tagName: 'span', weight: 'bold', text: '⚡ NodeLink' }) 
                     }),
                     new NavbarToggler({ collapseId: 'navbarLight' }),
                     new NavbarCollapse({

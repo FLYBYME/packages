@@ -10,7 +10,7 @@ class InteractiveRangeSlider extends Section {
         const rangeInput = new FormRange({ defaultValue: '50', id: 'interactive-range' });
 
         super({
-            className: 'd-flex align-items-center gap-3 mb-3',
+            display: 'flex', alignItems: 'center', gap: 3, mb: 3,
             children: [
                 new Section({ flex: 1, children: rangeInput }),
                 valDisplay
@@ -78,7 +78,7 @@ export class FormsSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Validation States', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Validation States', mt: 4, mb: 3 }),
             new Row({
                 children: [
                     new Col({
@@ -100,7 +100,7 @@ export class FormsSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Advanced Inputs', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Advanced Inputs', mt: 4, mb: 3 }),
             new Row({
                 children: [
                     new Col({
@@ -127,7 +127,7 @@ export class FormsSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Input Groups', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Input Groups', mt: 4, mb: 3 }),
             new Row({
                 children: [
                     new Col({

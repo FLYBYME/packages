@@ -8,7 +8,7 @@ import { Project, ProjectDeleteResult, ProjectStatus } from '../../domains/sys.p
 
 export class ProjectsPage extends BrokerPage {
   constructor() {
-    super('div', { className: 'container-fluid py-4' });
+    super('div', { className: 'container-fluid', py: 4 });
   }
 
   public getSEO() {
@@ -55,7 +55,8 @@ export class ProjectsPage extends BrokerPage {
           new Col({
             span: 12,
             children: new Card({
-              className: 'mb-4 border-start border-4 border-primary',
+              mb: 4,
+              className: 'border-start border-4 border-primary',
               children: new CardBody({
                 children: [
                   new Row({
@@ -63,8 +64,8 @@ export class ProjectsPage extends BrokerPage {
                     children: [
                       new Col({
                         children: [
-                          new SmallText({ text: 'Active Project Root', className: 'text-uppercase text-muted fw-bold' }),
-                          new Heading(4, { text: status.activeProjectRoot || 'Not Selected', className: 'mb-0' })
+                          new SmallText({ text: 'Active Project Root', textTransform: 'uppercase', color: 'muted', fontWeight: 'bold' }),
+                          new Heading(4, { text: status.activeProjectRoot || 'Not Selected', mb: 0 })
                         ]
                       }),
                       new Col({
@@ -85,7 +86,7 @@ export class ProjectsPage extends BrokerPage {
 
       // Form Card
       showForm ? new Row({
-        className: 'mb-4',
+        mb: 4,
         children: [
           new Col({
             span: 12,
@@ -122,7 +123,7 @@ export class ProjectsPage extends BrokerPage {
                       ]
                     }),
                     new Row({
-                      className: 'mt-3',
+                      mt: 3,
                       children: [
                         new Col({
                           span: 12,
@@ -138,7 +139,7 @@ export class ProjectsPage extends BrokerPage {
                       ]
                     }),
                     new Row({
-                      className: 'mt-3',
+                      mt: 3,
                       children: [
                         new Col({
                           span: 12,
@@ -155,7 +156,9 @@ export class ProjectsPage extends BrokerPage {
                       ]
                     }),
                     new Section({
-                      className: 'mt-4 d-flex gap-2',
+                      mt: 4,
+                      display: 'flex',
+                      gap: 2,
                       children: [
                         new Button({
                           variant: 'success',
@@ -184,9 +187,11 @@ export class ProjectsPage extends BrokerPage {
             children: new Card({
               children: [
                 new CardHeader({ 
-                  className: 'd-flex justify-content-between align-items-center',
+                  display: 'flex',
+                  justifyContent: 'between',
+                  alignItems: 'center',
                   children: [
-                    new Heading(5, { text: 'Workspace Projects', className: 'mb-0' }),
+                    new Heading(5, { text: 'Workspace Projects', mb: 0 }),
                     new Button({
                       variant: 'primary',
                       size: 'sm',
@@ -213,7 +218,8 @@ export class ProjectsPage extends BrokerPage {
                         key: 'id',
                         label: 'Actions',
                         render: (row: Project) => new Section({
-                          className: 'd-flex gap-1',
+                          display: 'flex',
+                          gap: 1,
                           children: [
                             new Button({
                               size: 'sm',

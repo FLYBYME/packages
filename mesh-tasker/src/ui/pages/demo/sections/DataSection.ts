@@ -23,7 +23,7 @@ export class DataSection extends BaseDemoSection {
                 initialEntriesPerPage: 10
             }),
             
-            new Section({ className: 'my-5', children: new Section({ tagName: 'hr' }) }),
+            new Section({ my: '5', children: new Section({ tagName: 'hr' }) }),
 
             new Heading(5, { text: 'Standard Responsive Table', marginBottom: '3' }),
             new Table({
@@ -75,7 +75,7 @@ export class DataSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Compact Dark Table', className: 'mt-5 mb-3' }),
+            new Heading(5, { text: 'Compact Dark Table', mt: 5, mb: 3 }),
             new Table({
                 variant: 'dark',
                 compact: true,
@@ -103,7 +103,7 @@ export class DataSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Bordered & Centered', className: 'mt-5 mb-3' }),
+            new Heading(5, { text: 'Bordered & Centered', mt: 5, mb: 3 }),
             new Table({
                 bordered: true,
                 alignVertical: 'middle',

@@ -5,44 +5,25 @@ import { BrokerComponent, IBaseUIProps, ComponentChild } from './BrokerComponent
  * Maps to 'mesh-' utility classes.
  */
 export interface IPrimitiveProps extends IBaseUIProps {
-    // Layout
-    display?: 'flex' | 'grid' | 'block';
     grid?: boolean;
     columns?: number;
     flex?: boolean | string | number;
-    direction?: 'row' | 'col' | 'row-reverse' | 'col-reverse';
     span?: number | string | boolean;
-    gap?: string | number;
-    padding?: string | number;
-    margin?: string | number;
-    marginTop?: string | number;
-    marginBottom?: string | number;
-    marginLeft?: string | number;
-    marginRight?: string | number;
-    align?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-    justify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-    wrap?: boolean | 'wrap' | 'nowrap' | 'reverse';
+
+    // Overflow
     overflow?: 'hidden' | 'auto' | 'scroll' | 'visible';
     overflowX?: 'hidden' | 'auto' | 'scroll' | 'visible';
     overflowY?: 'hidden' | 'auto' | 'scroll' | 'visible';
-    textWrap?: 'nowrap';
-    
-    // Typography
-    color?: string;
-    background?: string;
-    fontSize?: string | number;
-    fontWeight?: string | number;
-    fontFamily?: string;
-    textAlign?: 'left' | 'center' | 'right' | 'justify';
-    lineHeight?: string | number;
-    
+
     // Borders & Shadow
     borderRadius?: string | number;
     border?: string;
-    borderBottom?: string;
-    borderRight?: string;
+    borderTop?: string | boolean;
+    borderBottom?: string | boolean;
+    borderLeft?: string | boolean;
+    borderRight?: string | boolean;
     boxShadow?: string;
-    
+
     // Dimensions (Explicit, arbitrary values stay as styles)
     width?: string | number;
     height?: string | number;
@@ -60,18 +41,8 @@ export abstract class LayoutComponent extends BrokerComponent {
     public override props: IPrimitiveProps;
 
     constructor(tagName: string = 'div', props: IPrimitiveProps = {}) {
-        // 1. Resolve Utility Classes from Props
-        const layoutClasses = LayoutComponent.getLayoutClasses(props);
-        
-        // 2. Merge with existing className
-        const className = [props.className, ...layoutClasses]
-            .filter(Boolean)
-            .join(' ');
-
-        const finalProps = { ...props, className };
-
-        super(tagName, finalProps);
-        this.props = finalProps;
+        super(tagName, props);
+        this.props = props;
     }
 
     /**
@@ -79,31 +50,16 @@ export abstract class LayoutComponent extends BrokerComponent {
      */
     protected static getLayoutClasses(props: IPrimitiveProps): string[] {
         const classes: string[] = [];
-        const spaceMap: Record<string, string> = { xs: '1', sm: '2', md: '3', lg: '4', xl: '5' };
 
         // 1. Grid & Spanning
-        if (props.display === 'grid' || props.grid) classes.push('row m-0'); // Bootstrap grid container
+        if (props.grid) classes.push('row m-0'); // Bootstrap grid container
         if (props.span) {
             classes.push(`col-${props.span}`);
             classes.push('mesh-min-w-0'); // CRITICAL: Prevents grid items from expanding beyond their math
         }
-        
-        // 2. Flexbox
-        if (props.flex === true || props.direction) classes.push('d-flex');
-        if (props.direction === 'col') classes.push('flex-column');
-        if (props.direction === 'row') classes.push('flex-row');
-        if (props.align) classes.push(`align-items-${props.align}`);
-        if (props.justify) classes.push(`justify-content-${props.justify}`);
-        if (props.wrap === 'nowrap') classes.push('flex-nowrap');
-        else if (props.wrap) classes.push('flex-wrap');
 
-        // 3. Spacing (Mapped 1-5)
-        // 3. Spacing (Mapped 1-5, or literal 0-5)
-        if (props.padding !== undefined) classes.push(`p-${spaceMap[props.padding] ?? props.padding}`);
-        if (props.margin !== undefined) classes.push(`m-${spaceMap[props.margin] ?? props.margin}`);
-        if (props.marginTop !== undefined) classes.push(`mt-${spaceMap[props.marginTop] ?? props.marginTop}`);
-        if (props.marginBottom !== undefined) classes.push(`mb-${spaceMap[props.marginBottom] ?? props.marginBottom}`);
-        if (props.gap !== undefined) classes.push(`gap-${spaceMap[props.gap] ?? props.gap}`);
+        // 2. Flexbox (Legacy properties not in StyleProps)
+        if (props.flex === true) classes.push('d-flex');
 
         // 4. Dimensions & Overflow
         if (props.width === 'full') classes.push('w-100');
@@ -113,17 +69,16 @@ export abstract class LayoutComponent extends BrokerComponent {
         if (props.overflow) classes.push(`overflow-${props.overflow}`);
         if (props.overflowX) classes.push(`overflow-x-${props.overflowX}`);
         if (props.overflowY) classes.push(`overflow-y-${props.overflowY}`);
-        
-        // 5. Typography
-        if (props.textWrap === 'nowrap') classes.push('text-nowrap');
-        if (props.fontWeight === 'bold') classes.push('fw-bold');
-        if (props.textAlign) classes.push(`text-${props.textAlign}`);
 
-        // 6. Colors (We use custom mesh classes here so StyleEngine can apply manifest hex codes)
-        if (props.background) classes.push(`mesh-bg-${props.background}`);
-        if (props.color) classes.push(`mesh-text-${props.color}`);
-        if (props.borderRight) classes.push('border-end border-secondary');
+        // 5. Borders
+        if (props.borderTop) classes.push('border-top border-secondary');
         if (props.borderBottom) classes.push('border-bottom border-secondary');
+        if (props.borderLeft) classes.push('border-start border-secondary');
+        if (props.borderRight) classes.push('border-end border-secondary');
+
+        // 6. Colors (Mesh custom bg, handled here or in StyleProps. Let's keep bg here as background is not in TypographyProps, it's in IBaseUIProps)
+        if (props.background) classes.push(`mesh-bg-${props.background}`);
+        // Color is handled by mapStyleProps via TypographyProps
 
         return classes;
     }
@@ -148,13 +103,13 @@ export abstract class LayoutComponent extends BrokerComponent {
         if (props.maxHeight) styles.maxHeight = typeof props.maxHeight === 'number' ? `${props.maxHeight}px` : props.maxHeight;
 
         if (props.border) styles.border = props.border;
-        if (props.borderBottom) styles.borderBottom = props.borderBottom;
-        if (props.borderRight) styles.borderRight = props.borderRight;
+        if (typeof props.borderBottom === 'string') styles.borderBottom = props.borderBottom;
+        if (typeof props.borderRight === 'string') styles.borderRight = props.borderRight;
 
         // Arbitrary flex values (not true/false) stay as styles
         if (typeof props.flex === 'number' || (typeof props.flex === 'string' && !['true', 'false'].includes(props.flex))) {
             styles.flex = props.flex;
-        } else if (props.className?.includes('flex-grow-1')) {
+        } else if (props.flexGrow === 1) {
             // Ensure elements intended to grow can also shrink
             styles.minWidth = 0;
         }

@@ -39,7 +39,9 @@ export class AuditTrailTable extends BrokerComponent {
         {
           key: 'displayTime',
           label: 'Timestamp',
-          className: 'x-small text-muted font-monospace'
+          fontSize: 6,
+          color: 'muted',
+          className: 'font-monospace'
         },
         {
           key: 'domain',
@@ -47,7 +49,8 @@ export class AuditTrailTable extends BrokerComponent {
           render: (row: AuditTrailRow) => new Badge({
             text: row.domain,
             variant: 'light',
-            className: 'text-dark border'
+            color: 'dark',
+            border: true
           })
         },
         {
@@ -55,8 +58,8 @@ export class AuditTrailTable extends BrokerComponent {
           label: 'Action',
           render: (row: AuditTrailRow) => new Section({
             children: [
-              new SmallText({ text: row.action.split('.')[0], className: 'fw-bold me-1' }),
-              new SmallText({ text: row.action.split('.').slice(1).join('.'), className: 'text-info' })
+              new SmallText({ text: row.action.split('.')[0], fontWeight: 'bold', mr: 1 }),
+              new SmallText({ text: row.action.split('.').slice(1).join('.'), color: 'info' })
             ]
           })
         },

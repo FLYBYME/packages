@@ -25,9 +25,9 @@ export class DropdownSection extends BaseDemoSection {
                                 ]
                             }),
 
-                            new Heading(5, { text: 'Auto Close Behavior', className: 'mt-4 mb-3' }),
+                            new Heading(5, { text: 'Auto Close Behavior', mt: 4, mb: 3 }),
                             new Section({
-                                className: 'd-flex gap-2 flex-wrap',
+                                display: 'flex', gap: 2, className: 'flex-wrap',
                                 children: [
                                     new Dropdown({
                                         children: [
@@ -63,7 +63,7 @@ export class DropdownSection extends BaseDemoSection {
                                 ]
                             }),
                             
-                            new Heading(5, { text: 'Alignment', className: 'mt-4 mb-3' }),
+                            new Heading(5, { text: 'Alignment', mt: 4, mb: 3 }),
                             new Dropdown({
                                 children: [
                                     new DropdownToggle({ variant: 'info', label: 'Right-aligned menu' }),
@@ -97,9 +97,9 @@ export class DropdownSection extends BaseDemoSection {
                                 ]
                             }),
 
-                            new Heading(5, { text: 'Dropend / Dropstart', className: 'mt-4 mb-3' }),
+                            new Heading(5, { text: 'Dropend / Dropstart', mt: 4, mb: 3 }),
                             new Section({
-                                className: 'd-flex gap-2 flex-wrap',
+                                display: 'flex', gap: 2, className: 'flex-wrap',
                                 children: [
                                     new Dropdown({
                                         direction: 'end',

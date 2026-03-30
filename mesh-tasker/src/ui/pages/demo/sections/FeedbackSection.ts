@@ -44,7 +44,7 @@ export class FeedbackSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Badges', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex gap-2 flex-wrap mb-4',
+                                display: 'flex', gap: 2, mb: 4, className: 'flex-wrap',
                                 children: [
                                     new Badge({ variant: 'primary', text: 'Default' }),
                                     new Badge({ variant: 'secondary', text: 'Secondary' }),
@@ -56,7 +56,7 @@ export class FeedbackSection extends BaseDemoSection {
                             }),
                             new Heading(6, { text: 'Button Badges', marginBottom: '2' }),
                             new Section({
-                                className: 'd-flex gap-2 flex-wrap',
+                                display: 'flex', gap: 2, className: 'flex-wrap',
                                 children: [
                                     new Button({
                                         variant: 'primary',
@@ -79,13 +79,13 @@ export class FeedbackSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Toasts & Notifications', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Toasts & Notifications', mt: 4, mb: 3 }),
             new Section({
-                className: 'position-relative border rounded p-5 bg-light mb-4',
+                padding: 5, mb: 4, className: 'position-relative border rounded bg-light',
                 style: { minHeight: '300px' },
                 children: [
                     new ToastContainer({
-                        className: 'position-absolute bottom-0 end-0 p-3',
+                        padding: 3, className: 'position-absolute bottom-0 end-0',
                         children: [
                             new Toast({
                                 delay: 5000,
@@ -105,13 +105,13 @@ export class FeedbackSection extends BaseDemoSection {
                         ]
                     }),
                     new Section({ 
-                        className: 'text-center text-muted', 
+                        textAlign: 'center', color: 'muted', 
                         children: 'Toasts will stack here (Bottom-Right)' 
                     })
                 ]
             }),
 
-            new Heading(5, { text: 'Progress Tracking', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Progress Tracking', mt: 4, mb: 3 }),
             new Row({
                 children: [
                     new Col({
@@ -119,11 +119,11 @@ export class FeedbackSection extends BaseDemoSection {
                         children: [
                             new Progress({
                                 height: 20,
-                                className: 'mb-3',
+                                mb: 3,
                                 children: new ProgressBar({ value: 45, variant: 'primary', label: 'Processing' })
                             }),
                             new Progress({
-                                className: 'mb-3',
+                                mb: 3,
                                 children: new ProgressBar({ value: 75, striped: true, animated: true, variant: 'success', label: 'Uploading...' })
                             })
                         ]
@@ -132,7 +132,7 @@ export class FeedbackSection extends BaseDemoSection {
                         span: 6,
                         children: [
                             new Progress({
-                                className: 'mb-3',
+                                mb: 3,
                                 children: [
                                     new ProgressBar({ value: 15, variant: 'primary' }),
                                     new ProgressBar({ value: 30, variant: 'success' }),
@@ -148,7 +148,7 @@ export class FeedbackSection extends BaseDemoSection {
                 ]
             }),
 
-            new Heading(5, { text: 'Loading Indicators', className: 'mt-4 mb-3' }),
+            new Heading(5, { text: 'Loading Indicators', mt: 4, mb: 3 }),
             new Row({
                 children: [
                     new Col({
@@ -156,7 +156,7 @@ export class FeedbackSection extends BaseDemoSection {
                         children: [
                             new Heading(6, { text: 'Border Spinners', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex gap-4 align-items-center mb-4',
+                                display: 'flex', gap: 4, alignItems: 'center', mb: 4,
                                 children: [
                                     new Spinner({ variant: 'primary', label: 'Processing...' }),
                                     new Spinner({ variant: 'secondary' }),
@@ -172,7 +172,7 @@ export class FeedbackSection extends BaseDemoSection {
                         children: [
                             new Heading(6, { text: 'Grow Spinners', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex gap-4 align-items-center mb-4',
+                                display: 'flex', gap: 4, alignItems: 'center', mb: 4,
                                 children: [
                                     new Spinner({ spinnerType: 'grow', variant: 'primary' }),
                                     new Spinner({ spinnerType: 'grow', variant: 'secondary' }),
@@ -187,7 +187,7 @@ export class FeedbackSection extends BaseDemoSection {
             }),
             new Heading(6, { text: 'Button Spinners & Sizing', marginBottom: '3' }),
             new Section({
-                className: 'd-flex gap-4 align-items-center',
+                display: 'flex', gap: 4, alignItems: 'center',
                 children: [
                     new Button({
                         variant: 'primary',

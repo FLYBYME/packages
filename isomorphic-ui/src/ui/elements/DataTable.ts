@@ -5,11 +5,12 @@ import { Pagination, PageItem, PageLink } from './NavigationComponents';
 import { Text } from './Typography';
 import { FormSelect, FormControl, FormOption, IFormControlProps, IFormSelectProps } from './Forms';
 
-export interface IDataTableColumn<T = Record<string, unknown>> {
+import { StyleProps } from '../../core/types/styleProps';
+
+export interface IDataTableColumn<T = Record<string, unknown>> extends StyleProps {
     key: string;
     label: string;
     sortable?: boolean;
-    className?: string;
     render?: (row: T) => ComponentChild;
 }
 
@@ -224,8 +225,8 @@ export class DataTable<T = Record<string, unknown>> extends BrokerComponent {
             return new TableRow({
                 children: this.columns.map(col => {
                     const rowVal = (row as Record<string, unknown>)[col.key];
-                    if (col.render) return new TableCell({ className: col.className, children: col.render(row) });
-                    return new TableCell({ className: col.className, text: String(rowVal) });
+                    if (col.render) return new TableCell({ ...col, children: col.render(row) });
+                    return new TableCell({ ...col, text: String(rowVal) });
                 })
             });
         });

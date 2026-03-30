@@ -56,8 +56,14 @@ export class MemoryExplorerPage extends BrokerPage {
         new ModalBody({
           children: [
             new Section({
-              className: 'mb-3', children: [
-                new SmallText({ text: 'Content', className: 'd-block fw-bold mb-1' }),
+              mb: 3,
+              children: [
+                new SmallText({
+                  text: 'Content',
+                  display: 'block',
+                  fontWeight: 'bold',
+                  mb: 1
+                }),
                 new FormControl({
                   type: 'textarea',
                   className: 'form-control',

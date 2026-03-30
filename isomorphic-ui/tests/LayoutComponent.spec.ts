@@ -48,7 +48,7 @@ describe('LayoutComponent', () => {
         const el = comp.element!;
         expect(el.className).toContain('p-3');
         expect(el.className).toContain('px-2');
-        expect(el.className).toContain('py-sm');
+        expect(el.className).toContain('py-2');
     });
 
     it('should apply margin props as classes', () => {
@@ -71,19 +71,16 @@ describe('LayoutComponent', () => {
 
     it('should apply flex layout styles', () => {
         const comp = new TestLayout('div', {
-            flex: true,
+            display: 'flex',
             direction: 'col',
             gap: 3,
-            align: 'center',
-            justify: 'between',
-            wrap: true
+            alignItems: 'center',
+            justifyContent: 'between',
+            flexWrap: true
         });
         comp.mount(container);
         
         const el = comp.element!;
-        // The implementation adds !important to layout styles via setProperty
-        // In JSDOM, sometimes getPropertyValue with !important is finicky.
-        // Let's verify the classes which are also applied for these props.
         expect(el.className).toContain('d-flex');
         expect(el.className).toContain('flex-column');
         expect(el.className).toContain('justify-content-between');
@@ -93,8 +90,8 @@ describe('LayoutComponent', () => {
 
     it('should handle display weight and text alignment', () => {
         const comp = new TestLayout('div', {
-            weight: 'bold',
-            textCenter: true,
+            fontWeight: 'bold',
+            textAlign: 'center',
             shadow: 'lg',
             rounded: 'pill'
         });

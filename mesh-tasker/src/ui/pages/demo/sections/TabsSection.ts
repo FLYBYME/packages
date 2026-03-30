@@ -12,7 +12,7 @@ export class TabsSection extends BaseDemoSection {
                             new Heading(5, { text: 'Dynamic Tabs', marginBottom: '3' }),
                             new Nav({
                                 variant: 'tabs',
-                                className: 'mb-3',
+                                mb: 3,
                                 children: [
                                     new NavItem({ paneId: 'home-tab', active: true, text: 'Home' }),
                                     new NavItem({ paneId: 'profile-tab', text: 'Profile' }),
@@ -33,7 +33,7 @@ export class TabsSection extends BaseDemoSection {
                         children: [
                             new Heading(5, { text: 'Vertical Pills', marginBottom: '3' }),
                             new Section({
-                                className: 'd-flex align-items-start',
+                                display: 'flex', alignItems: 'start',
                                 children: [
                                     new Nav({
                                         variant: 'pills',
@@ -60,7 +60,7 @@ export class TabsSection extends BaseDemoSection {
             }),
 
             new Row({
-                className: 'mt-5',
+                mt: 5,
                 children: [
                     new Col({
                         span: 12,
@@ -69,7 +69,7 @@ export class TabsSection extends BaseDemoSection {
                             new Nav({
                                 variant: 'pills',
                                 justified: true,
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new NavItem({ href: '#', active: true, text: 'Active' }),
                                     new NavItem({ href: '#', text: 'Much longer nav link' }),
@@ -81,7 +81,7 @@ export class TabsSection extends BaseDemoSection {
                             new Nav({
                                 variant: 'tabs',
                                 align: 'center',
-                                className: 'mb-4',
+                                mb: 4,
                                 children: [
                                     new NavItem({ href: '#', active: true, text: 'Active' }),
                                     new NavItem({ href: '#', text: 'Link' }),

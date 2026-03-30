@@ -10,7 +10,7 @@ export class DemoHeader extends Row {
                     children: [
                         new Heading(1, { text: 'Broker Design System', marginBottom: '2' }),
                         new LeadText({ muted: true, text: 'A programmatic UI library built with Bootstrap 5 and Isomorphic-UI reactivity.' }),
-                        new Section({ tagName: 'hr', className: 'my-4' })
+                        new Section({ tagName: 'hr', my: '4' })
                     ]
                 })
             ]
