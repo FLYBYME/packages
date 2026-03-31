@@ -52,10 +52,17 @@ export abstract class BrokerComponent {
     private _isRendering = false;
 
     protected static RESERVED_PROPS = new Set([
-        'key', 'text', 'children',
+        'key', 'text', 'children', 'className',
         'style', 'variant', 'size', 'tagName', 'label', 'ariaLabel',
         'flex', 'direction', 'gap', 'align', 'alignItems', 'justify', 'justifyContent', 'wrap',
-        'padding', 'paddingX', 'paddingY', 'margin', 'marginX', 'marginY', 'marginTop', 'marginBottom',
+        'flexDirection', 'flexWrap', 'flexGrow', 'flexShrink', 'order', 'alignSelf', 'justifySelf',
+        'm', 'mt', 'mb', 'ml', 'mr', 'mx', 'my',
+        'p', 'pt', 'pb', 'pl', 'pr', 'px', 'py',
+        'margin', 'marginX', 'marginY', 'marginTop', 'marginBottom', 'marginLeft', 'marginRight',
+        'padding', 'paddingX', 'paddingY', 'paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight',
+        'width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight',
+        'grid', 'columns', 'span', 'overflow', 'overflowX', 'overflowY',
+        'top', 'bottom', 'left', 'right', 'zIndex', 'display',
         'weight', 'unstyled', 'fullWidth', 'shadow', 'rounded', 'background', 'color', 'textCenter',
         // Component Specific
         'outline', 'nowrap', 'active', 'toggle', 'dismiss', 'pill', 'indicator', 'positioned', 'hiddenText',
@@ -130,7 +137,8 @@ export abstract class BrokerComponent {
             this.getVariantClasses(props.variant),
             this.getSizeClasses(props.size),
             ...this.getUtilityClasses(props),
-            ...mapStyleProps(props)
+            ...mapStyleProps(props),
+            (props as any).className
         ];
         const classStr = this.clsx(...classes);
         if (classStr) {

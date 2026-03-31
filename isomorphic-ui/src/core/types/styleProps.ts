@@ -45,8 +45,19 @@ export interface PaddingProps {
     paddingY?: BreakpointSpacing;
 }
 
+export type DisplayMode = 'flex' | 'inline-flex' | 'none' | 'block' | 'inline-block' | 'grid';
+
+export interface BreakpointDisplay {
+    xs?: DisplayMode;
+    sm?: DisplayMode;
+    md?: DisplayMode;
+    lg?: DisplayMode;
+    xl?: DisplayMode;
+    xxl?: DisplayMode;
+}
+
 export interface FlexProps {
-    display?: 'flex' | 'inline-flex' | 'none' | 'block' | 'inline-block' | 'grid';
+    display?: DisplayMode | BreakpointDisplay;
     flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
     direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse' | 'col' | 'col-reverse';
     justifyContent?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';

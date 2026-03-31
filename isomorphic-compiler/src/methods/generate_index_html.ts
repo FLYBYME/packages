@@ -56,8 +56,7 @@ export function generate_index_html(manifest: SiteManifest, bundlePath: string, 
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            overflow: hidden; /* CRITICAL: Prevents the whole browser tab from scrolling */
+            min-height: 100vh;
             background: ${manifest.app.background};
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
@@ -65,7 +64,7 @@ export function generate_index_html(manifest: SiteManifest, bundlePath: string, 
         /* 3. App Wrapper */
         #mesh-root-app {
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }

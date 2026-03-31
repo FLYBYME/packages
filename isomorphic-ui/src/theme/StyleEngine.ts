@@ -10,6 +10,9 @@ export class StyleEngine {
     public static init(manifest: SiteManifest): void {
         if (typeof document === 'undefined') return;
 
+        // Enable Bootstrap 5 Dark Mode Global Theme
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+
         let styleTag = document.getElementById(this.STYLE_ID) as HTMLStyleElement;
         if (!styleTag) {
             styleTag = document.createElement('style');
@@ -31,9 +34,9 @@ html, body {
     margin: 0 !important; 
     padding: 0 !important; 
     width: 100% !important; 
-    height: 100% !important; 
-    overflow: hidden !important; 
+    min-height: 100vh !important; 
     background-color: ${manifest.app.background || '#020617'} !important;
+    color: ${manifest.design?.tokens?.colors?.text || '#f8fafc'} !important;
     -webkit-text-size-adjust: 100%;
     overscroll-behavior: none;
 }
@@ -42,7 +45,7 @@ html, body {
 
 #mesh-root-app {
     width: 100% !important;
-    height: 100% !important;
+    min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
 }

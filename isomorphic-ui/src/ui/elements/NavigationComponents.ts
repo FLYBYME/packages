@@ -154,9 +154,12 @@ export class NavbarLink extends BrokerComponent {
     constructor(props: IBaseUIProps = {}) { 
         super('a', { 
             href: props.href || '#',
-            className: 'nav-link cursor-pointer text-nowrap' + (props.active ? ' active' : ''),
             ...props 
         }); 
+    }
+    protected override getBaseClasses(): string {
+        const props = this.props;
+        return 'nav-link cursor-pointer text-nowrap' + (props.active ? ' active' : '');
     }
     build() { return this.props.text || this.props.children; }
 }
@@ -166,11 +169,9 @@ export class NavbarLink extends BrokerComponent {
  */
 export class NavbarDropdown extends BrokerComponent {
     constructor(props: IBaseUIProps = {}) { 
-        super('li', {
-            className: 'nav-item dropdown',
-            ...props
-        }); 
+        super('li', props); 
     }
+    protected override getBaseClasses(): string { return 'nav-item dropdown'; }
     build() { return this.props.children; }
 }
 
@@ -181,13 +182,13 @@ export class NavbarDropdownToggle extends BrokerComponent {
     constructor(props: IBaseUIProps = {}) {
         super('a', {
             href: '#',
-            className: 'nav-link dropdown-toggle',
             'data-bs-toggle': 'dropdown',
             'aria-expanded': 'false',
             role: 'button',
             ...props
         });
     }
+    protected override getBaseClasses(): string { return 'nav-link dropdown-toggle'; }
     build() { return this.props.text || this.props.children; }
 }
 
@@ -196,11 +197,9 @@ export class NavbarDropdownToggle extends BrokerComponent {
  */
 export class NavbarDropdownMenu extends BrokerComponent {
     constructor(props: IBaseUIProps = {}) {
-        super('ul', {
-            className: 'dropdown-menu shadow-sm',
-            ...props
-        });
+        super('ul', props);
     }
+    protected override getBaseClasses(): string { return 'dropdown-menu shadow-sm'; }
     build() { return this.props.children; }
 }
 
@@ -212,9 +211,12 @@ export class NavbarDropdownItem extends BrokerComponent {
         super('li', props);
     }
     build() {
+        const { children, text, ...rest } = this.props;
         return new NavbarLink({
-            ...this.props,
-            className: 'dropdown-item cursor-pointer'
+            ...rest,
+            className: 'dropdown-item cursor-pointer',
+            children,
+            text
         });
     }
 }
@@ -336,10 +338,11 @@ export class PageLink extends LayoutComponent {
  */
 export class Sidebar extends LayoutComponent {
     constructor(props: IPrimitiveProps = {}) { 
-        super('aside', { 
-            className: 'mesh-sidebar d-flex flex-column border-end bg-white h-100',
-            ...props 
-        }); 
+        super('aside', props); 
+    }
+    
+    protected override getBaseClasses(): string {
+        return 'mesh-sidebar d-flex flex-column h-100';
     }
     
     build() { return this.props.children; }

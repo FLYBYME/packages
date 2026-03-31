@@ -1,7 +1,7 @@
 import { BrokerComponent, ComponentChild } from './BrokerComponent';
 import { BrokerDOM } from '../BrokerDOM';
 import { NavigationItem } from '@flybyme/isomorphic-core';
-import { Main, Container } from '../ui/elements/Layout';
+import { Main, Container, Section } from '../ui/elements/Layout';
 import { Navbar, NavbarBrand, NavbarToggler, NavbarCollapse, NavbarNav, Sidebar, NavbarItem, NavbarLink, NavbarDropdown, NavbarDropdownToggle, NavbarDropdownMenu, NavbarDropdownItem } from '../ui/elements/NavigationComponents';
 import { RouterView } from './RouterView';
 import { Text, BootstrapIcon } from '../ui/elements/Typography';
@@ -11,12 +11,19 @@ export class AppShell extends BrokerComponent {
     private sidebar: Sidebar;
 
     constructor() {
-        super('div', { className: 'h-100 w-100 d-flex flex-column overflow-hidden mesh-app-root' });
+        super('div', { 
+            fullWidth: true,
+            flex: true, 
+            direction: 'column',
+            style: { minHeight: '100vh' }
+        });
         BrokerDOM.setAppShell(this);
         this.routerView = new RouterView();
         this.sidebar = new Sidebar({
-            width: 0,
-            className: 'border-end bg-white transition-all overflow-hidden d-none d-lg-flex'
+            width: 280,
+            borderRight: true,
+            overflow: 'hidden',
+            display: { xs: 'none', lg: 'flex' }
         });
 
         const state = BrokerDOM.getStateService();
@@ -84,34 +91,43 @@ export class AppShell extends BrokerComponent {
         return new Navbar({
             expand: 'lg',
             variant: 'dark',
-            className: 'bg-dark shadow-sm px-4',
+            className: 'bg-dark',
+            background: 'dark',
+            shadow: 'sm',
+            px: 4,
             sticky: 'top',
             container: 'fluid',
+            borderBottom: true,
             children: [
                 new NavbarBrand({
                     text: manifest?.app?.name || 'Mesh Platform',
                     href: '/',
-                    className: 'fw-bold me-4'
+                    fontWeight: 'bold',
+                    mr: 4
                 }),
                 new NavbarToggler(),
                 new NavbarCollapse({
                     children: [
                         new NavbarNav({
-                            className: 'me-auto flex-row d-flex', // FORCE ROW
+                            mr: 'auto',
+                            flex: true,
+                            direction: 'row',
+                            gap: 3,
                             children: navItems.map((item: NavigationItem) => {
                                 if (item.children && item.children.length > 0) {
                                     return new NavbarDropdown({
                                         children: [
                                             new NavbarDropdownToggle({
                                                 children: [
-                                                    item.icon ? new BootstrapIcon({ name: item.icon, className: 'me-2' }) : null,
+                                                    item.icon ? new BootstrapIcon({ name: item.icon, mr: 2 }) : null,
                                                     new Text({ text: item.label })
                                                 ]
                                             }),
                                             new NavbarDropdownMenu({
+                                                shadow: 'sm',
                                                 children: item.children.map(child => new NavbarDropdownItem({
                                                     children: [
-                                                        child.icon ? new BootstrapIcon({ name: child.icon, className: 'me-2' }) : null,
+                                                        child.icon ? new BootstrapIcon({ name: child.icon, mr: 2 }) : null,
                                                         new Text({ text: child.label })
                                                     ],
                                                     onClick: (e: Event) => {
@@ -125,9 +141,10 @@ export class AppShell extends BrokerComponent {
                                 }
                                 return new NavbarItem({
                                     children: new NavbarLink({
-                                        className: 'nav-link cursor-pointer text-nowrap px-3 px-lg-3',
+                                        px: 3,
+                                        nowrap: true,
                                         children: [
-                                            item.icon ? new BootstrapIcon({ name: item.icon, className: 'me-2' }) : null,
+                                            item.icon ? new BootstrapIcon({ name: item.icon, mr: 2 }) : null,
                                             new Text({ text: item.label })
                                         ],
                                         onClick: (e: Event) => {
@@ -140,7 +157,10 @@ export class AppShell extends BrokerComponent {
                         }),
                         new NavbarNav({
                             tagName: 'div',
-                            className: 'ms-auto d-flex align-items-center gap-3',
+                            ml: 'auto',
+                            flex: true,
+                            alignItems: 'center',
+                            gap: 3,
                             children: headerActions
                         })
                     ]
@@ -155,7 +175,13 @@ export class AppShell extends BrokerComponent {
 
         return new Container({
             tagName: 'footer',
-            className: 'p-4 border-top bg-white text-center text-muted small mt-auto',
+            fluid: true,
+            padding: 4,
+            borderTop: true,
+            textAlign: 'center',
+            color: 'muted',
+            fontSize: 6,
+            mt: 'auto',
             children: footerContent.length > 0 ? footerContent : [
                 new Container({ text: `&copy; ${new Date().getFullYear()} ${manifest?.app?.name || 'Mesh Platform'}. All rights reserved.` })
             ]
@@ -166,19 +192,52 @@ export class AppShell extends BrokerComponent {
         const state = BrokerDOM.getStateService();
         const layoutMode = state.getValue('$app.layout');
         const sidebarExtra = this.getMergedLayoutState('$app.sidebar.extra');
+        const manifest = BrokerDOM.getManifest();
+        const navItems = manifest?.navigation?.main || [];
 
-        // Update sidebar children based on current state
-        this.sidebar.props.children = [
-            new Container({
-                className: 'p-3 flex-grow-1 overflow-auto',
-                children: sidebarExtra
-            })
-        ];
+        const sidebar = new Sidebar({
+            width: 280,
+            background: 'elevated',
+            style: { borderRight: '1px solid rgba(255,255,255,0.1)' },
+            display: { xs: 'none', lg: 'flex' },
+            children: [
+                new Container({
+                    padding: 3,
+                    flexGrow: 1,
+                    overflow: 'auto',
+                    children: [
+                        new NavbarNav({
+                            flex: true,
+                            direction: 'column',
+                            gap: 2,
+                            children: navItems.map((item: any) => new NavbarItem({
+                                children: new NavbarLink({
+                                    px: 3,
+                                    active: window.location.pathname === item.path,
+                                    children: [
+                                        item.icon ? new BootstrapIcon({ name: item.icon, mr: 2 }) : null,
+                                        new Text({ text: item.label })
+                                    ],
+                                    onClick: (e: Event) => {
+                                        e.preventDefault();
+                                        if (item.path) BrokerDOM.navigate(item.path);
+                                    }
+                                })
+                            }))
+                        }),
+                        new Section({ mt: 4, children: sidebarExtra })
+                    ]
+                })
+            ]
+        });
 
         if (layoutMode === 'minimal') {
             return [
                 new Main({
-                    className: 'flex-grow-1 w-100 h-100 bg-light',
+                    flexGrow: 1,
+                    width: 'full',
+                    display: 'flex',
+                    flexDirection: 'column',
                     children: this.routerView
                 })
             ];
@@ -188,22 +247,29 @@ export class AppShell extends BrokerComponent {
             this.buildNavbar(),
             new Container({
                 fluid: true,
-                className: 'flex-grow-1 p-0 d-flex overflow-hidden',
+                flexGrow: 1,
+                p: 0,
+                flex: true,
                 children: [
-                    this.sidebar,
+                    sidebar,
                     new Main({
-                        className: 'flex-grow-1 bg-light d-flex flex-column overflow-y-auto',
+                        flexGrow: 1,
+                        flex: true,
+                        direction: 'column',
                         children: [
                             new Container({
                                 fluid: true,
-                                className: 'flex-grow-1 d-flex flex-column p-0',
+                                flexGrow: 1,
+                                flex: true,
+                                direction: 'column',
+                                p: 0,
                                 children: this.routerView
-                            }),
-                            this.buildFooter()
+                            })
                         ]
                     })
                 ]
-            })
+            }),
+            this.buildFooter()
         ];
     }
 }

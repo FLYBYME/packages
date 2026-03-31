@@ -1,4 +1,7 @@
-import { MarginProps, PaddingProps, FlexProps, TypographyProps, BreakpointSpacing, PositionProps } from '../types/styleProps';
+import { 
+    MarginProps, PaddingProps, FlexProps, TypographyProps, 
+    BreakpointSpacing, PositionProps, DisplayMode, BreakpointDisplay 
+} from '../types/styleProps';
 
 const spaceMap: Record<string, string> = { xs: '1', sm: '2', md: '3', lg: '4', xl: '5' };
 
@@ -52,9 +55,23 @@ export const mapPaddingProps = (props: PaddingProps): string[] => {
     return classes;
 };
 
+const resolveDisplay = (value: DisplayMode | BreakpointDisplay | undefined): string[] => {
+    if (value === undefined) return [];
+    if (typeof value === 'string') return [`d-${value}`];
+    
+    const classes: string[] = [];
+    if (value.xs !== undefined) classes.push(`d-${value.xs}`);
+    if (value.sm !== undefined) classes.push(`d-sm-${value.sm}`);
+    if (value.md !== undefined) classes.push(`d-md-${value.md}`);
+    if (value.lg !== undefined) classes.push(`d-lg-${value.lg}`);
+    if (value.xl !== undefined) classes.push(`d-xl-${value.xl}`);
+    if (value.xxl !== undefined) classes.push(`d-xxl-${value.xxl}`);
+    return classes;
+};
+
 export const mapFlexProps = (props: FlexProps): string[] => {
     const classes: string[] = [];
-    if (props.display) classes.push(`d-${props.display}`);
+    if (props.display) classes.push(...resolveDisplay(props.display));
     const dir = props.flexDirection ?? props.direction;
     if (dir) {
         if (dir === 'row') classes.push('flex-row');

@@ -48,7 +48,7 @@ export abstract class LayoutComponent extends BrokerComponent {
     /**
      * Maps IPrimitiveProps to Bootstrap 5 utility class names.
      */
-    protected static getLayoutClasses(props: IPrimitiveProps): string[] {
+    protected getLayoutClasses(props: IPrimitiveProps): string[] {
         const classes: string[] = [];
 
         // 1. Grid & Spanning
@@ -84,12 +84,18 @@ export abstract class LayoutComponent extends BrokerComponent {
         return classes;
     }
 
+    protected override getUtilityClasses(props: IPrimitiveProps): string[] {
+        const classes = super.getUtilityClasses(props);
+        classes.push(...this.getLayoutClasses(props));
+        return classes;
+    }
+
     /**
      * Only applies explicit, arbitrary dimensions as inline styles.
      * All design tokens are handled via className.
      */
     protected override getLayoutStyles(props: IPrimitiveProps): Record<string, string | number> {
-        const styles: Record<string, string | number> = {};
+        const styles = { ...super.getLayoutStyles(props) };
 
         // Explicit dimensions only if NOT a utility class
         if (props.width && !['full', 'screen'].includes(String(props.width))) {

@@ -7,9 +7,9 @@
     "mesh-*"
   ],
   "scripts": {
-    "build": "tsc -b",
+    "build": "npm run build --workspaces --if-present",
     "prepare": "npm run build",
-    "typecheck": "tsc -b",
+    "typecheck": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces",
     "test": "npm test --workspaces",
     "clean": "rm -rf node_modules && npm run clean --workspaces",
